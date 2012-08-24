@@ -1,4 +1,4 @@
 sharpSAT
 ========
 
-The #SAT solver sharpSAT
+A #SAT solver 
