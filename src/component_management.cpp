@@ -13,11 +13,6 @@
 ComponentCache::ComponentCache(SolverConfiguration &conf,
 		DataAndStatistics &statistics) :
 		config_(conf), statistics_(statistics) {
-
-//	struct sysinfo info;
-//	sysinfo(&info);
-//	cout << "free " << info.freeram/1000000 << " MB, minfree " << min_free_ram_/1000000 << "MB" <<endl;
-//	cout << endl << endl;
 }
 
 void ComponentCache::init() {
@@ -36,7 +31,6 @@ void ComponentCache::init() {
 	unsigned long max_cache_bound = 95 * (info.freeram / 100);
 
 	if (config_.maximum_cache_size_bytes == 0) {
-		//config_.maximum_cache_size_bytes = info.totalram;
 		config_.maximum_cache_size_bytes = max_cache_bound;
 	}
 
@@ -61,25 +55,6 @@ CacheEntryID ComponentCache::createEntryFor(Component &comp,
 			>= config_.maximum_cache_size_bytes) {
 		deleteEntries();
 	}
-//	else {
-//		struct sysinfo info;
-//		sysinfo(&info);
-//		if (info.freeram < min_free_ram_) {
-//			cout << endl << endl << "LOW FREE RAM, deleting cache entries";
-//			cout << "free " << info.freeram/1000000 << " MB, minfree " << min_free_ram_/1000000 << "MB" <<endl;
-//			cout << "cache " << recompute_bytes_memory_usage()/1000000;
-//			cout << endl << endl;
-//			deleteEntries();
-//			sysinfo(&info);
-//			if (info.freeram < min_free_ram_) {
-//				cout << endl << endl << "LOW FREE RAM, cannot store entry";
-//				cout << "free " << info.freeram/1000000 << " MB, minfree " << min_free_ram_/1000000 << "MB" <<endl;
-//				cout << "cache " << recompute_bytes_memory_usage()/1000000;
-//			    cout << endl << endl;
-//				return 0;
-//			}
-//		}
-//	}
 
 	assert(
 			statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
@@ -106,12 +81,12 @@ CacheEntryID ComponentCache::createEntryFor(Component &comp,
 	statistics_.num_cached_components_++;
 
 #ifdef DEBUG
-//    for (unsigned u = 2; u < entry_base_.size(); u++)
-//          if (entry_base_[u] != nullptr) {
-//            assert(entry_base_[u]->father() != id);
-//            assert(entry_base_[u]->first_descendant() != id);
-//            assert(entry_base_[u]->next_sibling() != id);
-//          }
+    for (unsigned u = 2; u < entry_base_.size(); u++)
+          if (entry_base_[u] != nullptr) {
+            assert(entry_base_[u]->father() != id);
+            assert(entry_base_[u]->first_descendant() != id);
+            assert(entry_base_[u]->next_sibling() != id);
+          }
 #endif
 	return id;
 }
@@ -221,7 +196,6 @@ bool ComponentCache::deleteEntries() {
 	test_descendantstree_consistency();
 #endif
 
-	// TODO go through the whole entrybase once more and collect the new statistics
 	statistics_.sum_size_cached_components_ = 0;
 	for (unsigned id = 2; id < entry_base_.size(); id++)
 		if (entry_base_[id] != nullptr) {
@@ -334,9 +308,6 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 	for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
 		if (variables_seen_[*vt] == CA_IN_SUP_COMP) {
 			recordComponentOf(*vt);
-			// TODO, depending on how many clauses have been found,
-			//     we can e.g. store the model_count of the component
-			//     directly
 			if (component_search_stack_.size() == 1) {
 				top.includeSolution(2);
 				variables_seen_[*vt] = CA_IN_OTHER_COMP;
