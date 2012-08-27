@@ -1,6 +1,6 @@
-========
+=========
 sharpSAT
-========
+=========
 
 sharpSAT is a #SAT solver based on modern DPLL based SAT solver technology.
 This is a new version with several incremental improvements over the 2006
@@ -8,6 +8,37 @@ sharpSAT 1.1 which has been published at SAT 2006.
 
 This version also fixed several bugs - most importantly a counting bug,
 that causes sharpSAT to report wrong model counts on some instances.
+
+=========
+Usage
+=========
+
+Usage: sharpSAT [options] [CNF_File]
+Options: 
+	-noPP	turn off preprocessing
+	-noCC	turn off component caching
+	-noIBCP	turn off implicit BCP
+	-q      quiet mode
+	-t [s] 	set time bound to s seconds
+	-cs [n]	set max cache size to n MB
+
+
+=========
+Building
+=========
+
+It suffices to change to the ./Release subdirectory and run
+
+make
+
+
+NOTE:
+
+- it is necessary to have at least G++ 4.7 installed for sharpSAT to
+compile. This is particularly necessary as we use delegating constructors 
+
+- the GMP bignum package has to be installed in your system
+
 
 
 =========
