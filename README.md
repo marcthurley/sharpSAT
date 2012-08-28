@@ -27,7 +27,7 @@ Options:
 Building
 =========
 
-It suffices to change to the ./Release subdirectory and run
+It suffices to call
 
 make
 
