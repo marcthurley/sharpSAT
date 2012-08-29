@@ -235,6 +235,7 @@ public:
   }
 
   long double getAvgComponentSize() {
+	  if(num_cached_components_ == 0) return 0.0;
     return sum_size_cached_components_ / (long double) num_cached_components_;
   }
 

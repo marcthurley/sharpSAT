@@ -117,6 +117,10 @@ void Solver::solve(const string &file_name) {
     cout << " DONE" << endl;
 
   if (notfoundUNSAT) {
+	  if(num_variables() == 0){
+		  statistics_.exit_state_ = SUCCESS;
+		  statistics_.set_final_solution_count(1.0);
+  }else{
 
     if (!config_.quiet) {
       statistics_.printShortFormulaInfo();
@@ -125,7 +129,6 @@ void Solver::solve(const string &file_name) {
     last_ccl_deletion_time_ = last_ccl_cleanup_time_ = statistics_.getTime();
 
     state_.violated_clause.reserve(num_variables());
-
     component_analyzer_.initialize(literals_, literal_pool_);
 
     statistics_.exit_state_ = countSAT();
@@ -134,6 +137,7 @@ void Solver::solve(const string &file_name) {
     statistics_.num_long_conflict_clauses_ = num_conflict_clauses();
     statistics_.cache_bytes_memory_usage_ =
         component_analyzer_.cache().recompute_bytes_memory_usage();
+	  }
   } else {
     statistics_.exit_state_ = SUCCESS;
     statistics_.set_final_solution_count(0.0);
@@ -142,7 +146,6 @@ void Solver::solve(const string &file_name) {
 
   stopwatch_.stop();
   statistics_.time_elapsed_ = stopwatch_.getElapsedSeconds();
-
   statistics_.writeToFile("data.out");
   if(!SolverConfiguration::quiet)
     statistics_.printShort();
