@@ -74,6 +74,11 @@ void DataAndStatistics::printShort() {
   cout << num_conflict_clauses();
   cout << "/" << num_binary_conflict_clauses_ << "/" << num_unit_clauses_
       << endl << endl;
+  cout << "failed literals found by implicit BCP \t " <<
+  		  num_failed_literals_detected_ << endl;;
+
+    cout << "implicit BCP miss rate \t " << implicitBCP_miss_rate()*100 << "%";
+    cout << endl;
   cout << "cache size " << cache_bytes_memory_usage_ / 1000 / 1000 << "MB\t"
       << endl;
   cout << "cache (stores / hits) \t\t\t" << num_cached_components_ << "/"
