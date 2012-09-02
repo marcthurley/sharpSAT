@@ -264,42 +264,119 @@ retStateT Solver::backtrack() {
 	return EXIT;
 }
 
+
+//// THE OLD VERSION WITHOUT FAR BACKTRACKING
+//retStateT Solver::resolveConflict() {
+//
+//	assert(state_.name == STATE_CONFLICT);
+//	recordLastUIPCauses();
+//
+//	if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
+//			> statistics_.clause_deletion_interval()) {
+//		deleteConflictClauses();
+//		last_ccl_deletion_time_ = statistics_.num_clauses_learned_;
+//	}
+//
+//	if (statistics_.num_clauses_learned_ - last_ccl_cleanup_time_ > 100000) {
+//		compactConflictLiteralPool();
+//		last_ccl_cleanup_time_ = statistics_.num_clauses_learned_;
+//	}
+//
+//	statistics_.num_conflicts_++;
+//
+//	assert(
+//			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
+//
+//	//
+//	//BEGIN Backtracking
+//	// maybe the other branch had some solutions
+//	if (stack_.top().isSecondBranch()) {
+//		return BACKTRACK;
+//	}
+//
+//	Antecedent ant(NOT_A_CLAUSE);
+//	if (uip_clauses_.back().front() == TOS_decLit().neg()) {
+//		assert(TOS_decLit().neg() == uip_clauses_.back()[0]);
+//		var(TOS_decLit().neg()).ante = addUIPConflictClause(
+//				uip_clauses_.back());
+//		ant = var(TOS_decLit()).ante;
+//	}
+//	stack_.top().mark_branch_unsat();
+//	assert(stack_.get_decision_level() > 0);
+//	assert(stack_.top().branch_found_unsat());
+//
+//	// we do not have to remove pollutions here,
+//	// since conflicts only arise directly before
+//	// remaining components are stored
+//	// hence
+//	assert(
+//			stack_.top().remaining_components_ofs() == component_analyzer_.component_stack_size());
+//
+//	stack_.top().changeBranch();
+//	LiteralID lit = TOS_decLit();
+//	reactivateTOS();
+//	setLiteralIfFree(lit.neg(), ant);
+//	setState(STATE_ASSERTION_PENDING);
+////END Backtracking
+//	return RESOLVED;
+//}
+
 retStateT Solver::resolveConflict() {
+
+	assert(state_.name == STATE_CONFLICT);
+	recordLastUIPCauses();
+
+	if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
+			> statistics_.clause_deletion_interval()) {
+		deleteConflictClauses();
+		last_ccl_deletion_time_ = statistics_.num_clauses_learned_;
+	}
+
+	if (statistics_.num_clauses_learned_ - last_ccl_cleanup_time_ > 100000) {
+		compactConflictLiteralPool();
+		last_ccl_cleanup_time_ = statistics_.num_clauses_learned_;
+	}
+
 	statistics_.num_conflicts_++;
 
 	assert(
 			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
 
-	stack_.top().mark_branch_unsat();
-	//BEGIN Backtracking
-	// maybe the other branch had some solutions
-	if (stack_.top().isSecondBranch()) {
-		return BACKTRACK;
+//		if (stack_.top().isSecondBranch()) {
+//			return BACKTRACK;
+//		}
+
+	//
+	// FAR BACKTRACK
+	//stack_.top().mark_branch_unsat();
+	if(stack_.get_decision_level() == assertion_level_)
+		cout << "AAA" << endl;
+	while (stack_.get_decision_level() > assertion_level_) {
+		stack_.top().mark_branch_unsat();
+		component_analyzer_.removeAllCachePollutionsOf(stack_.top());
+		reactivateTOS();
+
+		if(stack_.size()<2)
+			cout << "ss" << assertion_level_;
+		assert(stack_.size()>=2);
+		(stack_.end() - 2)->includeSolution(0);
+		stack_.pop_back();
+		// step to the next component not yet processed
+		//stack_.top().nextUnprocessedComponent();
+		component_analyzer_.cleanRemainingComponentsOf(stack_.top());
+		stack_.top().resetRemainingComps();
+		stack_.top().reset_branch_model_count();
 	}
-
-	Antecedent ant(NOT_A_CLAUSE);
-	if (uip_clauses_.back().front() == TOS_decLit().neg()) {
-		assert(TOS_decLit().neg() == uip_clauses_.back()[0]);
-		var(TOS_decLit().neg()).ante = addUIPConflictClause(
-				uip_clauses_.back());
-		ant = var(TOS_decLit()).ante;
-	}
-	assert(stack_.get_decision_level() > 0);
-	assert(stack_.top().branch_found_unsat());
-
-	// we do not have to remove pollutions here,
-	// since conflicts only arise directly before
-	// remaining components are stored
-	// hence
-	assert(
-			stack_.top().remaining_components_ofs() == component_analyzer_.component_stack_size());
-
-	stack_.top().changeBranch();
-	LiteralID lit = TOS_decLit();
-	reactivateTOS();
-	setLiteralIfFree(lit.neg(), ant);
+	assert(!stack_.top().branch_found_unsat());
+    //if(TOS_decLit().var() == )
+    assert(uip_clauses_.size() >= 1);
+    assert(uip_clauses_.back().size() >= 1);
+	Antecedent ant
+	        = var(uip_clauses_.back().front()).ante
+	        = addUIPConflictClause(uip_clauses_.back());
+	setLiteralIfFree(uip_clauses_.back().front(), ant);
 	setState(STATE_ASSERTION_PENDING);
-//END Backtracking
+	// END FAR BACKTRACK
 	return RESOLVED;
 }
 
@@ -323,23 +400,6 @@ bool Solver::bcp() {
 		bSucceeded = implicitBCP();
 	}
 
-	if (!bSucceeded) {
-		assert(state_.name == STATE_CONFLICT);
-		recordLastUIPCauses();
-
-		if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
-				> statistics_.clause_deletion_interval()) {
-			deleteConflictClauses();
-			last_ccl_deletion_time_ = statistics_.num_clauses_learned_;
-		}
-
-		if (statistics_.num_clauses_learned_ - last_ccl_cleanup_time_
-				> 100000) {
-			compactConflictLiteralPool();
-			last_ccl_cleanup_time_ = statistics_.num_clauses_learned_;
-		}
-
-	}
 	return bSucceeded;
 }
 
@@ -572,7 +632,7 @@ void Solver::minimizeAndStoreUIPClause(LiteralID uipLit,
 		vector<LiteralID> & tmp_clause, bool seen[]) {
 	static deque<LiteralID> clause;
 	clause.clear();
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	for (auto lit : tmp_clause) {
 		if (existsUnitClauseOf(lit.var()))
 			continue;
@@ -601,9 +661,8 @@ void Solver::minimizeAndStoreUIPClause(LiteralID uipLit,
 		}
 	}
 
-	assert(var(uipLit).get_decision_level()== stack_.get_decision_level());
-
-	clause.push_front(uipLit);
+	if(uipLit.var() != 0)
+	  clause.push_front(uipLit);
 	uip_clauses_.push_back(vector<LiteralID>(clause.begin(), clause.end()));
 }
 
@@ -620,7 +679,7 @@ void Solver::recordLastUIPCauses() {
 	static vector<LiteralID> tmp_clause;
 	tmp_clause.clear();
 
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	uip_clauses_.clear();
 
 	unsigned lit_stack_ofs = literal_stack_.size();
@@ -692,8 +751,12 @@ void Solver::recordLastUIPCauses() {
 
 	minimizeAndStoreUIPClause(curr_lit.neg(), tmp_clause, seen);
 
-	if (var(curr_lit).decision_level > assertion_level_)
-		assertion_level_ = var(curr_lit).decision_level;
+//	cout << " |" << var(curr_lit).decision_level - assertion_level_ << " ";
+//	if (var(curr_lit).decision_level > assertion_level_)
+//		assertion_level_ = var(curr_lit).decision_level;
+//	if(uip_clauses_.back().size() == 1){
+//		assertion_level_ = var(curr_lit).decision_level;
+//	}
 }
 
 void Solver::recordAllUIPCauses() {
@@ -710,7 +773,7 @@ void Solver::recordAllUIPCauses() {
 	static vector<LiteralID> tmp_clause;
 	tmp_clause.clear();
 
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	uip_clauses_.clear();
 
 	unsigned lit_stack_ofs = literal_stack_.size();
@@ -784,8 +847,8 @@ void Solver::recordAllUIPCauses() {
 	if (!hasAntecedent(curr_lit)) {
 		minimizeAndStoreUIPClause(curr_lit.neg(), tmp_clause, seen);
 	}
-	if (var(curr_lit).decision_level > assertion_level_)
-		assertion_level_ = var(curr_lit).decision_level;
+//	if (var(curr_lit).decision_level > assertion_level_)
+//		assertion_level_ = var(curr_lit).decision_level;
 }
 
 void Solver::printOnlineStats() {

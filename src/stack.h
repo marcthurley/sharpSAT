@@ -117,6 +117,10 @@ public:
 
   }
 
+  void reset_branch_model_count(){
+	  branch_found_unsat_[active_branch_] = false;
+	  branch_model_count_[active_branch_] = 0;
+  }
   bool branch_found_unsat() {
     return branch_found_unsat_[active_branch_];
   }
