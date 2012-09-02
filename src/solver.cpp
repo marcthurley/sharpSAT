@@ -265,10 +265,32 @@ retStateT Solver::backtrack() {
 }
 
 retStateT Solver::resolveConflict() {
+
+	assert(state_.name == STATE_CONFLICT);
+	recordLastUIPCauses();
+
+	if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
+			> statistics_.clause_deletion_interval()) {
+		deleteConflictClauses();
+		last_ccl_deletion_time_ = statistics_.num_clauses_learned_;
+	}
+
+	if (statistics_.num_clauses_learned_ - last_ccl_cleanup_time_ > 100000) {
+		compactConflictLiteralPool();
+		last_ccl_cleanup_time_ = statistics_.num_clauses_learned_;
+	}
+
 	statistics_.num_conflicts_++;
 
 	assert(
 			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
+
+	assert(uip_clauses_.size() == 1);
+
+	// DEBUG
+	if (uip_clauses_.back().size() == 0)
+		cout << " EMPTY CLAUSE FOUND" << endl;
+	// END DEBUG
 
 	stack_.top().mark_branch_unsat();
 	//BEGIN Backtracking
@@ -321,24 +343,6 @@ bool Solver::bcp() {
 
 	if (config_.perform_failed_lit_test && bSucceeded) {
 		bSucceeded = implicitBCP();
-	}
-
-	if (!bSucceeded) {
-		assert(state_.name == STATE_CONFLICT);
-		recordLastUIPCauses();
-
-		if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
-				> statistics_.clause_deletion_interval()) {
-			deleteConflictClauses();
-			last_ccl_deletion_time_ = statistics_.num_clauses_learned_;
-		}
-
-		if (statistics_.num_clauses_learned_ - last_ccl_cleanup_time_
-				> 100000) {
-			compactConflictLiteralPool();
-			last_ccl_cleanup_time_ = statistics_.num_clauses_learned_;
-		}
-
 	}
 	return bSucceeded;
 }
@@ -522,6 +526,10 @@ bool Solver::implicitBCP() {
 					sz = literal_stack_.size();
 					for (auto it = uip_clauses_.rbegin();
 							it != uip_clauses_.rend(); it++) {
+						// DEBUG
+						if (it->size() == 0)
+							cout << "EMPTY CLAUSE FOUND" << endl;
+						// END DEBUG
 						setLiteralIfFree(it->front(),
 								addUIPConflictClause(*it));
 					}
@@ -572,7 +580,7 @@ void Solver::minimizeAndStoreUIPClause(LiteralID uipLit,
 		vector<LiteralID> & tmp_clause, bool seen[]) {
 	static deque<LiteralID> clause;
 	clause.clear();
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	for (auto lit : tmp_clause) {
 		if (existsUnitClauseOf(lit.var()))
 			continue;
@@ -603,7 +611,9 @@ void Solver::minimizeAndStoreUIPClause(LiteralID uipLit,
 
 	assert(var(uipLit).get_decision_level()== stack_.get_decision_level());
 
-	clause.push_front(uipLit);
+	assert(uipLit.toInt() != 0);
+	if (uipLit.toInt() != 0)
+		clause.push_front(uipLit);
 	uip_clauses_.push_back(vector<LiteralID>(clause.begin(), clause.end()));
 }
 
@@ -620,7 +630,7 @@ void Solver::recordLastUIPCauses() {
 	static vector<LiteralID> tmp_clause;
 	tmp_clause.clear();
 
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	uip_clauses_.clear();
 
 	unsigned lit_stack_ofs = literal_stack_.size();
@@ -710,7 +720,7 @@ void Solver::recordAllUIPCauses() {
 	static vector<LiteralID> tmp_clause;
 	tmp_clause.clear();
 
-	assertion_level_ = -1;
+	assertion_level_ = 0;
 	uip_clauses_.clear();
 
 	unsigned lit_stack_ofs = literal_stack_.size();
