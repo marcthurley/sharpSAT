@@ -300,12 +300,28 @@ retStateT Solver::resolveConflict() {
 	}
 
 	Antecedent ant(NOT_A_CLAUSE);
+	// this has to be checked since using implicit BCP
+	// and checking literals there not exhaustively
+	// we cannot guarantee that uip_clauses_.back().front() == TOS_decLit().neg()
+	// this is because we might have checked a literal
+	// during implict BCP which has been a failed literal
+	// due only to assignments made at lower decision levels
 	if (uip_clauses_.back().front() == TOS_decLit().neg()) {
 		assert(TOS_decLit().neg() == uip_clauses_.back()[0]);
 		var(TOS_decLit().neg()).ante = addUIPConflictClause(
 				uip_clauses_.back());
 		ant = var(TOS_decLit()).ante;
 	}
+//	// RRR
+//	else if(var(uip_clauses_.back().front()).decision_level
+//			< stack_.get_decision_level()
+//			&& assertion_level_ <  stack_.get_decision_level()){
+//         stack_.top().set_both_branches_unsat();
+//         return BACKTRACK;
+//	}
+//
+//
+//	// RRR
 	assert(stack_.get_decision_level() > 0);
 	assert(stack_.top().branch_found_unsat());
 
@@ -609,10 +625,11 @@ void Solver::minimizeAndStoreUIPClause(LiteralID uipLit,
 		}
 	}
 
-	assert(var(uipLit).get_decision_level()== stack_.get_decision_level());
+	if(uipLit.var())
+	 assert(var(uipLit).decision_level == stack_.get_decision_level());
 
-	assert(uipLit.toInt() != 0);
-	if (uipLit.toInt() != 0)
+	//assert(uipLit.var() != 0);
+	if (uipLit.var() != 0)
 		clause.push_front(uipLit);
 	uip_clauses_.push_back(vector<LiteralID>(clause.begin(), clause.end()));
 }
@@ -664,12 +681,15 @@ void Solver::recordLastUIPCauses() {
 				// this should be the decision literal when in first branch
 				// or it is a literal decided to explore in failed literal testing
 				//assert(stack_.TOS_decLit() == curr_lit);
+//				cout << "R" << curr_lit.toInt() << "S"
+//				     << var(curr_lit).ante.isAnt() << " "  << endl;
 				break;
 			}
 		}
 
 		assert(hasAntecedent(curr_lit));
 
+		//cout << "{" << curr_lit.toInt() << "}";
 		if (getAntecedent(curr_lit).isAClause()) {
 			updateActivities(getAntecedent(curr_lit).asCl());
 			assert(curr_lit == *beginOf(getAntecedent(curr_lit).asCl()));
@@ -698,12 +718,16 @@ void Solver::recordLastUIPCauses() {
 				seen[alit.var()] = true;
 			}
 		}
+		curr_lit = NOT_A_LIT;
 	}
 
+//	cout << "T" << curr_lit.toInt() << "U "
+//     << var(curr_lit).decision_level << ", " << stack_.get_decision_level() << endl;
+//	cout << "V"  << var(curr_lit).ante.isAnt() << " "  << endl;
 	minimizeAndStoreUIPClause(curr_lit.neg(), tmp_clause, seen);
 
-	if (var(curr_lit).decision_level > assertion_level_)
-		assertion_level_ = var(curr_lit).decision_level;
+//	if (var(curr_lit).decision_level > assertion_level_)
+//		assertion_level_ = var(curr_lit).decision_level;
 }
 
 void Solver::recordAllUIPCauses() {
@@ -794,8 +818,8 @@ void Solver::recordAllUIPCauses() {
 	if (!hasAntecedent(curr_lit)) {
 		minimizeAndStoreUIPClause(curr_lit.neg(), tmp_clause, seen);
 	}
-	if (var(curr_lit).decision_level > assertion_level_)
-		assertion_level_ = var(curr_lit).decision_level;
+//	if (var(curr_lit).decision_level > assertion_level_)
+//		assertion_level_ = var(curr_lit).decision_level;
 }
 
 void Solver::printOnlineStats() {

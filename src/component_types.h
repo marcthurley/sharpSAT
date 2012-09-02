@@ -71,7 +71,7 @@ public:
 
   void closeClauseData() {
     data_.push_back(clsSENTINEL);
-    assert(*clsBegin() == 0);
+    assert(*(clsBegin()-1) == 0);
   }
 
   vector<VariableIndex>::const_iterator varsBegin() const {
