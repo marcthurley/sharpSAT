@@ -16,35 +16,6 @@ enum retStateT {
 	EXIT, RESOLVED, PROCESS_COMPONENT, BACKTRACK
 };
 
-enum StateName {
-	STATE_NIL,
-	// denotes that the formula has been found to be unsatisfiable
-	STATE_UNSAT,
-	// a literal has been asserted --> perform BCP
-	// the literal and its antecedent are set
-	STATE_ASSERTION_PENDING,
-	// the current decision level has another yet unprocessed component
-
-	STATE_PROCESS_COMPONENT,
-	// denotes that the remaining formula has been found
-	STATE_SOLUTION_FOUND,
-	// a conflict has been found and has to be resolved
-	// via clause learning and backtracking
-	STATE_CONFLICT,
-
-	STATE_SUCCESS,
-
-	STATE_TIMEOUT,
-
-	STATE_ABORTED
-};
-
-struct SolverState {
-	StateName name;
-	// if the state name is CONFLICT,
-	// then violated_clause contains the clause determining the conflict;
-	vector<LiteralID> violated_clause;
-};
 
 class Solver: public Instance {
 public:
@@ -63,7 +34,6 @@ public:
 	}
 
 private:
-	SolverState state_;
 	SolverConfiguration config_;
 
 	DecisionStack stack_; // decision stack
@@ -138,22 +108,17 @@ private:
 	void print(vector<LiteralID> &vec);
 	void print(vector<unsigned> &vec);
 
-	void setState(StateName name) {
-		state_.name = name;
-	}
 
 	void setConflictState(LiteralID litA, LiteralID litB) {
-		state_.violated_clause.clear();
-		state_.violated_clause.push_back(litA);
-		state_.violated_clause.push_back(litB);
-		state_.name = STATE_CONFLICT;
+		violated_clause.clear();
+		violated_clause.push_back(litA);
+		violated_clause.push_back(litB);
 	}
 	void setConflictState(ClauseOfs cl_ofs) {
 		getHeaderOf(cl_ofs).increaseActivity();
-		state_.violated_clause.clear();
+		violated_clause.clear();
 		for (auto it = beginOf(cl_ofs); *it != SENTINEL_LIT; it++)
-			state_.violated_clause.push_back(*it);
-		state_.name = STATE_CONFLICT;
+			violated_clause.push_back(*it);
 	}
 
 	vector<LiteralID>::const_iterator TOSLiteralsBegin() {
@@ -209,6 +174,9 @@ private:
 	//  BEGIN conflict analysis
 	/////////////////////////////////////////////
 
+	// if the state name is CONFLICT,
+	// then violated_clause contains the clause determining the conflict;
+	vector<LiteralID> violated_clause;
 	// this is an array of all the clauses found
 	// during the most recent conflict analysis
 	// it might contain more than 2 clauses

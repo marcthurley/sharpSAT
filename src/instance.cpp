@@ -13,6 +13,11 @@
 
 using namespace std;
 
+void Instance::decayActivities() {
+    for (auto l_it = literals_.begin(); l_it != literals_.end(); l_it++)
+      l_it->activity_score_ *= 0.5;
+}
+
 void Instance::cleanClause(ClauseOfs cl_ofs) {
   bool satisfied = false;
   for (auto it = beginOf(cl_ofs); *it != SENTINEL_LIT; it++)

@@ -127,7 +127,7 @@ void Solver::solve(const string &file_name) {
 		last_ccl_deletion_time_ = last_ccl_cleanup_time_ =
 				statistics_.getTime();
 
-		state_.violated_clause.reserve(num_variables());
+		violated_clause.reserve(num_variables());
 
 		component_analyzer_.initialize(literals_, literal_pool_);
 
@@ -152,10 +152,9 @@ void Solver::solve(const string &file_name) {
 }
 
 SOLVER_StateT Solver::countSAT() {
-	retStateT res = RESOLVED;
+	retStateT state = RESOLVED;
 
 	while (true) {
-		assert(state_.name != STATE_ASSERTION_PENDING);
 		while (component_analyzer_.findNextRemainingComponentOf(stack_.top())) {
 			decideLiteral();
 			if (stopwatch_.timeBoundBroken())
@@ -164,23 +163,22 @@ SOLVER_StateT Solver::countSAT() {
 				printOnlineStats();
 
 			while (!bcp()) {
-				res = resolveConflict();
-				if (res == BACKTRACK)
+				state = resolveConflict();
+				if (state == BACKTRACK)
 					break;
 			}
-			if (res == BACKTRACK)
+			if (state == BACKTRACK)
 				break;
-			assert(state_.name != STATE_ASSERTION_PENDING);
 		}
 
-		res = backtrack();
-		if (res == EXIT)
+		state = backtrack();
+		if (state == EXIT)
 			return SUCCESS;
-		while (res != PROCESS_COMPONENT && !bcp()) {
-			res = resolveConflict();
-			if (res == BACKTRACK) {
-				res = backtrack();
-				if (res == EXIT)
+		while (state != PROCESS_COMPONENT && !bcp()) {
+			state = resolveConflict();
+			if (state == BACKTRACK) {
+				state = backtrack();
+				if (state == EXIT)
 					return SUCCESS;
 			}
 		}
@@ -215,7 +213,6 @@ void Solver::decideLiteral() {
 					> literal(LiteralID(max_score_var, false)).activity_score_);
 
 	setLiteralIfFree(theLit);
-	setState(STATE_ASSERTION_PENDING);
 	statistics_.num_decisions_++;
 
 	if (statistics_.num_decisions_ % 128 == 0)
@@ -240,7 +237,6 @@ retStateT Solver::backtrack() {
 			stack_.top().changeBranch();
 			reactivateTOS();
 			setLiteralIfFree(aLit.neg(), NOT_A_CLAUSE);
-			setState(STATE_ASSERTION_PENDING);
 			return RESOLVED;
 		}
 		// OTHERWISE:  backtrack further
@@ -265,8 +261,6 @@ retStateT Solver::backtrack() {
 }
 
 retStateT Solver::resolveConflict() {
-
-	assert(state_.name == STATE_CONFLICT);
 	recordLastUIPCauses();
 
 	if (statistics_.num_clauses_learned_ - last_ccl_deletion_time_
@@ -336,15 +330,11 @@ retStateT Solver::resolveConflict() {
 	LiteralID lit = TOS_decLit();
 	reactivateTOS();
 	setLiteralIfFree(lit.neg(), ant);
-	setState(STATE_ASSERTION_PENDING);
 //END Backtracking
 	return RESOLVED;
 }
 
 bool Solver::bcp() {
-	assert(
-			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
-	assert(state_.name == STATE_ASSERTION_PENDING);
 // the asserted literal has been set, so we start
 // bcp on that literal
 	unsigned start_ofs = literal_stack_.size() - 1;
@@ -354,7 +344,6 @@ bool Solver::bcp() {
 		setLiteralIfFree(lit);
 //END process unit clauses
 
-	setState(STATE_NIL);
 	bool bSucceeded = BCP(start_ofs);
 
 	if (config_.perform_failed_lit_test && bSucceeded) {
@@ -639,8 +628,6 @@ void Solver::recordLastUIPCauses() {
 // variables of lower dl: if seen we dont work with them anymore
 // variables of this dl: if seen we incorporate their
 // antecedent and set to unseen
-	assert(state_.name == STATE_CONFLICT);
-
 	bool seen[num_variables() + 1];
 	memset(seen, false, sizeof(bool) * (num_variables() + 1));
 
@@ -654,7 +641,7 @@ void Solver::recordLastUIPCauses() {
 	int DL = stack_.get_decision_level();
 	unsigned lits_at_current_dl = 0;
 
-	for (auto l : state_.violated_clause) {
+	for (auto l : violated_clause) {
 		if (var(l).decision_level == 0 || existsUnitClauseOf(l.var()))
 			continue;
 		if (var(l).decision_level < DL)
@@ -735,9 +722,6 @@ void Solver::recordAllUIPCauses() {
 // variables of lower dl: if seen we dont work with them anymore
 // variables of this dl: if seen we incorporate their
 // antecedent and set to unseen
-
-	assert(state_.name == STATE_CONFLICT);
-
 	bool seen[num_variables() + 1];
 	memset(seen, false, sizeof(bool) * (num_variables() + 1));
 
@@ -751,7 +735,7 @@ void Solver::recordAllUIPCauses() {
 	int DL = stack_.get_decision_level();
 	unsigned lits_at_current_dl = 0;
 
-	for (auto l : state_.violated_clause) {
+	for (auto l : violated_clause) {
 		if (var(l).decision_level == 0 || existsUnitClauseOf(l.var()))
 			continue;
 		if (var(l).decision_level < DL)

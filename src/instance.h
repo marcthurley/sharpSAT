@@ -107,6 +107,7 @@ protected:
     for (auto l_it = literals_.begin(); l_it != literals_.end(); l_it++)
       l_it->activity_score_ *= 0.5;
   }
+//  void decayActivities();
 
   void updateActivities(ClauseOfs clause_ofs) {
     getHeaderOf(clause_ofs).increaseActivity();
