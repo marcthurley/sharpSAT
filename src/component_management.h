@@ -131,11 +131,6 @@ private:
   // unsigned long num_buckets_ = 0;
   unsigned long num_occupied_buckets_ = 0;
   unsigned long my_time_ = 0;
-
-  // minimum amount of RAM the solver leaves free
-  // so as to avoid that the system starts paging
-  // currently set to 5% of total RAM size
-  unsigned long min_free_ram_ = 0;
 };
 
 struct CAClauseHeader {

@@ -95,7 +95,7 @@ struct SolverConfiguration {
   bool perform_pre_processing = true;
 
   unsigned long time_bound_seconds = 100000;
-  unsigned long maximum_cache_size_bytes = 0;
+  unsigned long long maximum_cache_size_bytes = 0;
 
   bool verbose = false;
 
