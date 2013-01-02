@@ -27,20 +27,21 @@ void ComponentCache::init() {
 	struct sysinfo info;
 	sysinfo(&info);
 
-	min_free_ram_ = info.totalram / 20;
-	unsigned long max_cache_bound = 95 * (info.freeram / 100);
+	unsigned long long free_ram =
+		info.freeram *(unsigned long long) info.mem_unit;
+	unsigned long max_cache_bound = 95 * (free_ram / 100);
 
 	if (config_.maximum_cache_size_bytes == 0) {
 		config_.maximum_cache_size_bytes = max_cache_bound;
 	}
 
-	if (config_.maximum_cache_size_bytes > info.freeram) {
+	if (config_.maximum_cache_size_bytes > free_ram) {
 		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
-		cout << " Free RAM " << info.freeram / 1000000 << "MB" << endl;
+		cout << " Free RAM " << free_ram / 1048576 << "MB" << endl;
 	}
 
 	cout << "Maximum cache size:\t"
-			<< config_.maximum_cache_size_bytes / 1000000 << " MB" << endl
+			<< config_.maximum_cache_size_bytes / 1048576 << " MB" << endl
 			<< endl;
 
 	recompute_bytes_memory_usage();
