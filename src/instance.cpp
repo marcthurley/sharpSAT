@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <sys/stat.h>
 
 using namespace std;
@@ -329,8 +330,23 @@ bool Instance::createfromFile(const string &file_name) {
           for (auto l : literals)
             occurrence_lists_[l].push_back(cl_ofs);
       }
-    }
-    input_file.ignore(max_ignore, '\n');
+    } else if (c == 'c') {
+      input_file >> noskipws >> c;
+      input_file >> c;
+      input_file >> skipws;
+      if (c == 'r') {
+        cout << "*** Projection vars";
+        string line;
+        getline(input_file, line);
+        stringstream linestream(line);
+
+        while ((linestream >> lit) && lit != 0) {
+          cout << " " << lit;
+          rememberedVarNums.insert(lit);
+        }
+        cout << endl;
+      } else input_file.ignore(max_ignore, '\n');
+    } else input_file.ignore(max_ignore, '\n');
   }
   ///END NEW
   input_file.close();

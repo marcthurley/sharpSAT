@@ -192,18 +192,36 @@ void Solver::decideLiteral() {
 			StackLevel(stack_.top().currentRemainingComponent(),
 					literal_stack_.size(),
 					component_analyzer_.component_stack_size()));
-	float max_score = -1;
 	float score;
+	float max_score_remembered = -1;
+	float max_score_forgotten = -1;
 	unsigned max_score_var = 0;
+	unsigned max_score_var_remembered = 0;
+	unsigned max_score_var_forgotten = 0;
 	for (auto it =
 			component_analyzer_.superComponentOf(stack_.top()).varsBegin();
 			*it != varsSENTINEL; it++) {
 		score = scoreOf(*it);
-		if (score > max_score) {
-			max_score = score;
-			max_score_var = *it;
+		if (rememberedVarNums.find(*it) != rememberedVarNums.end()) {
+			if (score > max_score_remembered) {
+				max_score_remembered = score;
+				max_score_var_remembered = *it;
+			}
+		} else {
+			if (score > max_score_forgotten) {
+				max_score_forgotten = score;
+				max_score_var_forgotten = *it;
+			}
 		}
+
 	}
+
+	if (max_score_var_remembered != 0 ) {
+		max_score_var = max_score_var_remembered;
+	} else if (max_score_var_forgotten != 0 ) {
+		max_score_var = max_score_var_forgotten;
+	} else assert(0);
+
 	// this assert should always hold,
 	// if not then there is a bug in the logic of countSAT();
 	assert(max_score_var != 0);

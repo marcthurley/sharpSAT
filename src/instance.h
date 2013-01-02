@@ -13,9 +13,12 @@
 #include "containers.h"
 
 #include <assert.h>
+#include <set>
 
 class Instance {
 protected:
+
+  set<int> rememberedVarNums;
 
   void unSet(LiteralID lit) {
     var(lit).ante = Antecedent(NOT_A_CLAUSE);
