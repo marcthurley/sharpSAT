@@ -14,6 +14,8 @@
 
 using namespace std;
 
+set<int> Instance::rememberedVarNums;
+
 void Instance::cleanClause(ClauseOfs cl_ofs) {
   bool satisfied = false;
   for (auto it = beginOf(cl_ofs); *it != SENTINEL_LIT; it++)
