@@ -131,6 +131,13 @@ void Instance::compactVariables() {
       var_map[v] = last_ofs;
     }
 
+  // rename any remembered vars accordingly
+  set<int> tmp;
+  for (auto vt = rememberedVarNums.begin(); vt != rememberedVarNums.end(); vt++) {
+    tmp.insert(var_map[*vt]);
+  }
+  rememberedVarNums = tmp;
+
   variables_.clear();
   variables_.resize(last_ofs + 1);
   occurrence_lists_.clear();
