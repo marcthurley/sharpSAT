@@ -310,7 +310,11 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 		if (variables_seen_[*vt] == CA_IN_SUP_COMP) {
 			recordComponentOf(*vt);
 			if (component_search_stack_.size() == 1) {
-				top.includeSolution(2);
+				if (Instance::remembered(*vt)) {
+					top.includeSolution(2);
+				} else {
+					top.includeSolution(1);
+				}
 				variables_seen_[*vt] = CA_IN_OTHER_COMP;
 			} else {
 				/////////////////////////////////////////////////
@@ -340,7 +344,13 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 				/////////////////////////////////////////////////
 				// END store variables in resComp
 				/////////////////////////////////////////////////
-				if (config_.perform_component_caching) {
+
+				// replace forgettable component by TRUE (unsound if component is UNSAT)
+				if (Instance::forgettable(component_stack_.back())) {
+					top.includeSolution(1);
+					delete component_stack_.back();
+					component_stack_.pop_back();
+				} else if (config_.perform_component_caching) {
 					CacheEntryID id = cache_.createEntryFor(
 							*component_stack_.back(),
 							component_stack_.size() - 1);

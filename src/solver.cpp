@@ -133,6 +133,8 @@ void Solver::solve(const string &file_name) {
 
 		statistics_.exit_state_ = countSAT();
 
+		cout << "FINAL COUNT: " << stack_.top().getTotalModelCount() << endl;
+
 		statistics_.set_final_solution_count(stack_.top().getTotalModelCount());
 		statistics_.num_long_conflict_clauses_ = num_conflict_clauses();
 		statistics_.cache_bytes_memory_usage_ =

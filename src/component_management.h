@@ -12,6 +12,7 @@
 #include "component_types.h"
 #include "containers.h"
 #include "stack.h"
+#include "instance.h"
 
 using namespace std;
 
