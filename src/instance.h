@@ -11,11 +11,30 @@
 #include "basic_types.h"
 #include "structures.h"
 #include "containers.h"
+#include "component_types.h"
 
 #include <assert.h>
+#include <set>
 
 class Instance {
+public:
+
+  static bool remembered(VariableIndex v) {
+    return rememberedVarNums.find(v) != rememberedVarNums.end();
+  }
+
+  static bool forgettable(Component * comp) {
+	for (auto it = comp->varsBegin(); *it != varsSENTINEL; it++) {
+		if (rememberedVarNums.find(*it) != rememberedVarNums.end())
+			return false;
+	}
+	return true;
+  }
+
+
 protected:
+
+  static set<int> rememberedVarNums;
 
   void unSet(LiteralID lit) {
     var(lit).ante = Antecedent(NOT_A_CLAUSE);

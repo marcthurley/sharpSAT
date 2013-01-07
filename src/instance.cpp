@@ -9,14 +9,12 @@
 
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <sys/stat.h>
 
 using namespace std;
 
-void Instance::decayActivities() {
-    for (auto l_it = literals_.begin(); l_it != literals_.end(); l_it++)
-      l_it->activity_score_ *= 0.5;
-}
+set<int> Instance::rememberedVarNums;
 
 void Instance::cleanClause(ClauseOfs cl_ofs) {
   bool satisfied = false;
@@ -132,6 +130,13 @@ void Instance::compactVariables() {
       last_ofs++;
       var_map[v] = last_ofs;
     }
+
+  // rename any remembered vars accordingly
+  set<int> tmp;
+  for (auto vt = rememberedVarNums.begin(); vt != rememberedVarNums.end(); vt++) {
+    tmp.insert(var_map[*vt]);
+  }
+  rememberedVarNums = tmp;
 
   variables_.clear();
   variables_.resize(last_ofs + 1);
@@ -334,8 +339,23 @@ bool Instance::createfromFile(const string &file_name) {
           for (auto l : literals)
             occurrence_lists_[l].push_back(cl_ofs);
       }
-    }
-    input_file.ignore(max_ignore, '\n');
+    } else if (c == 'c') {
+      input_file >> noskipws >> c;
+      input_file >> c;
+      input_file >> skipws;
+      if (c == 'r') {
+        cout << "*** Projection vars";
+        string line;
+        getline(input_file, line);
+        stringstream linestream(line);
+
+        while ((linestream >> lit) && lit != 0) {
+          cout << " " << lit;
+          rememberedVarNums.insert(lit);
+        }
+        cout << endl;
+      } else input_file.ignore(max_ignore, '\n');
+    } else input_file.ignore(max_ignore, '\n');
   }
   ///END NEW
   input_file.close();

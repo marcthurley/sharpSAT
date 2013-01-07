@@ -27,20 +27,21 @@ void ComponentCache::init() {
 	struct sysinfo info;
 	sysinfo(&info);
 
-	min_free_ram_ = info.totalram / 20;
-	unsigned long max_cache_bound = 95 * (info.freeram / 100);
+	unsigned long long free_ram =
+		info.freeram *(unsigned long long) info.mem_unit;
+	unsigned long max_cache_bound = 95 * (free_ram / 100);
 
 	if (config_.maximum_cache_size_bytes == 0) {
 		config_.maximum_cache_size_bytes = max_cache_bound;
 	}
 
-	if (config_.maximum_cache_size_bytes > info.freeram) {
+	if (config_.maximum_cache_size_bytes > free_ram) {
 		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
-		cout << " Free RAM " << info.freeram / 1000000 << "MB" << endl;
+		cout << " Free RAM " << free_ram / 1048576 << "MB" << endl;
 	}
 
 	cout << "Maximum cache size:\t"
-			<< config_.maximum_cache_size_bytes / 1000000 << " MB" << endl
+			<< config_.maximum_cache_size_bytes / 1048576 << " MB" << endl
 			<< endl;
 
 	recompute_bytes_memory_usage();
@@ -309,7 +310,11 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 		if (variables_seen_[*vt] == CA_IN_SUP_COMP) {
 			recordComponentOf(*vt);
 			if (component_search_stack_.size() == 1) {
-				top.includeSolution(2);
+				if (Instance::remembered(*vt)) {
+					top.includeSolution(2);
+				} else {
+					top.includeSolution(1);
+				}
 				variables_seen_[*vt] = CA_IN_OTHER_COMP;
 			} else {
 				/////////////////////////////////////////////////
@@ -339,7 +344,13 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 				/////////////////////////////////////////////////
 				// END store variables in resComp
 				/////////////////////////////////////////////////
-				if (config_.perform_component_caching) {
+
+				// replace forgettable component by TRUE (unsound if component is UNSAT)
+				if (Instance::forgettable(component_stack_.back())) {
+					top.includeSolution(1);
+					delete component_stack_.back();
+					component_stack_.pop_back();
+				} else if (config_.perform_component_caching) {
 					CacheEntryID id = cache_.createEntryFor(
 							*component_stack_.back(),
 							component_stack_.size() - 1);
