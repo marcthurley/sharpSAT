@@ -73,6 +73,10 @@ PackedComponent::PackedComponent(Component &rComp) {
 
   unsigned bits_per_var_diff = (unsigned int) ceil(
       log((double) max_diff + 1) / log(2.0));
+  if(bits_per_var_diff == 0)
+	   bits_per_var_diff = 1;
+  assert(bits_per_var_diff != 0);
+  assert((bits_per_var_diff&31)!= 0);
 
   max_diff = 0;
   for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {

@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <sys/sysinfo.h>
+#include <cstdint>
 
 ComponentCache::ComponentCache(SolverConfiguration &conf,
 		DataAndStatistics &statistics) :
