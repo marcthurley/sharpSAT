@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         cout << " wrong parameters" << endl;
         return -1;
       }
-      theSolver.config().maximum_cache_size_bytes = atol(argv[i + 1]) * (unsigned long long) 1048576;
+      theSolver.config().maximum_cache_size_bytes = atol(argv[i + 1]) * (unsigned long long) 1000000;
     } else
       input_file = argv[i];
   }

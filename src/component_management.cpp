@@ -37,11 +37,11 @@ void ComponentCache::init() {
 
 	if (config_.maximum_cache_size_bytes > free_ram) {
 		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
-		cout << " Free RAM " << free_ram / 1048576 << "MB" << endl;
+		cout << " Free RAM " << free_ram / 1000000 << "MB" << endl;
 	}
 
 	cout << "Maximum cache size:\t"
-			<< config_.maximum_cache_size_bytes / 1048576 << " MB" << endl
+			<< config_.maximum_cache_size_bytes / 1000000 << " MB" << endl
 			<< endl;
 
 	recompute_bytes_memory_usage();
