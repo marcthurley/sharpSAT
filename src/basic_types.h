@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <sys/time.h> // To seed random generator
 #include <iostream>
+#include <cstdint>
 #include "structures.h"
 
 #include <gmpxx.h>
@@ -95,7 +96,7 @@ struct SolverConfiguration {
   bool perform_pre_processing = true;
 
   unsigned long time_bound_seconds = 100000;
-  unsigned long long maximum_cache_size_bytes = 0;
+  uint64_t maximum_cache_size_bytes = 0;
 
   bool verbose = false;
 
@@ -150,15 +151,15 @@ public:
 
 
   /* cache statistics */
-  unsigned long num_cache_hits_ = 0;
-  unsigned long num_cache_look_ups_ = 0;
-  unsigned long sum_cache_hit_sizes_ = 0;
+  uint64_t num_cache_hits_ = 0;
+  uint64_t num_cache_look_ups_ = 0;
+  uint64_t sum_cache_hit_sizes_ = 0;
 
-  unsigned long num_cached_components_ = 0;
-  unsigned long sum_size_cached_components_ = 0;
-  unsigned long sum_memory_size_cached_components_ = 0;
+  uint64_t num_cached_components_ = 0;
+  uint64_t sum_size_cached_components_ = 0;
+  uint64_t sum_memory_size_cached_components_ = 0;
 
-  unsigned long cache_bytes_memory_usage_ = 0;
+  uint64_t cache_bytes_memory_usage_ = 0;
   /*end statistics */
 
   mpz_class final_solution_count_ = 0;

@@ -28,9 +28,9 @@ void ComponentCache::init() {
 	struct sysinfo info;
 	sysinfo(&info);
 
-	unsigned long long free_ram =
-		info.freeram *(unsigned long long) info.mem_unit;
-	unsigned long max_cache_bound = 95 * (free_ram / 100);
+	uint64_t free_ram =
+		info.freeram *(uint64_t) info.mem_unit;
+	uint64_t max_cache_bound = 95 * (free_ram / 100);
 
 	if (config_.maximum_cache_size_bytes == 0) {
 		config_.maximum_cache_size_bytes = max_cache_bound;
@@ -120,7 +120,7 @@ void ComponentCache::test_descendantstree_consistency() {
 		}
 }
 
-unsigned long ComponentCache::recompute_bytes_memory_usage() {
+uint64_t ComponentCache::recompute_bytes_memory_usage() {
 	statistics_.cache_bytes_memory_usage_ = sizeof(ComponentCache)
 			+ sizeof(CacheBucket *) * table_.capacity();
 	for (auto pbucket : table_)

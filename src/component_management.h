@@ -22,7 +22,7 @@ public:
 
   // compute the size in bytes of the component cache from scratch
   // the value is stored in bytes_memory_usage_
-  unsigned long recompute_bytes_memory_usage();
+  uint64_t recompute_bytes_memory_usage();
 
   void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
     assert(descendantid != entry(compid).first_descendant());
