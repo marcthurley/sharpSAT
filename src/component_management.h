@@ -10,10 +10,13 @@
 
 #include <vector>
 #include "component_types.h"
+#include "component_types/difference_packed_component.h"
 #include "containers.h"
 #include "stack.h"
 
 using namespace std;
+
+typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 
 class ComponentCache {
 public:

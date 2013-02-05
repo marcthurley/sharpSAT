@@ -20,7 +20,6 @@ using namespace std;
 #define NIL_ENTRY 0
 
 typedef unsigned CacheEntryID;
-typedef unsigned ComponentDataType;
 
 // State values for variables found during component
 // analysis (CA)
@@ -30,8 +29,6 @@ typedef unsigned char CA_SearchState;
 #define   CA_SEEN 2
 #define   CA_IN_OTHER_COMP  3
 
-#define varsSENTINEL  0
-#define clsSENTINEL   NOT_A_CLAUSE
 
 //  the identifier of the components
 
@@ -125,103 +122,14 @@ private:
 
 };
 
-class PackedComponent {
-public:
-  static unsigned bits_per_variable() {
-    return _bits_per_variable;
-  }
-  static unsigned bits_per_clause() {
-    return _bits_per_clause;
-  }
-
-  static void adjustPackSize(unsigned int maxVarId, unsigned int maxClId);
-
-  PackedComponent() {
-  }
-
-  inline PackedComponent(Component &rComp);
-
-  PackedComponent(Component &rComp, const mpz_class &model_count,
-      unsigned long time) :
-      PackedComponent(rComp) {
-    model_count_ = model_count;
-    creation_time_ = time;
-  }
-
-  ~PackedComponent() {
-    if (data_)
-      delete data_;
-  }
-
-  unsigned data_size() const {
-    if (!data_)
-      return 0;
-    unsigned *p = data_;
-    while (*p)
-      p++;
-    return (p - data_ + 1);
-  }
-
-  unsigned creation_time() {
-    return creation_time_;
-  }
-
-  const mpz_class &model_count() const {
-    return model_count_;
-  }
-
-  void set_creation_time(unsigned time) {
-    creation_time_ = time;
-  }
-
-  void set_model_count(const mpz_class &rn) {
-    model_count_ = rn;
-  }
-
-  unsigned hashkey() {
-    return hashkey_;
-  }
-
-  // NOTE that the following is only an upper bound on
-  // the number of varaibles
-  // it might overcount by a few variables
-  // this is due to the way things are packed
-  // and to reduce time needed to compute this value
-  unsigned num_variables() {
-    unsigned bits_per_var_diff = (*data_) & 31;
-    return 1 + (clauses_ofs_ * sizeof(unsigned) * 8 - _bits_per_variable - 5) / bits_per_var_diff;
-  }
-//  unsigned num_variables() {
-//      return (clauses_ofs_ * sizeof(unsigned) * 8) /_bits_per_variable;
-//  }
-
-  inline bool equals(const PackedComponent &comp) const;
-
-protected:
-  // data_ contains in packed form the variable indices
-  // and clause indices of the component ordered
-  // structure is
-  // var var ... clause clause ...
-  // clauses begin at clauses_ofs_
-  unsigned* data_ = nullptr;
-  unsigned clauses_ofs_ = 0;
-  unsigned hashkey_ = 0;
-
-  mpz_class model_count_;
-  unsigned creation_time_ = 0;
-
-private:
-  static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
-  static unsigned _variable_mask, _clause_mask;
-  static const unsigned _bitsPerBlock = (sizeof(unsigned) << 3);
-
-};
 
 // CachedComponent Adds Structure to PackedComponent that is
 // necessary to store it in the cache
 // namely, the descendant tree structure that
 // allows for the removal of cache pollutions
-class CachedComponent: public PackedComponent {
+
+template< class T_Component>
+class GenericCachedComponent: public T_Component {
 
   // the position where this
   // component is stored in the component stack
@@ -257,29 +165,29 @@ public:
     // before deleting the contents of this component,
     // we should make sure that this component is not present in the component stack anymore!
     assert(component_stack_id_ == 0);
-    if (data_)
-      delete data_;
-    data_ = nullptr;
+    if (T_Component::data_)
+      delete T_Component::data_;
+    T_Component::data_ = nullptr;
   }
 
-  CachedComponent() {
+  GenericCachedComponent() {
   }
 
-  CachedComponent(Component &comp, const mpz_class &model_count,
+  GenericCachedComponent(Component &comp, const mpz_class &model_count,
       unsigned long time) :
-      PackedComponent(comp, model_count, time) {
+    	  T_Component(comp, model_count, time) {
   }
 
-  CachedComponent(Component &comp) :
-      PackedComponent(comp) {
+  GenericCachedComponent(Component &comp) :
+	  T_Component(comp) {
   }
   unsigned long SizeInBytes() const {
-    return sizeof(CachedComponent)
-        + PackedComponent::data_size() * sizeof(unsigned)
+    return sizeof(GenericCachedComponent<T_Component>)
+        + T_Component::data_size() * sizeof(unsigned)
         // and add the memory usage of model_count_
         // which is:
         + sizeof(mpz_class)
-        + model_count().get_mpz_t()->_mp_size * sizeof(mp_limb_t);
+        + T_Component::model_count().get_mpz_t()->_mp_size * sizeof(mp_limb_t);
   }
 
   // BEGIN Cache Pollution Management
@@ -317,7 +225,5 @@ public:
     return sizeof(CacheBucket) + size() * sizeof(CacheEntryID);
   }
 };
-
-#include "component_types-inl.h"
 
 #endif /* COMPONENT_TYPES_H_ */

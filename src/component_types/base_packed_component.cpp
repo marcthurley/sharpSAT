@@ -1,18 +1,17 @@
 /*
- * component_types.cpp
+ * base_packed_component.cpp
  *
- *  Created on: Aug 23, 2012
- *      Author: Marc Thurley
+ *  Created on: Feb 4, 2013
+ *      Author: mthurley
  */
+#include "base_packed_component.h"
 
-#include "component_types.h"
+unsigned BasePackedComponent::_bits_per_clause = 0;
+unsigned BasePackedComponent::_bits_per_variable = 0; // bitsperentry
+unsigned BasePackedComponent::_variable_mask = 0;
+unsigned BasePackedComponent::_clause_mask = 0; // bitsperentry
 
-unsigned PackedComponent::_bits_per_clause = 0;
-unsigned PackedComponent::_bits_per_variable = 0; // bitsperentry
-unsigned PackedComponent::_variable_mask = 0;
-unsigned PackedComponent::_clause_mask = 0; // bitsperentry
-
-void PackedComponent::adjustPackSize(unsigned int maxVarId,
+void BasePackedComponent::adjustPackSize(unsigned int maxVarId,
     unsigned int maxClId) {
   _bits_per_variable = (unsigned int) ceil(
       log((double) maxVarId + 1) / log(2.0));
@@ -24,3 +23,7 @@ void PackedComponent::adjustPackSize(unsigned int maxVarId,
   for (unsigned int i = 0; i < _bits_per_clause; i++)
     _clause_mask = (_clause_mask << 1) + 1;
 }
+
+
+
+

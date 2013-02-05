@@ -26,6 +26,12 @@ using namespace std;
 #define toDEBUGOUT(X)
 #endif
 
+#define varsSENTINEL  0
+#define clsSENTINEL   NOT_A_CLAUSE
+
+typedef unsigned ComponentDataType;
+
+
 class StopWatch {
 public:
 

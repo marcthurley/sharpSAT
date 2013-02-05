@@ -4,29 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/basic_types.cpp \
-../src/component_management.cpp \
-../src/instance.cpp \
-../src/main.cpp \
-../src/solver.cpp 
+../src/component_types/base_packed_component.cpp 
 
 OBJS += \
-./src/basic_types.o \
-./src/component_management.o \
-./src/instance.o \
-./src/main.o \
-./src/solver.o 
+./src/component_types/base_packed_component.o 
 
 CPP_DEPS += \
-./src/basic_types.d \
-./src/component_management.d \
-./src/instance.d \
-./src/main.d \
-./src/solver.d 
+./src/component_types/base_packed_component.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/%.o: ../src/%.cpp
+src/component_types/%.o: ../src/component_types/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
 	g++-4.7 -O3 -pg -Wall -std=c++11 -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
