@@ -8,133 +8,27 @@
 #ifndef COMPONENT_MANAGEMENT_H_
 #define COMPONENT_MANAGEMENT_H_
 
+
+
+#include "component_types/component.h"
+#include "component_cache.h"
+
 #include <vector>
-#include "component_types.h"
-#include "component_types/difference_packed_component.h"
+#include <gmpxx.h>
 #include "containers.h"
 #include "stack.h"
 
 using namespace std;
 
-typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 
-class ComponentCache {
-public:
+// State values for variables found during component
+// analysis (CA)
+typedef unsigned char CA_SearchState;
+#define   CA_NIL  0
+#define   CA_IN_SUP_COMP  1
+#define   CA_SEEN 2
+#define   CA_IN_OTHER_COMP  3
 
-  void init();
-
-  // compute the size in bytes of the component cache from scratch
-  // the value is stored in bytes_memory_usage_
-  uint64_t recompute_bytes_memory_usage();
-
-  void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
-    assert(descendantid != entry(compid).first_descendant());
-    entry(descendantid).set_next_sibling(entry(compid).first_descendant());
-    entry(compid).set_first_descendant(descendantid);
-  }
-  void remove_firstdescendantOf(CacheEntryID compid) {
-    CacheEntryID desc = entry(compid).first_descendant();
-    if (desc != 0)
-      entry(compid).set_first_descendant(entry(desc).next_sibling());
-  }
-  unsigned long used_memory_MB() {
-    return recompute_bytes_memory_usage() / 1000000;
-  }
-
-  ComponentCache(SolverConfiguration &conf, DataAndStatistics &statistics);
-
-  ~ComponentCache() {
-    for (auto &pbucket : table_)
-      if (pbucket != nullptr)
-        delete pbucket;
-    for (auto &pentry : entry_base_)
-      if (pentry != nullptr)
-        delete pentry;
-  }
-
-  CachedComponent &entry(CacheEntryID id) {
-    assert(entry_base_.size() > id);
-    assert(entry_base_[id] != nullptr);
-    return *entry_base_[id];
-  }
-
-  bool hasEntry(CacheEntryID id) {
-    assert(entry_base_.size() > id);
-    return entry_base_[id];
-  }
-
-  // removes the entry id from the hash table
-  // but not from the entry base
-  inline void removeFromHashTable(CacheEntryID id);
-
-  // we delete the Component with ID id
-  // and all its descendants from the cache
-  inline void cleanPollutionsInvolving(CacheEntryID id);
-
-  // creates a CCacheEntry in the entry base
-  // which contains a packed copy of comp
-  // returns the id of the entry created
-  // stores in the entry the position of
-  // comp which is a part of the component stack
-  CacheEntryID createEntryFor(Component &comp, unsigned stack_id);
-
-  // unchecked erase of an entry from entry_base_
-  void eraseEntry(CacheEntryID id) {
-    statistics_.cache_bytes_memory_usage_ -= entry_base_[id]->SizeInBytes();
-    statistics_.sum_size_cached_components_ -= entry_base_[id]->num_variables();
-    statistics_.num_cached_components_--;
-    delete entry_base_[id];
-    entry_base_[id] = nullptr;
-    free_entry_base_slots_.push_back(id);
-  }
-
-
-  // store the number in model_count as the model count of CacheEntryID id
-  inline void storeValueOf(CacheEntryID id, const mpz_class &model_count);
-
-  // check if the cache contains the modelcount of comp
-  // if so, return true and out_model_count contains that model count
-  bool requestValueOf(Component &comp, mpz_class &out_model_count);
-
-  bool deleteEntries();
-
-  // delete entries, keeping the descendants tree consistent
-  inline void removeFromDescendantsTree(CacheEntryID id);
-
-  // test function to ensure consistency of the descendant tree
-  inline void test_descendantstree_consistency();
-
-private:
-  unsigned int clip(long unsigned int ofs) {
-    return ofs % table_.size();
-  }
-
-  CacheBucket &at(unsigned int ofs) {
-    if (table_[ofs] == NULL) {
-      num_occupied_buckets_++;
-      table_[ofs] = new CacheBucket();
-    }
-    return *table_[ofs];
-  }
-
-  bool isBucketAt(unsigned int ofs) {
-    return table_[ofs] != NULL;
-  }
-
-  vector<CachedComponent *> entry_base_;
-  vector<CacheEntryID> free_entry_base_slots_;
-
-  // the actual hash table
-  // by means of which the cache is accessed
-  vector<CacheBucket *> table_;
-
-  SolverConfiguration &config_;
-  DataAndStatistics &statistics_;
-
-  // unsigned long num_buckets_ = 0;
-  unsigned long num_occupied_buckets_ = 0;
-  unsigned long my_time_ = 0;
-};
 
 struct CAClauseHeader {
   unsigned clause_id = 0;
@@ -210,8 +104,9 @@ public:
   void initialize(LiteralIndexedVector<Literal> & literals,
       vector<LiteralID> &lit_pool);
 
-  ComponentCache &cache() {
-    return cache_;
+  void gatherStatistics(){
+	  statistics_.cache_bytes_memory_usage_ =
+	     cache_.recompute_bytes_memory_usage();
   }
 
   void removeAllCachePollutionsOf(StackLevel &top);
@@ -295,8 +190,35 @@ private:
   void recordComponentOf(const VariableIndex var);
 
   void initializeComponentStack();
+
+
+  void cacheCheckMostRecentComponent(StackLevel &top, CacheEntryID super_comp_id){
+	  //static mpz_class tmp_model_count;
+	  if (config_.perform_component_caching) {
+		  CacheEntryID id = cache_.createEntryFor(
+				  *component_stack_.back(),
+				  component_stack_.size() - 1);
+		  if (id != 0) {
+			  component_stack_.back()->set_id(id);
+			  // set up the father
+			  assert(cache_.hasEntry(id));
+			  assert(cache_.hasEntry(super_comp_id));
+//			  if (cache_.requestValueOf(*component_stack_.back(),
+//					  tmp_model_count)) {
+//				  top.includeSolution(tmp_model_count);
+			  if(cache_.getValueOf(*component_stack_.back(),top)){
+				  cache_.eraseEntry(id);
+				  delete component_stack_.back();
+				  component_stack_.pop_back();
+			  } else {
+				  cache_.entry(id).set_father(super_comp_id);
+				  cache_.add_descendant(super_comp_id, id);
+			  }
+		  }
+	  }
+  }
 };
 
-#include "component_management-inl.h"
+
 
 #endif /* COMPONENT_MANAGEMENT_H_ */

@@ -8,7 +8,7 @@
 #ifndef STACK_H_
 #define STACK_H_
 
-#include "basic_types.h"
+#include <gmpxx.h>
 
 class StackLevel {
   /// active Component, once initialized, it should not change

@@ -8,9 +8,8 @@
 #ifndef BASE_PACKED_COMPONENT_H_
 #define BASE_PACKED_COMPONENT_H_
 
-#include "../basic_types.h"
 #include <assert.h>
-#include <math.h>
+#include <gmpxx.h>
 
 
 class BasePackedComponent {
@@ -50,6 +49,11 @@ public:
 
   const mpz_class &model_count() const {
     return model_count_;
+  }
+
+  unsigned size_of_model_count() const{
+	  return sizeof(mpz_class)
+		     + model_count_.get_mpz_t()->_mp_size * sizeof(mp_limb_t);
   }
 
   void set_creation_time(unsigned time) {

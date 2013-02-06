@@ -10,6 +10,8 @@
 
 #include "base_packed_component.h"
 
+#include <math.h>
+
 class DifferencePackedComponent:public BasePackedComponent {
 public:
 

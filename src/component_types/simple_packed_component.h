@@ -10,6 +10,8 @@
 
 #include "base_packed_component.h"
 
+typedef unsigned ComponentDataType;
+
 class SimplePackedComponent : public BasePackedComponent {
 public:
 

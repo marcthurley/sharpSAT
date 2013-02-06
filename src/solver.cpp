@@ -9,6 +9,33 @@
 
 #include <algorithm>
 
+
+StopWatch::StopWatch() {
+  interval_length_.tv_sec = 60;
+  gettimeofday(&last_interval_start_, NULL);
+  start_time_ = stop_time_ = last_interval_start_;
+}
+
+timeval StopWatch::getElapsedTime() {
+  timeval r;
+  timeval other_time = stop_time_;
+  if (stop_time_.tv_sec == start_time_.tv_sec
+      && stop_time_.tv_usec == start_time_.tv_usec)
+    gettimeofday(&other_time, NULL);
+  long int ad = 0;
+  long int bd = 0;
+
+  if (other_time.tv_usec < start_time_.tv_usec) {
+    ad = 1;
+    bd = 1000000;
+  }
+  r.tv_sec = other_time.tv_sec - ad - start_time_.tv_sec;
+  r.tv_usec = other_time.tv_usec + bd - start_time_.tv_usec;
+  return r;
+}
+
+
+
 void Solver::print(vector<LiteralID> &vec) {
 	for (auto l : vec)
 		cout << l.toInt() << " ";
@@ -135,8 +162,9 @@ void Solver::solve(const string &file_name) {
 
 		statistics_.set_final_solution_count(stack_.top().getTotalModelCount());
 		statistics_.num_long_conflict_clauses_ = num_conflict_clauses();
-		statistics_.cache_bytes_memory_usage_ =
-				component_analyzer_.cache().recompute_bytes_memory_usage();
+
+		component_analyzer_.gatherStatistics();
+
 	} else {
 		statistics_.exit_state_ = SUCCESS;
 		statistics_.set_final_solution_count(0.0);
@@ -824,8 +852,9 @@ void Solver::printOnlineStats() {
 			<< statistics_.implicitBCP_miss_rate() * 100 << "%";
 	cout << endl;
 
-	cout << "cache size " << component_analyzer_.cache().used_memory_MB()
-			<< "MB" << endl;
+	component_analyzer_.gatherStatistics();
+
+	cout << "cache size " << statistics_.cache_MB_memory_usage()	<< "MB" << endl;
 	cout << "components (stored / hits) \t\t"
 			<< statistics_.cached_component_count() << "/"
 			<< statistics_.cache_hits() << endl;

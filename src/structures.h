@@ -10,15 +10,11 @@
 
 #include <vector>
 #include <iostream>
-
+#include "primitive_types.h"
 using namespace std;
 
-typedef unsigned VariableIndex;
-typedef unsigned ClauseIndex;
-typedef unsigned ClauseOfs;
 
-static const ClauseIndex NOT_A_CLAUSE(0);
-#define SENTINEL_CL NOT_A_CLAUSE
+
 #define INVALID_DL -1
 
 typedef unsigned char TriValue;

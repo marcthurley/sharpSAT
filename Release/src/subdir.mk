@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/basic_types.cpp \
+../src/component_cache.cpp \
 ../src/component_management.cpp \
 ../src/instance.cpp \
 ../src/main.cpp \
@@ -12,6 +13,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/basic_types.o \
+./src/component_cache.o \
 ./src/component_management.o \
 ./src/instance.o \
 ./src/main.o \
@@ -19,6 +21,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/basic_types.d \
+./src/component_cache.d \
 ./src/component_management.d \
 ./src/instance.d \
 ./src/main.d \

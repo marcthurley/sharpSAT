@@ -1,12 +1,12 @@
 /*
- * component_management-inl.h
+ * component_cache-inl.h
  *
  *  Created on: Aug 23, 2012
  *      Author: Marc Thurley
  */
 
-#ifndef COMPONENT_MANAGEMENT_INL_H_
-#define COMPONENT_MANAGEMENT_INL_H_
+#ifndef COMPONENT_CACHE_INL_H_
+#define COMPONENT_CACHE_INL_H_
 
 void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
   CacheEntryID father = entry(id).father();
@@ -92,4 +92,4 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   statistics_.cache_bytes_memory_usage_ += entry(id).SizeInBytes();
 }
 
-#endif /* COMPONENT_MANAGEMENT_INL_H_ */
+#endif /* COMPONENT_CACHE_INL_H_ */

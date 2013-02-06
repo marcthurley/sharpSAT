@@ -5,6 +5,8 @@
  *      Author: mthurley
  */
 #include "base_packed_component.h"
+#include <math.h>
+
 
 unsigned BasePackedComponent::_bits_per_clause = 0;
 unsigned BasePackedComponent::_bits_per_variable = 0; // bitsperentry
