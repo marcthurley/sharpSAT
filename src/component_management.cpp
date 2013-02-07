@@ -10,7 +10,7 @@
 void ComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 		vector<LiteralID> &lit_pool) {
 
-	cache_.init();
+
 	max_variable_id_ = literals.end_lit().var() - 1;
 
 	variables_seen_ = new CA_SearchState[max_variable_id_ + 1];
@@ -113,30 +113,34 @@ bool ComponentAnalyzer::recordRemainingCompsFor(StackLevel &top) {
 				// BEGIN store variables and clauses in component_stack_.back()
 				// protocol is: variables first, then clauses
 				/////////////////////////////////////////////////
-				component_stack_.push_back(new Component());
-				component_stack_.back()->reserveSpace(
+				Component *pNewComp = new Component();
+				//component_stack_.push_back(new Component());
+				pNewComp->reserveSpace(
 						component_search_stack_.size(),
 						super_comp.numLongClauses());
 
 				for (auto v_it = super_comp.varsBegin(); *v_it != varsSENTINEL;
 						v_it++)
 					if (variables_seen_[*v_it] == CA_SEEN) { //we have to put a var into our component
-						component_stack_.back()->addVar(*v_it);
+						pNewComp->addVar(*v_it);
 						variables_seen_[*v_it] = CA_IN_OTHER_COMP;
 					}
-				component_stack_.back()->closeVariableData();
+				pNewComp->closeVariableData();
 
 				for (auto it_cl = super_comp.clsBegin(); *it_cl != clsSENTINEL;
 						it_cl++)
 					if (clauses_seen_[*it_cl] == CA_SEEN) {
-						component_stack_.back()->addCl(*it_cl);
+						pNewComp->addCl(*it_cl);
 						clauses_seen_[*it_cl] = CA_IN_OTHER_COMP;
 					}
-				component_stack_.back()->closeClauseData();
+				pNewComp->closeClauseData();
 				/////////////////////////////////////////////////
 				// END store variables in resComp
 				/////////////////////////////////////////////////
-				cacheCheckMostRecentComponent(top, super_comp.id());
+				//if(!cacheCheckComponent(top, *pNewComp ,super_comp.id())){
+				if(!cache_.manageNewComponent(top,*pNewComp,super_comp.id(),component_stack_.size())){
+					component_stack_.push_back(pNewComp);
+				}
 			}
 		}
 
@@ -234,10 +238,8 @@ void ComponentAnalyzer::initializeComponentStack() {
 	assert(component_stack_.size() == 2);
 	component_stack_.back()->createAsDummyComponent(max_variable_id_,
 			max_clause_id_);
-	CacheEntryID id = cache_.createEntryFor(*component_stack_.back(),
-			component_stack_.size() - 1);
-	component_stack_.back()->set_id(id);
-	assert(id == 1);
+
+    cache_.init(*component_stack_.back());
 }
 
 void ComponentAnalyzer::removeAllCachePollutionsOf(StackLevel &top) {

@@ -69,13 +69,13 @@ public:
   GenericCachedComponent() {
   }
 
-  GenericCachedComponent(Component &comp, const mpz_class &model_count,
-      unsigned long time) :
-    	  T_Component(comp, model_count, time) {
-  }
+//  GenericCachedComponent(Component &comp, const mpz_class &model_count,
+//      unsigned long time) :
+//    	  T_Component(comp, model_count, time) {
+//  }
 
-  GenericCachedComponent(Component &comp) :
-	  T_Component(comp) {
+  GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
+	  T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
   }
   unsigned long SizeInBytes() const {
     return sizeof(GenericCachedComponent<T_Component>)

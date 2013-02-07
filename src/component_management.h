@@ -191,32 +191,6 @@ private:
 
   void initializeComponentStack();
 
-
-  void cacheCheckMostRecentComponent(StackLevel &top, CacheEntryID super_comp_id){
-	  //static mpz_class tmp_model_count;
-	  if (config_.perform_component_caching) {
-		  CacheEntryID id = cache_.createEntryFor(
-				  *component_stack_.back(),
-				  component_stack_.size() - 1);
-		  if (id != 0) {
-			  component_stack_.back()->set_id(id);
-			  // set up the father
-			  assert(cache_.hasEntry(id));
-			  assert(cache_.hasEntry(super_comp_id));
-//			  if (cache_.requestValueOf(*component_stack_.back(),
-//					  tmp_model_count)) {
-//				  top.includeSolution(tmp_model_count);
-			  if(cache_.getValueOf(*component_stack_.back(),top)){
-				  cache_.eraseEntry(id);
-				  delete component_stack_.back();
-				  component_stack_.pop_back();
-			  } else {
-				  cache_.entry(id).set_father(super_comp_id);
-				  cache_.add_descendant(super_comp_id, id);
-			  }
-		  }
-	  }
-  }
 };
 
 

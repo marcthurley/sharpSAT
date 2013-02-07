@@ -18,14 +18,14 @@ public:
   DifferencePackedComponent() {
   }
 
-  inline DifferencePackedComponent(Component &rComp);
+  inline DifferencePackedComponent(Component &rComp, unsigned creation_time);
 
-  DifferencePackedComponent(Component &rComp, const mpz_class &model_count,
-      unsigned long time) :
-      DifferencePackedComponent(rComp) {
-    model_count_ = model_count;
-    creation_time_ = time;
-  }
+//  DifferencePackedComponent(Component &rComp, const mpz_class &model_count,
+//      unsigned long time) :
+//      DifferencePackedComponent(rComp) {
+//    model_count_ = model_count;
+//    creation_time_ = time;
+//  }
 
 //  ~DifferencePackedComponent() {
 //    if (data_)
@@ -37,7 +37,7 @@ public:
   // it might overcount by a few variables
   // this is due to the way things are packed
   // and to reduce time needed to compute this value
-  unsigned num_variables() {
+  unsigned num_variables() const{
     unsigned bits_per_var_diff = (*data_) & 31;
     return 1 + (clauses_ofs_ * sizeof(unsigned) * 8 - bits_per_variable() - 5) / bits_per_var_diff;
   }
@@ -45,7 +45,8 @@ public:
 };
 
 
-DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
+DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned creation_time)
+  : BasePackedComponent(creation_time) {
   unsigned max_diff = 0;
 
   for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {

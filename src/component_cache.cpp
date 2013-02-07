@@ -19,7 +19,11 @@ ComponentCache::ComponentCache(SolverConfiguration &conf,
 		config_(conf), statistics_(statistics) {
 }
 
-void ComponentCache::init() {
+void ComponentCache::init(Component &super_comp) {
+
+	CachedComponent &packed_super_comp = *new CachedComponent(super_comp,1,1);
+	my_time_ = 1;
+
 	table_.clear();
 	entry_base_.clear();
 	entry_base_.reserve(2000000);
@@ -49,51 +53,19 @@ void ComponentCache::init() {
 			<< endl;
 
 	recompute_bytes_memory_usage();
-}
 
-CacheEntryID ComponentCache::createEntryFor(Component &comp,
-		unsigned stack_id) {
-	my_time_++;
-	CacheEntryID id;
+	assert(statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
 
-	if (statistics_.cache_bytes_memory_usage_
-			>= config_.maximum_cache_size_bytes) {
-		deleteEntries();
-	}
+	if (entry_base_.capacity() == entry_base_.size())
+		entry_base_.reserve(2 * entry_base_.size());
 
-	assert(
-			statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
-	if (free_entry_base_slots_.empty()) {
-		if (entry_base_.capacity() == entry_base_.size()) {
-			entry_base_.reserve(2 * entry_base_.size());
-		}
-		entry_base_.push_back(new CachedComponent(comp));
-		id = entry_base_.size() - 1;
-	} else {
-		id = free_entry_base_slots_.back();
-		assert(id < entry_base_.size());
-		assert(entry_base_[id] == nullptr);
-		free_entry_base_slots_.pop_back();
-		entry_base_[id] = new CachedComponent(comp);
-	}
-	entry_base_[id]->setComponentStackID(stack_id);
-	entry_base_[id]->set_creation_time(my_time_);
+	entry_base_.push_back(&packed_super_comp);
 
-	assert(entry_base_[id]->first_descendant() == 0);
-	assert(entry_base_[id]->next_sibling() == 0);
-	statistics_.cache_bytes_memory_usage_ += entry_base_[id]->SizeInBytes();
-	statistics_.sum_size_cached_components_ += entry_base_[id]->num_variables();
+	statistics_.cache_bytes_memory_usage_ += packed_super_comp.SizeInBytes();
+	statistics_.sum_size_cached_components_ += super_comp.num_variables();
 	statistics_.num_cached_components_++;
 
-#ifdef DEBUG
-    for (unsigned u = 2; u < entry_base_.size(); u++)
-          if (entry_base_[u] != nullptr) {
-            assert(entry_base_[u]->father() != id);
-            assert(entry_base_[u]->first_descendant() != id);
-            assert(entry_base_[u]->next_sibling() != id);
-          }
-#endif
-	return id;
+	super_comp.set_id(1);
 }
 
 void ComponentCache::test_descendantstree_consistency() {
@@ -137,47 +109,21 @@ uint64_t ComponentCache::recompute_bytes_memory_usage() {
 	return statistics_.cache_bytes_memory_usage_;
 }
 
-bool ComponentCache::requestValueOf(Component &comp, mpz_class &rn) {
-	CachedComponent &packedcomp = entry(comp.id());
-
-	unsigned int v = clip(packedcomp.hashkey());
-	if (!isBucketAt(v))
-		return false;
-
-	CachedComponent *pcomp;
-	statistics_.num_cache_look_ups_++;
-
-	for (auto it = table_[v]->begin(); it != table_[v]->end(); it++) {
-		pcomp = &entry(*it);
-		if (packedcomp.hashkey() == pcomp->hashkey()
-				&& pcomp->equals(packedcomp)) {
-			statistics_.num_cache_hits_++;
-			statistics_.sum_cache_hit_sizes_ += pcomp->num_variables();
-			rn = pcomp->model_count();
-			//pComp->set_creation_time(my_time_);
-			return true;
-		}
-	}
-	return false;
-}
-
 bool ComponentCache::getValueOf(const Component &comp, StackLevel &top){
-		CachedComponent &packedcomp = entry(comp.id());
+		CachedComponent &packedcomp = entry(comp);
 
 		unsigned int v = clip(packedcomp.hashkey());
 		if (!isBucketAt(v))
 			return false;
-
-		CachedComponent *pcomp;
 		statistics_.num_cache_look_ups_++;
 
 		for (auto it = table_[v]->begin(); it != table_[v]->end(); it++) {
-			pcomp = &entry(*it);
-			if (packedcomp.hashkey() == pcomp->hashkey()
-					&& pcomp->equals(packedcomp)) {
+			const CachedComponent &rcomp = entry(*it);
+			if (packedcomp.hashkey() == rcomp.hashkey()
+					&& rcomp.equals(packedcomp)) {
 				statistics_.num_cache_hits_++;
-				statistics_.sum_cache_hit_sizes_ += pcomp->num_variables();
-				top.includeSolution(pcomp->model_count());
+				statistics_.sum_cache_hit_sizes_ += comp.num_variables();
+				top.includeSolution(rcomp.model_count());
 				//pComp->set_creation_time(my_time_);
 				return true;
 			}

@@ -28,6 +28,7 @@ public:
   static void adjustPackSize(unsigned int maxVarId, unsigned int maxClId);
 
   BasePackedComponent() {}
+  BasePackedComponent(unsigned creation_time): creation_time_(creation_time) {}
 
   ~BasePackedComponent() {
     if (data_)
@@ -64,7 +65,7 @@ public:
     model_count_ = rn;
   }
 
-  unsigned hashkey() {
+  unsigned hashkey() const  {
     return hashkey_;
   }
 
