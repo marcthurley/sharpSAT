@@ -80,6 +80,13 @@ public:
      for (auto itCl = super_comp.clsBegin(); *itCl != clsSENTINEL; itCl++)
        clauses_seen_[*itCl] = CA_IN_SUP_COMP;
   }
+
+  unsigned max_clause_id(){
+     return max_clause_id_;
+  }
+  unsigned max_variable_id(){
+    return max_variable_id_;
+  }
 private:
 
   SolverConfiguration &config_;

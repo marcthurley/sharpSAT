@@ -99,7 +99,7 @@ private:
 
 	StopWatch stopwatch_;
 
-	ComponentManager component_analyzer_ = ComponentManager(config_,
+	ComponentManager comp_manager_ = ComponentManager(config_,
 			statistics_, literal_values_);
 
 	// the last time conflict clauses have been deleted
@@ -141,7 +141,7 @@ private:
 	/////////////////////////////////////////////
 
 	float scoreOf(VariableIndex v) {
-		float score = component_analyzer_.scoreOf(v);
+		float score = comp_manager_.scoreOf(v);
 		score += 10.0 * literal(LiteralID(v, true)).activity_score_;
 		score += 10.0 * literal(LiteralID(v, false)).activity_score_;
 		return score;
@@ -201,7 +201,7 @@ private:
 	void reactivateTOS() {
 		for (auto it = TOSLiteralsBegin(); it != literal_stack_.end(); it++)
 			unSet(*it);
-		component_analyzer_.cleanRemainingComponentsOf(stack_.top());
+		comp_manager_.cleanRemainingComponentsOf(stack_.top());
 		literal_stack_.resize(stack_.top().literal_stack_ofs());
 		stack_.top().resetRemainingComps();
 	}

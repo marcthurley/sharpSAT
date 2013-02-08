@@ -156,14 +156,14 @@ void Solver::solve(const string &file_name) {
 
 		violated_clause.reserve(num_variables());
 
-		component_analyzer_.initialize(literals_, literal_pool_);
+		comp_manager_.initialize(literals_, literal_pool_);
 
 		statistics_.exit_state_ = countSAT();
 
 		statistics_.set_final_solution_count(stack_.top().getTotalModelCount());
 		statistics_.num_long_conflict_clauses_ = num_conflict_clauses();
 
-		component_analyzer_.gatherStatistics();
+		comp_manager_.gatherStatistics();
 
 	} else {
 		statistics_.exit_state_ = SUCCESS;
@@ -183,7 +183,7 @@ SOLVER_StateT Solver::countSAT() {
 	retStateT state = RESOLVED;
 
 	while (true) {
-		while (component_analyzer_.findNextRemainingComponentOf(stack_.top())) {
+		while (comp_manager_.findNextRemainingComponentOf(stack_.top())) {
 			decideLiteral();
 			if (stopwatch_.timeBoundBroken())
 				return TIMEOUT;
@@ -219,12 +219,12 @@ void Solver::decideLiteral() {
 	stack_.push_back(
 			StackLevel(stack_.top().currentRemainingComponent(),
 					literal_stack_.size(),
-					component_analyzer_.component_stack_size()));
+					comp_manager_.component_stack_size()));
 	float max_score = -1;
 	float score;
 	unsigned max_score_var = 0;
 	for (auto it =
-			component_analyzer_.superComponentOf(stack_.top()).varsBegin();
+			comp_manager_.superComponentOf(stack_.top()).varsBegin();
 			*it != varsSENTINEL; it++) {
 		score = scoreOf(*it);
 		if (score > max_score) {
@@ -247,15 +247,15 @@ void Solver::decideLiteral() {
 		decayActivities();
 
 	assert(
-			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
+			stack_.top().remaining_components_ofs() <= comp_manager_.component_stack_size());
 }
 
 retStateT Solver::backtrack() {
 	assert(
-			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
+			stack_.top().remaining_components_ofs() <= comp_manager_.component_stack_size());
 	do {
 		if (stack_.top().branch_found_unsat())
-			component_analyzer_.removeAllCachePollutionsOf(stack_.top());
+			comp_manager_.removeAllCachePollutionsOf(stack_.top());
 		else if (stack_.top().anotherCompProcessible())
 			return PROCESS_COMPONENT;
 
@@ -268,7 +268,7 @@ retStateT Solver::backtrack() {
 			return RESOLVED;
 		}
 		// OTHERWISE:  backtrack further
-		component_analyzer_.cacheModelCountOf(stack_.top().super_component(),
+		comp_manager_.cacheModelCountOf(stack_.top().super_component(),
 				stack_.top().getTotalModelCount());
 
 		if (stack_.get_decision_level() <= 0)
@@ -282,7 +282,7 @@ retStateT Solver::backtrack() {
 		stack_.top().nextUnprocessedComponent();
 
 		assert(
-				stack_.top().remaining_components_ofs() < component_analyzer_.component_stack_size()+1);
+				stack_.top().remaining_components_ofs() < comp_manager_.component_stack_size()+1);
 
 	} while (stack_.get_decision_level() >= 0);
 	return EXIT;
@@ -305,7 +305,7 @@ retStateT Solver::resolveConflict() {
 	statistics_.num_conflicts_++;
 
 	assert(
-			stack_.top().remaining_components_ofs() <= component_analyzer_.component_stack_size());
+			stack_.top().remaining_components_ofs() <= comp_manager_.component_stack_size());
 
 	assert(uip_clauses_.size() == 1);
 
@@ -352,7 +352,7 @@ retStateT Solver::resolveConflict() {
 	// remaining components are stored
 	// hence
 	assert(
-			stack_.top().remaining_components_ofs() == component_analyzer_.component_stack_size());
+			stack_.top().remaining_components_ofs() == comp_manager_.component_stack_size());
 
 	stack_.top().changeBranch();
 	LiteralID lit = TOS_decLit();
@@ -852,7 +852,7 @@ void Solver::printOnlineStats() {
 			<< statistics_.implicitBCP_miss_rate() * 100 << "%";
 	cout << endl;
 
-	component_analyzer_.gatherStatistics();
+	comp_manager_.gatherStatistics();
 
 	cout << "cache size " << statistics_.cache_MB_memory_usage()	<< "MB" << endl;
 	cout << "components (stored / hits) \t\t"
