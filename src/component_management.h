@@ -12,6 +12,7 @@
 
 #include "component_types/component.h"
 #include "component_cache.h"
+//#include "component_analyzer.h"
 
 #include <vector>
 #include <gmpxx.h>
@@ -40,8 +41,14 @@ struct CAClauseHeader {
   }
 };
 
-class ComponentAnalyzer {
+class ComponentManager {
 public:
+  ComponentManager(SolverConfiguration &config, DataAndStatistics &statistics,
+        LiteralIndexedVector<TriValue> & lit_values) :
+        config_(config), statistics_(statistics), cache_(config, statistics),
+       // ana_(config,statistics,lit_values),
+        literal_values_(lit_values) {
+  }
 
   unsigned scoreOf(VariableIndex v) {
     return var_frequency_scores_[v];
@@ -95,11 +102,36 @@ public:
 
   bool recordRemainingCompsFor(StackLevel &top);
 
-  ComponentAnalyzer(SolverConfiguration &config, DataAndStatistics &statistics,
-      LiteralIndexedVector<TriValue> & lit_values) :
-      config_(config), statistics_(statistics), cache_(config, statistics), literal_values_(
-          lit_values) {
-  }
+
+//  bool new_recordRemainingCompsFor(StackLevel &top){
+//    Component & super_comp = superComponentOf(top);
+//    unsigned new_comps_start_ofs = component_stack_.size();
+//
+//    ana_.preAnalysisSetUp(top, super_comp);
+//    Component *p_new_comp = nullptr;
+//    for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
+//    if(ana_.needsToBeExplored(*vt)){
+//      p_new_comp = ana_.recordRemainingCompFor(top,*vt,super_comp);
+//      if(p_new_comp)
+//        if (!cache_.manageNewComponent(top, *p_new_comp, super_comp.id(),
+//                         component_stack_.size())) {
+//                       component_stack_.push_back(p_new_comp);
+//                     }
+//    }
+//
+//
+//    top.set_unprocessed_components_end(component_stack_.size());
+//
+//      assert(new_comps_start_ofs <= component_stack_.size());
+//
+//      // sort the remaining components for processing
+//      for (unsigned i = new_comps_start_ofs; i < component_stack_.size(); i++)
+//        for (unsigned j = i + 1; j < component_stack_.size(); j++) {
+//          if (component_stack_[i]->num_variables()
+//              < component_stack_[j]->num_variables())
+//            swap(component_stack_[i], component_stack_[j]);
+//        }
+//  }
 
   void initialize(LiteralIndexedVector<Literal> & literals,
       vector<LiteralID> &lit_pool);
@@ -118,6 +150,7 @@ private:
 
   vector<Component *> component_stack_;
   ComponentCache cache_;
+ // ComponentAnalyzer ana_;
 
   // the id of the last clause
   // not that clause ID is the clause number,

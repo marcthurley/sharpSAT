@@ -92,6 +92,8 @@ private:
 };
 
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+  if(hashkey_ != comp.hashkey())
+    return false;
   if (clauses_ofs_ != comp.clauses_ofs_)
     return false;
   unsigned* p = data_;

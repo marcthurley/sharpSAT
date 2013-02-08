@@ -1,13 +1,13 @@
 /*
- * component_management.cpp
+ * component_analyzer.cpp
  *
- *  Created on: Aug 23, 2012
- *      Author: Marc Thurley
+ *  Created on: Feb 7, 2013
+ *      Author: mthurley
  */
 
-#include "component_management.h"
+#include "component_analyzer.h"
 
-void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
+void ComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
     vector<LiteralID> &lit_pool) {
 
   max_variable_id_ = literals.end_lit().var() - 1;
@@ -74,82 +74,50 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
   }
 
   // BEGIN CACHE INIT
-  CachedComponent::adjustPackSize(max_variable_id_, max_clause_id_);
-  initializeComponentStack();
+  //CachedComponent::adjustPackSize(max_variable_id_, max_clause_id_);
+  //initializeComponentStack();
 }
 
-bool ComponentManager::recordRemainingCompsFor(StackLevel &top) {
-  Component & super_comp = superComponentOf(top);
+Component *ComponentAnalyzer::recordRemainingCompFor(StackLevel &top,
+      VariableIndex v, Component &super_comp) {
+  Component *p_new_comp = nullptr;
+  assert(variables_seen_[v] == CA_IN_SUP_COMP);
 
-  memset(clauses_seen_, CA_NIL, sizeof(CA_SearchState) * (max_clause_id_ + 1));
-  memset(variables_seen_, CA_NIL,
-      sizeof(CA_SearchState) * (max_variable_id_ + 1));
+  recordComponentOf(v);
 
-  for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
-    if (isActive(*vt)) {
-      variables_seen_[*vt] = CA_IN_SUP_COMP;
-      var_frequency_scores_[*vt] = 0;
-    }
+  if (component_search_stack_.size() == 1) {
+    top.includeSolution(2);
+    variables_seen_[v] = CA_IN_OTHER_COMP;
+  } else {
+    /////////////////////////////////////////////////
+    // BEGIN store variables and clauses in component_stack_.back()
+    // protocol is: variables first, then clauses
+    /////////////////////////////////////////////////
+    p_new_comp = new Component();
+    p_new_comp->reserveSpace(component_search_stack_.size(),
+        super_comp.numLongClauses());
 
-  for (auto itCl = super_comp.clsBegin(); *itCl != clsSENTINEL; itCl++)
-    clauses_seen_[*itCl] = CA_IN_SUP_COMP;
-
-  unsigned new_comps_start_ofs = component_stack_.size();
-
-  for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
-    if (variables_seen_[*vt] == CA_IN_SUP_COMP) {
-      recordComponentOf(*vt);
-      if (component_search_stack_.size() == 1) {
-        top.includeSolution(2);
-        variables_seen_[*vt] = CA_IN_OTHER_COMP;
-      } else {
-        /////////////////////////////////////////////////
-        // BEGIN store variables and clauses in component_stack_.back()
-        // protocol is: variables first, then clauses
-        /////////////////////////////////////////////////
-        Component *pNewComp = new Component();
-        pNewComp->reserveSpace(component_search_stack_.size(),
-            super_comp.numLongClauses());
-
-        for (auto v_it = super_comp.varsBegin(); *v_it != varsSENTINEL; v_it++)
-          if (variables_seen_[*v_it] == CA_SEEN) { //we have to put a var into our component
-            pNewComp->addVar(*v_it);
-            variables_seen_[*v_it] = CA_IN_OTHER_COMP;
-          }
-        pNewComp->closeVariableData();
-
-        for (auto it_cl = super_comp.clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-          if (clauses_seen_[*it_cl] == CA_SEEN) {
-            pNewComp->addCl(*it_cl);
-            clauses_seen_[*it_cl] = CA_IN_OTHER_COMP;
-          }
-        pNewComp->closeClauseData();
-        /////////////////////////////////////////////////
-        // END store variables in resComp
-        /////////////////////////////////////////////////
-        //if(!cacheCheckComponent(top, *pNewComp ,super_comp.id())){
-        if (!cache_.manageNewComponent(top, *pNewComp, super_comp.id(),
-            component_stack_.size())) {
-          component_stack_.push_back(pNewComp);
-        }
+    for (auto v_it = super_comp.varsBegin(); *v_it != varsSENTINEL; v_it++)
+      if (variables_seen_[*v_it] == CA_SEEN) { //we have to put a var into our component
+        p_new_comp->addVar(*v_it);
+        variables_seen_[*v_it] = CA_IN_OTHER_COMP;
       }
-    }
+    p_new_comp->closeVariableData();
 
-  top.set_unprocessed_components_end(component_stack_.size());
-
-  assert(new_comps_start_ofs <= component_stack_.size());
-
-  // sort the remaining components for processing
-  for (unsigned i = new_comps_start_ofs; i < component_stack_.size(); i++)
-    for (unsigned j = i + 1; j < component_stack_.size(); j++) {
-      if (component_stack_[i]->num_variables()
-          < component_stack_[j]->num_variables())
-        swap(component_stack_[i], component_stack_[j]);
-    }
-  return true;
+    for (auto it_cl = super_comp.clsBegin(); *it_cl != clsSENTINEL; it_cl++)
+      if (clauses_seen_[*it_cl] == CA_SEEN) {
+        p_new_comp->addCl(*it_cl);
+        clauses_seen_[*it_cl] = CA_IN_OTHER_COMP;
+      }
+    p_new_comp->closeClauseData();
+    /////////////////////////////////////////////////
+    // END store variables in resComp
+    /////////////////////////////////////////////////
+  }
+  return p_new_comp;
 }
 
-void ComponentManager::recordComponentOf(const VariableIndex var) {
+void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
   component_search_stack_.clear();
   component_search_stack_.push_back(var);
@@ -217,38 +185,3 @@ void ComponentManager::recordComponentOf(const VariableIndex var) {
   }
 }
 
-void ComponentManager::initializeComponentStack() {
-  component_stack_.clear();
-  component_stack_.reserve(max_variable_id_ + 2);
-  component_stack_.push_back(new Component());
-  component_stack_.push_back(new Component());
-  assert(component_stack_.size() == 2);
-  component_stack_.back()->createAsDummyComponent(max_variable_id_,
-      max_clause_id_);
-
-  cache_.init(*component_stack_.back());
-}
-
-void ComponentManager::removeAllCachePollutionsOf(StackLevel &top) {
-  if (!config_.perform_component_caching)
-    return;
-  // all processed components are found in
-  // [top.currentRemainingComponent(), component_stack_.size())
-  // first, remove the list of descendants from the father
-  assert(top.remaining_components_ofs() <= component_stack_.size());
-  assert(top.super_component() != 0);
-  assert(cache_.hasEntry(superComponentOf(top).id()));
-
-  if (top.remaining_components_ofs() == component_stack_.size())
-    return;
-
-  for (unsigned u = top.remaining_components_ofs(); u < component_stack_.size();
-      u++) {
-    assert(cache_.hasEntry(component_stack_[u]->id()));
-    cache_.cleanPollutionsInvolving(component_stack_[u]->id());
-  }
-
-#ifdef DEBUG
-  cache_.test_descendantstree_consistency();
-#endif
-}

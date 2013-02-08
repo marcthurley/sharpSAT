@@ -99,7 +99,7 @@ private:
 
 	StopWatch stopwatch_;
 
-	ComponentAnalyzer component_analyzer_ = ComponentAnalyzer(config_,
+	ComponentManager component_analyzer_ = ComponentManager(config_,
 			statistics_, literal_values_);
 
 	// the last time conflict clauses have been deleted

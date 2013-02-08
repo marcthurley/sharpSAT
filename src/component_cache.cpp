@@ -11,7 +11,6 @@
 #include <sys/sysinfo.h>
 #include <cstdint>
 
-
 #include "stack.h"
 
 ComponentCache::ComponentCache(SolverConfiguration &conf,
@@ -35,8 +34,7 @@ void ComponentCache::init(Component &super_comp) {
 	struct sysinfo info;
 	sysinfo(&info);
 
-	uint64_t free_ram =
-		info.freeram *(uint64_t) info.mem_unit;
+	uint64_t free_ram =	info.freeram *(uint64_t) info.mem_unit;
 	uint64_t max_cache_bound = 95 * (free_ram / 100);
 
 	if (config_.maximum_cache_size_bytes == 0) {
@@ -109,27 +107,6 @@ uint64_t ComponentCache::recompute_bytes_memory_usage() {
 	return statistics_.cache_bytes_memory_usage_;
 }
 
-bool ComponentCache::getValueOf(const Component &comp, StackLevel &top){
-		CachedComponent &packedcomp = entry(comp);
-
-		unsigned int v = clip(packedcomp.hashkey());
-		if (!isBucketAt(v))
-			return false;
-		statistics_.num_cache_look_ups_++;
-
-		for (auto it = table_[v]->begin(); it != table_[v]->end(); it++) {
-			const CachedComponent &rcomp = entry(*it);
-			if (packedcomp.hashkey() == rcomp.hashkey()
-					&& rcomp.equals(packedcomp)) {
-				statistics_.num_cache_hits_++;
-				statistics_.sum_cache_hit_sizes_ += comp.num_variables();
-				top.includeSolution(rcomp.model_count());
-				//pComp->set_creation_time(my_time_);
-				return true;
-			}
-		}
-		return false;
-}
 
 
 bool ComponentCache::deleteEntries() {
