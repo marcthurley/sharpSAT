@@ -37,6 +37,9 @@ public:
   GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
         T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
   }
+//  GenericCachedComponent(Component &comp, ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
+//          T_Component(comp, archetype, creation_time), component_stack_id_(component_stack_id) {
+//    }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack

@@ -10,6 +10,9 @@
 
 #include <assert.h>
 #include <gmpxx.h>
+#include <iostream>
+
+using namespace std;
 
 
 class BasePackedComponent {
@@ -108,13 +111,18 @@ bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
 }
 
 bool BasePackedComponent::data_only_equals(const BasePackedComponent &comp) const {
-  if (clauses_ofs_ != comp.clauses_ofs_)
+  if (clauses_ofs_ != comp.clauses_ofs_){
+    cout <<"E";
     return false;
+  }
   unsigned* p = data_;
   unsigned* r = comp.data_;
   while (*p && *p == *r) {
     p++;
     r++;
+  }
+  if(*p != *r){
+    cout << "("<< p - data_<<")";
   }
   return *p == *r;
 }

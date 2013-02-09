@@ -97,8 +97,8 @@ public:
 //
 //    bool mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp);
 
-  inline bool manageNewComponent(ComponentArchetype &archetype,
-      CacheEntryID super_comp_id, unsigned comp_stack_index);
+//  inline bool manageNewComponent(ComponentArchetype &archetype,
+//      CacheEntryID super_comp_id, unsigned comp_stack_index);
 
   inline bool test_manageNewComponent(StackLevel &top,
                            Component &comp,
