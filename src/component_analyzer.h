@@ -27,7 +27,7 @@ using namespace std;
 // analysis (CA)
 typedef unsigned char CA_SearchState;
 #define   CA_NIL  0
-#define   CA_IN_SUP_COMP  1
+#define   CA_IN_SUP_COMP_UNSEEN  1
 #define   CA_SEEN 2
 #define   CA_IN_OTHER_COMP  3
 
@@ -42,6 +42,42 @@ struct CAClauseHeader {
   }
 };
 
+
+//class ComponentArchetype{
+//public:
+//  ComponentArchetype(Component &super_comp,StackLevel &stack_level)
+//    : p_super_comp_(&super_comp), p_stack_level_(&stack_level){
+//  }
+//
+//  Component &super_comp(){
+//    return *p_super_comp_;
+//  }
+//
+//  StackLevel & stack_level(){
+//    return *p_stack_level_;
+//  }
+//
+//  static void initArrays(unsigned max_variable_id, unsigned max_clause_id){
+//
+//    variables_seen_ = new CA_SearchState[max_variable_id + 1];
+//    variables_seen_byte_size_ =  sizeof(CA_SearchState) * (max_variable_id + 1);
+//    memset(variables_seen_, CA_NIL, variables_seen_byte_size_);
+//
+//    clauses_seen_ =  new CA_SearchState[max_clause_id + 1];
+//    clauses_seen_byte_size_ = sizeof(CA_SearchState) * (max_clause_id + 1);
+//    memset(clauses_seen_, CA_NIL, clauses_seen_byte_size_);
+//  }
+//
+//private:
+//  Component *p_super_comp_;
+//  StackLevel *p_stack_level_;
+//
+//  static CA_SearchState *variables_seen_;
+//  static unsigned variables_seen_byte_size_;
+//  static CA_SearchState *clauses_seen_;
+//  static unsigned clauses_seen_byte_size_;
+//};
+
 class ComponentAnalyzer {
 public:
   ComponentAnalyzer(SolverConfiguration &config, DataAndStatistics &statistics,
@@ -53,33 +89,54 @@ public:
     return var_frequency_scores_[v];
   }
 
-  Component *recordRemainingCompFor(StackLevel &top,
-      VariableIndex v, Component &super_comp);
-
   void initialize(LiteralIndexedVector<Literal> & literals,
       vector<LiteralID> &lit_pool);
 
 
-  bool needsToBeExplored(VariableIndex v){
-    return variables_seen_[v] == CA_IN_SUP_COMP;
+  bool isUnseenAndActive(VariableIndex v){
+    assert(v <= max_variable_id_);
+    return variables_seen_[v] == CA_IN_SUP_COMP_UNSEEN;
+  }
+
+  void setSeenAndStoreInSearchStack(VariableIndex v){
+    assert(isActive(v));
+    search_stack_.push_back(v);
+    variables_seen_[v] = CA_SEEN;
   }
 
 
-  void preAnalysisSetUp(StackLevel &top, Component & super_comp){
-
+  void setupAnalysisContext(StackLevel &top, Component & super_comp){
      memset(clauses_seen_, CA_NIL, sizeof(CA_SearchState) * (max_clause_id_ + 1));
      memset(variables_seen_, CA_NIL,
          sizeof(CA_SearchState) * (max_variable_id_ + 1));
+     p_top_ = &top;
+     p_super_comp_ = &super_comp;
 
      for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
        if (isActive(*vt)) {
-         variables_seen_[*vt] = CA_IN_SUP_COMP;
+         variables_seen_[*vt] = CA_IN_SUP_COMP_UNSEEN;
          var_frequency_scores_[*vt] = 0;
        }
 
      for (auto itCl = super_comp.clsBegin(); *itCl != clsSENTINEL; itCl++)
-       clauses_seen_[*itCl] = CA_IN_SUP_COMP;
+       clauses_seen_[*itCl] = CA_IN_SUP_COMP_UNSEEN;
   }
+
+  // returns true, iff the component found is non-trivial
+  bool exploreRemainingCompOf(VariableIndex v) {
+    assert(variables_seen_[v] == CA_IN_SUP_COMP_UNSEEN);
+
+    recordComponentOf(v);
+
+    if (search_stack_.size() == 1) {
+      p_top_->includeSolution(2);
+      variables_seen_[v] = CA_IN_OTHER_COMP;
+      return false;
+    }
+    return true;
+  }
+
+  inline Component *makeComponentFromArcheType();
 
   unsigned max_clause_id(){
      return max_clause_id_;
@@ -120,10 +177,14 @@ private:
 
   vector<unsigned> var_frequency_scores_;
 
+
+  Component *p_super_comp_;
+  StackLevel *p_top_;
+
   CA_SearchState *clauses_seen_;
   CA_SearchState *variables_seen_;
 
-  vector<VariableIndex> component_search_stack_;
+  vector<VariableIndex> search_stack_;
 
   bool isResolved(const LiteralID lit) {
     return literal_values_[lit] == F_TRI;
@@ -166,6 +227,25 @@ private:
 };
 
 
+Component *ComponentAnalyzer::makeComponentFromArcheType(){
+         Component *p_new_comp = new Component();
+         p_new_comp->reserveSpace(search_stack_.size(),
+             p_super_comp_->numLongClauses());
 
+         for (auto v_it = p_super_comp_->varsBegin(); *v_it != varsSENTINEL; v_it++)
+           if (variables_seen_[*v_it] == CA_SEEN) { //we have to put a var into our component
+             p_new_comp->addVar(*v_it);
+             variables_seen_[*v_it] = CA_IN_OTHER_COMP;
+           }
+         p_new_comp->closeVariableData();
+
+         for (auto it_cl = p_super_comp_->clsBegin(); *it_cl != clsSENTINEL; it_cl++)
+           if (clauses_seen_[*it_cl] == CA_SEEN) {
+             p_new_comp->addCl(*it_cl);
+             clauses_seen_[*it_cl] = CA_IN_OTHER_COMP;
+           }
+         p_new_comp->closeClauseData();
+         return p_new_comp;
+  }
 
 #endif /* COMPONENT_ANALYZER_H_ */

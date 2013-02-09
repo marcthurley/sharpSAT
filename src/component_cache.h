@@ -34,25 +34,7 @@ typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 class ComponentCache {
 public:
 
-  void init(Component &super_comp);
-
-  // compute the size in bytes of the component cache from scratch
-  // the value is stored in bytes_memory_usage_
-  uint64_t recompute_bytes_memory_usage();
-
-  void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
-    assert(descendantid != entry(compid).first_descendant());
-    entry(descendantid).set_next_sibling(entry(compid).first_descendant());
-    entry(compid).set_first_descendant(descendantid);
-  }
-  void remove_firstdescendantOf(CacheEntryID compid) {
-    CacheEntryID desc = entry(compid).first_descendant();
-    if (desc != 0)
-      entry(compid).set_first_descendant(entry(desc).next_sibling());
-  }
-
-  ComponentCache(SolverConfiguration &conf,
-                 DataAndStatistics &statistics);
+  ComponentCache(SolverConfiguration &conf, DataAndStatistics &statistics);
 
   ~ComponentCache() {
     for (auto &pbucket : table_)
@@ -62,6 +44,12 @@ public:
       if (pentry != nullptr)
         delete pentry;
   }
+
+  void init(Component &super_comp);
+
+  // compute the size in bytes of the component cache from scratch
+  // the value is stored in bytes_memory_usage_
+  uint64_t recompute_bytes_memory_usage();
 
   CachedComponent &entry(CacheEntryID id) {
     assert(entry_base_.size() > id);
@@ -101,6 +89,12 @@ public:
                           Component &comp,
                           CacheEntryID super_comp_id,
                           unsigned comp_stack_index);
+//    bool manageNewComponent(StackLevel &top,
+//                             Component &comp,
+//                             CacheEntryID super_comp_id,
+//                             unsigned comp_stack_index);
+//
+//    bool mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp);
 
 
 
@@ -131,6 +125,18 @@ private:
   CacheBucket *bucketOf(const CachedComponent &packed_comp) {
       return table_[packed_comp.hashkey() % table_.size()];
   }
+
+  void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
+      assert(descendantid != entry(compid).first_descendant());
+      entry(descendantid).set_next_sibling(entry(compid).first_descendant());
+      entry(compid).set_first_descendant(descendantid);
+    }
+
+  void remove_firstdescendantOf(CacheEntryID compid) {
+      CacheEntryID desc = entry(compid).first_descendant();
+      if (desc != 0)
+        entry(compid).set_first_descendant(entry(desc).next_sibling());
+    }
 
   vector<CachedComponent *> entry_base_;
   vector<CacheEntryID> free_entry_base_slots_;

@@ -8,6 +8,78 @@
 #ifndef COMPONENT_CACHE_INL_H_
 #define COMPONENT_CACHE_INL_H_
 
+CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID super_comp_id){
+    CacheEntryID id;
+
+    if (statistics_.cache_bytes_memory_usage_
+            >= config_.maximum_cache_size_bytes) {
+        deleteEntries();
+    }
+
+    assert(
+            statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
+    if (free_entry_base_slots_.empty()) {
+        if (entry_base_.capacity() == entry_base_.size()) {
+            entry_base_.reserve(2 * entry_base_.size());
+        }
+        entry_base_.push_back(&ccomp);
+        id = entry_base_.size() - 1;
+    } else {
+        id = free_entry_base_slots_.back();
+        assert(id < entry_base_.size());
+        assert(entry_base_[id] == nullptr);
+        free_entry_base_slots_.pop_back();
+        entry_base_[id] = &ccomp;
+    }
+
+    entry(id).set_father(super_comp_id);
+    add_descendant(super_comp_id, id);
+
+    assert(hasEntry(id));
+    assert(hasEntry(super_comp_id));
+
+    statistics_.cache_bytes_memory_usage_ += ccomp.SizeInBytes();
+    statistics_.sum_size_cached_components_ += ccomp.num_variables();
+    statistics_.num_cached_components_++;
+
+  #ifdef DEBUG
+      for (unsigned u = 2; u < entry_base_.size(); u++)
+            if (entry_base_[u] != nullptr) {
+              assert(entry_base_[u]->father() != id);
+              assert(entry_base_[u]->first_descendant() != id);
+              assert(entry_base_[u]->next_sibling() != id);
+            }
+  #endif
+    return id;
+}
+
+
+bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp,
+      CacheEntryID super_comp_id, unsigned comp_stack_index) {
+    if (!config_.perform_component_caching)
+      return false;
+    CachedComponent *packed_comp = new CachedComponent(comp, comp_stack_index,
+        my_time_);
+    my_time_++;
+    statistics_.num_cache_look_ups_++;
+    CacheBucket *p_bucket = bucketOf(*packed_comp);
+    if (p_bucket != nullptr)
+      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+        if (entry(*it).equals(*packed_comp)) {
+          statistics_.num_cache_hits_++;
+          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+          top.includeSolution(entry(*it).model_count());
+          delete packed_comp;
+          return true;
+        }
+    // otherwise, set up everything for a component to be explored
+
+    comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
+    return false;
+  }
+
+
+
 void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
   CacheEntryID father = entry(id).father();
   if (entry(father).first_descendant() == id) {
@@ -35,17 +107,14 @@ void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
 }
 
 void ComponentCache::removeFromHashTable(CacheEntryID id) {
- // unsigned int v = clip(entry(id).hashkey());
- // if (isBucketAt(v))
   CacheBucket *p_bucket = bucketOf(entry(id));
   if(p_bucket)
-    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++) {
+    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
       if (*it == id) {
         *it = p_bucket->back();
         p_bucket->pop_back();
         break;
       }
-    }
 }
 
 void ComponentCache::removeFromDescendantsTree(CacheEntryID id) {
@@ -100,72 +169,7 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
 }
 
 
-CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID super_comp_id){
-    CacheEntryID id;
 
-    if (statistics_.cache_bytes_memory_usage_
-            >= config_.maximum_cache_size_bytes) {
-        deleteEntries();
-    }
 
-    assert(
-            statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
-    if (free_entry_base_slots_.empty()) {
-        if (entry_base_.capacity() == entry_base_.size()) {
-            entry_base_.reserve(2 * entry_base_.size());
-        }
-        entry_base_.push_back(&ccomp);
-        id = entry_base_.size() - 1;
-    } else {
-        id = free_entry_base_slots_.back();
-        assert(id < entry_base_.size());
-        assert(entry_base_[id] == nullptr);
-        free_entry_base_slots_.pop_back();
-        entry_base_[id] = &ccomp;
-    }
 
-    entry(id).set_father(super_comp_id);
-    add_descendant(super_comp_id, id);
-
-    assert(hasEntry(id));
-    assert(hasEntry(super_comp_id));
-
-    statistics_.cache_bytes_memory_usage_ += ccomp.SizeInBytes();
-    statistics_.sum_size_cached_components_ += ccomp.num_variables();
-    statistics_.num_cached_components_++;
-
-  #ifdef DEBUG
-      for (unsigned u = 2; u < entry_base_.size(); u++)
-            if (entry_base_[u] != nullptr) {
-              assert(entry_base_[u]->father() != id);
-              assert(entry_base_[u]->first_descendant() != id);
-              assert(entry_base_[u]->next_sibling() != id);
-            }
-  #endif
-    return id;
-}
-
-bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp,
-      CacheEntryID super_comp_id, unsigned comp_stack_index) {
-    if (!config_.perform_component_caching)
-      return false;
-    CachedComponent *packed_comp = new CachedComponent(comp, comp_stack_index,
-        my_time_);
-    my_time_++;
-    statistics_.num_cache_look_ups_++;
-    CacheBucket *p_bucket = bucketOf(*packed_comp);
-    if (p_bucket != nullptr)
-      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-        if (entry(*it).equals(*packed_comp)) {
-          statistics_.num_cache_hits_++;
-          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-          top.includeSolution(entry(*it).model_count());
-          delete packed_comp;
-          return true;
-        }
-    // otherwise, set up everything for a component to be explored
-
-    comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
-    return false;
-  }
 #endif /* COMPONENT_CACHE_INL_H_ */

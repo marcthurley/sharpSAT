@@ -13,6 +13,39 @@
 
 #include "stack.h"
 
+
+
+
+//bool ComponentCache::mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp){
+//  if (p_bucket != nullptr)
+//       for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+//         if (entry(*it).equals(*packed_comp)) {
+//           statistics_.num_cache_hits_++;
+//           statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+//           top.includeSolution(entry(*it).model_count());
+//           delete packed_comp;
+//           return true;
+//         }
+//  return false;
+//}
+
+//bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp,
+//      CacheEntryID super_comp_id, unsigned comp_stack_index) {
+//    if (!config_.perform_component_caching)
+//      return false;
+//    CachedComponent *packed_comp = new CachedComponent(comp, comp_stack_index,
+//        my_time_);
+//    my_time_++;
+//    statistics_.num_cache_look_ups_++;
+//    CacheBucket *p_bucket = bucketOf(*packed_comp);
+//    if(mgmNCInternal(top, p_bucket, packed_comp))
+//      return true;
+//    // otherwise, set up everything for a component to be explored
+//
+//    comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
+//    return false;
+//  }
+
 ComponentCache::ComponentCache(SolverConfiguration &conf,
 		DataAndStatistics &statistics) :
 		config_(conf), statistics_(statistics) {
@@ -78,15 +111,13 @@ void ComponentCache::test_descendantstree_consistency() {
 			}
 			CacheEntryID father = entry(id).father();
 			CacheEntryID act_sib = entry(father).first_descendant();
-#ifndef NDEBUG
+
 			bool found = false;
-#endif
+
 			while (act_sib) {
 				CacheEntryID next_sib = entry(act_sib).next_sibling();
-#ifndef NDEBUG
 				if (act_sib == id)
 					found = true;
-#endif
 				act_sib = next_sib;
 			}
 			assert(found);

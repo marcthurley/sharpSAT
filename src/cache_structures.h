@@ -26,21 +26,13 @@ class Component;
 
 template< class T_Component>
 class GenericCachedComponent: public T_Component {
-
-  // the position where this
-  // component is stored in the component stack
-  // if this is non-zero, we may not simply delete this
-  // component
-  unsigned component_stack_id_ = 0;
-
-  // theFather and theDescendants:
-  // each CCacheEntry is a Node in a tree which represents the relationship
-  // of the components stored
-  CacheEntryID father_ = 0;
-  CacheEntryID first_descendant_ = 0;
-  CacheEntryID next_sibling_ = 0;
-
 public:
+  GenericCachedComponent() {
+  }
+
+  GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
+      T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
+  }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack
@@ -66,17 +58,7 @@ public:
     T_Component::data_ = nullptr;
   }
 
-  GenericCachedComponent() {
-  }
 
-//  GenericCachedComponent(Component &comp, const mpz_class &model_count,
-//      unsigned long time) :
-//    	  T_Component(comp, model_count, time) {
-//  }
-
-  GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
-	  T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
-  }
   unsigned long SizeInBytes() const {
     return sizeof(GenericCachedComponent<T_Component>)
         + T_Component::data_size() * sizeof(unsigned)
@@ -107,6 +89,21 @@ public:
   CacheEntryID first_descendant() {
     return first_descendant_;
   }
+
+private:
+  // the position where this
+  // component is stored in the component stack
+  // if this is non-zero, we may not simply delete this
+  // component
+  unsigned component_stack_id_ = 0;
+
+  // theFather and theDescendants:
+  // each CCacheEntry is a Node in a tree which represents the relationship
+  // of the components stored
+  CacheEntryID father_ = 0;
+  CacheEntryID first_descendant_ = 0;
+  CacheEntryID next_sibling_ = 0;
+
 };
 
 class CacheBucket: protected vector<CacheEntryID> {
