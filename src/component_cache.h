@@ -18,6 +18,7 @@
 #include "component_types/component.h"
 #include "component_types/difference_packed_component.h"
 
+
 #include "stack.h"
 /// Forward Declaration of mpz_class
 //struct __mpz_struct;
@@ -96,6 +97,14 @@ public:
 //
 //    bool mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp);
 
+  inline bool manageNewComponent(ComponentArchetype &archetype,
+      CacheEntryID super_comp_id, unsigned comp_stack_index);
+
+  inline bool test_manageNewComponent(StackLevel &top,
+                           Component &comp,
+                           ComponentArchetype &archetype,
+                           CacheEntryID super_comp_id,
+                           unsigned comp_stack_index);
 
 
   // unchecked erase of an entry from entry_base_

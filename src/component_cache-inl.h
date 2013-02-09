@@ -80,6 +80,74 @@ bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp,
 
 
 
+bool ComponentCache::manageNewComponent(ComponentArchetype &archetype,
+    CacheEntryID super_comp_id, unsigned comp_stack_index){
+  if (!config_.perform_component_caching)
+    return false;
+  CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
+      my_time_);
+  my_time_++;
+  statistics_.num_cache_look_ups_++;
+  CacheBucket *p_bucket = bucketOf(*packed_comp);
+  if (p_bucket != nullptr)
+    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+      if (entry(*it).equals(*packed_comp)) {
+        statistics_.num_cache_hits_++;
+        statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+        archetype.stack_level().includeSolution(entry(*it).model_count());
+        delete packed_comp;
+        return true;
+      }
+  // otherwise, set up everything for a component to be explored
+
+  //comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
+  return false;
+}
+
+
+
+
+
+bool ComponentCache::test_manageNewComponent(StackLevel &top,
+    Component &comp,
+    ComponentArchetype &archetype,
+    CacheEntryID super_comp_id,
+    unsigned comp_stack_index){
+  if (!config_.perform_component_caching)
+    return false;
+  CachedComponent *packed_comp = new CachedComponent(comp, comp_stack_index,
+      my_time_);
+  CachedComponent *new_packed_comp = new CachedComponent(archetype, comp_stack_index,
+        my_time_);
+//  CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
+//        my_time_);
+
+
+  //if(!packed_comp->data_only_equals(*new_packed_comp))
+  //  cout << "W";
+    //cout << packed_comp->hashkey() - new_packed_comp->hashkey() <<" ";
+  my_time_++;
+  statistics_.num_cache_look_ups_++;
+  CacheBucket *p_bucket = bucketOf(*packed_comp);
+  if (p_bucket != nullptr)
+    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+      if (entry(*it).equals(*packed_comp)) {
+        statistics_.num_cache_hits_++;
+        statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+        top.includeSolution(entry(*it).model_count());
+        delete packed_comp;
+        return true;
+      }
+  // otherwise, set up everything for a component to be explored
+
+  comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
+  return false;
+}
+
+
+
+
+
 void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
   CacheEntryID father = entry(id).father();
   if (entry(father).first_descendant() == id) {

@@ -17,7 +17,7 @@ using namespace std;
 #define NIL_ENTRY 0
 
 class Component;
-
+class ComponentArchetype;
 
 // GenericCachedComponent Adds Structure to PackedComponent that is
 // necessary to store it in the cache
@@ -32,6 +32,10 @@ public:
 
   GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
       T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
+  }
+
+  GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
+        T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
   }
   // a cache entry is deletable
   // only if it is not connected to an active

@@ -71,6 +71,8 @@ public:
 
   inline bool equals(const BasePackedComponent &comp) const;
 
+  inline bool data_only_equals(const BasePackedComponent &comp) const;
+
 protected:
   // data_ contains in packed form the variable indices
   // and clause indices of the component ordered
@@ -94,6 +96,18 @@ private:
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
   if(hashkey_ != comp.hashkey())
     return false;
+  if (clauses_ofs_ != comp.clauses_ofs_)
+    return false;
+  unsigned* p = data_;
+  unsigned* r = comp.data_;
+  while (*p && *p == *r) {
+    p++;
+    r++;
+  }
+  return *p == *r;
+}
+
+bool BasePackedComponent::data_only_equals(const BasePackedComponent &comp) const {
   if (clauses_ofs_ != comp.clauses_ofs_)
     return false;
   unsigned* p = data_;

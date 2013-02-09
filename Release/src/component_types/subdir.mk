@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/component_types/base_packed_component.cpp 
+../src/component_types/base_packed_component.cpp \
+../src/component_types/component_archetype.cpp 
 
 OBJS += \
-./src/component_types/base_packed_component.o 
+./src/component_types/base_packed_component.o \
+./src/component_types/component_archetype.o 
 
 CPP_DEPS += \
-./src/component_types/base_packed_component.d 
+./src/component_types/base_packed_component.d \
+./src/component_types/component_archetype.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
