@@ -27,13 +27,6 @@ public:
     creation_time_ = time;
   }
 
-//  ~SimplePackedComponent() {
-//    if (data_)
-//      delete data_;
-//  }
-
-
-
   unsigned num_variables() {
       return (clauses_ofs_ * sizeof(unsigned) * 8) /bits_per_variable();
   }

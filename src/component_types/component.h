@@ -86,6 +86,15 @@ public:
     closeClauseData();
   }
 
+
+// unsigned max_var_diff_ = 0;
+// unsigned max_clause_diff_ = 0;
+  unsigned bits_per_var_diff_ = 0;
+  unsigned bits_per_clause_diff_ = 0;
+// unsigned packed_data_size_ = 0;
+//  unsigned* packed_data_ = nullptr;
+//  unsigned packed_clause_ofs_ = 0;
+//  unsigned hashkey_ = 0;
 private:
   // data_ stores the component data:
   // for better cache performance the

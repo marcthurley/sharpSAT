@@ -36,43 +36,58 @@ public:
     return 1 + (clauses_ofs_ * sizeof(unsigned) * 8 - bits_per_variable() - 5) / bits_per_var_diff;
   }
 
+
 };
 
 
 DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned creation_time)
   : BasePackedComponent(creation_time) {
-  unsigned max_diff = 0;
-
-  for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {
-    if (*it - *(it - 1) > max_diff)
-      max_diff = *it - *(it - 1);
-  }
-
-  unsigned bits_per_var_diff = (unsigned int) ceil(
-      log((double) max_diff + 1) / log(2.0));
-  if(bits_per_var_diff == 0)
-	   bits_per_var_diff = 1;
-  assert(bits_per_var_diff != 0);
-  assert((bits_per_var_diff&31)!= 0);
-
-  max_diff = 0;
-  for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {
-    if (*jt - *(jt - 1) > max_diff)
-      max_diff = *jt - *(jt - 1);
-  }
-
-  unsigned bits_per_clause_diff = (unsigned int) ceil(
-      log((double) max_diff + 1) / log(2.0));
-
-
+////  unsigned max_diff = 0;
+//
+////  for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {
+////    if (*it - *(it - 1) > max_diff)
+////      max_diff = *it - *(it - 1);
+////  }
+//
+// // cout << " "<<rComp.max_var_diff_ << ","<< max_diff << " " << endl;
+//  //assert(rComp.max_var_diff_ == max_diff);
+//
+////  unsigned bits_per_var_diff = (unsigned int) ceil(
+////      log((double) max_diff + 1) / log(2.0));
+//  unsigned bits_per_var_diff = (unsigned int) ceil(
+//        log((double) rComp.max_var_diff_ + 1) / log(2.0));
+//
+ //    unsigned bits_per_var_diff = log(rComp.max_var_diff_ + 1) + 1;
+//
+////  if(bits_per_var_diff == 0)
+////	   bits_per_var_diff = 1;
+////  assert(bits_per_var_diff != 0);
+////  assert((bits_per_var_diff&31)!= 0);
+//
+////  max_diff = 0;
+////  for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {
+////    if (*jt - *(jt - 1) > max_diff)
+////      max_diff = *jt - *(jt - 1);
+////  }
+//
+//  //assert(rComp.max_clause_diff_ == max_diff);
+//
+////  unsigned bits_per_clause_diff = (unsigned int) ceil(
+////      log((double) max_diff + 1) / log(2.0));
+//  unsigned bits_per_clause_diff = (unsigned int) ceil(
+//       log((double) rComp.max_clause_diff_ + 1) / log(2.0));
+//  unsigned bits_per_clause_diff = log2(rComp.max_clause_diff_ + 1) + 1;
+//
+//
   unsigned data_size = (bits_per_variable() + 5 + bits_per_clause() + 5
-      + (rComp.num_variables() - 1) * bits_per_var_diff
-      + (rComp.numLongClauses() - 1) * bits_per_clause_diff) / bits_per_block()
+      + (rComp.num_variables() - 1) * rComp.bits_per_var_diff_
+      + (rComp.numLongClauses() - 1) * rComp.bits_per_clause_diff_) / bits_per_block()
       + 3;
 
-  unsigned * p = data_ = (unsigned*) malloc(sizeof(unsigned) * data_size);
-
-  *p = bits_per_var_diff;
+ // unsigned * p = data_ = (unsigned*) malloc(sizeof(unsigned) * data_size);
+  unsigned * p = data_ = new unsigned[data_size];
+ // unsigned * p = data_ = new unsigned[rComp.packed_data_size_];
+  *p = rComp.bits_per_var_diff_;
   unsigned int bitpos = 5;
 
   *p |= *rComp.varsBegin() << bitpos;
@@ -81,11 +96,11 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned 
 
   for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {
     *p |= ((*it) - *(it - 1)) << bitpos;
-    bitpos += bits_per_var_diff;
+    bitpos += rComp.bits_per_var_diff_;
     hashkey_vars = hashkey_vars * 3 + ((*it) - *(it - 1));
     if (bitpos >= bits_per_block()) {
       bitpos -= bits_per_block();
-      *(++p) = (((*it) - *(it - 1)) >> (bits_per_var_diff - bitpos));
+      *(++p) = (((*it) - *(it - 1)) >> (rComp.bits_per_var_diff_ - bitpos));
     }
   }
   if (bitpos > 0)
@@ -94,17 +109,17 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned 
 
   unsigned hashkey_clauses = *rComp.clsBegin();
   if (*rComp.clsBegin()) {
-    *p = bits_per_clause_diff;
+    *p = rComp.bits_per_clause_diff_;
     bitpos = 5;
     *p |= *rComp.clsBegin() << bitpos;
     bitpos += bits_per_clause();
     for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {
       *p |= ((*jt - *(jt - 1)) << (bitpos));
-      bitpos += bits_per_clause_diff;
+      bitpos += rComp.bits_per_clause_diff_;
       hashkey_clauses = hashkey_clauses * 3 + (*jt - *(jt - 1));
       if (bitpos >= bits_per_block()) {
         bitpos -= bits_per_block();
-        *(++p) = ((*jt - *(jt - 1)) >> (bits_per_clause_diff - bitpos));
+        *(++p) = ((*jt - *(jt - 1)) >> (rComp.bits_per_clause_diff_ - bitpos));
       }
     }
     if (bitpos > 0)
@@ -115,6 +130,14 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned 
 }
 
 
+
+//DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned creation_time)
+//  : BasePackedComponent(creation_time) {
+//
+//  data_ = rComp.packed_data_;
+//  clauses_ofs_ = rComp.packed_clause_ofs_;
+//  hashkey_ = rComp.hashkey_;
+//}
 
 //DifferencePackedComponent::DifferencePackedComponent(Component &rComp, ComponentArchetype &archetype, unsigned creation_time)
 //  : BasePackedComponent(creation_time) {
@@ -358,10 +381,10 @@ DifferencePackedComponent::DifferencePackedComponent(
   unsigned num_long_clauses = 0;
 
   auto vfirst_it = archetype.super_comp().varsBegin();
-  while (!archetype.var_seen(*vfirst_it) && *vfirst_it != varsSENTINEL)
+  while (!archetype.var_seen(*vfirst_it))
     ++vfirst_it;
   auto vprev_it = vfirst_it;
-  assert(*vfirst_it != varsSENTINEL);
+  //assert(*vfirst_it != varsSENTINEL);
 
   for (auto v_it = vfirst_it + 1; *v_it != varsSENTINEL; v_it++)
     if (archetype.var_seen(*v_it)) { //we have to put a var into our component
@@ -405,7 +428,8 @@ DifferencePackedComponent::DifferencePackedComponent(
 
 /////////////////////////////
 
-  unsigned * p = data_ = (unsigned*) malloc(sizeof(unsigned) * data_size);
+ // unsigned * p = data_ = (unsigned*) malloc(sizeof(unsigned) * data_size);
+  unsigned * p = data_ = new unsigned[data_size];
 
   *p = bits_per_var_diff;
   unsigned int bitpos = 5;

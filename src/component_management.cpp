@@ -21,7 +21,9 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
   assert(component_stack_.size() == 2);
   component_stack_.back()->createAsDummyComponent(ana_.max_variable_id(),
       ana_.max_clause_id());
-
+  component_stack_.back()->bits_per_clause_diff_=BasePackedComponent::bits_per_clause();
+  component_stack_.back()->bits_per_var_diff_ = BasePackedComponent::bits_per_variable();
+ // component_stack_.back()->packed_data_size_ = ana_.max_variable_id() + ana_.max_clause_id();
   cache_.init(*component_stack_.back());
 }
 

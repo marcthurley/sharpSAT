@@ -95,20 +95,45 @@ public:
           //TODO this is supposed to change:
           //     do not make component directly, but pass a componentbuilder to the cache!
      //     Component *p_new_comp = ana_.makeComponentFromArcheType();
-        Component *p_new_comp = ana_.makeComponentFromArcheTypeNoDeact();
- //         if (!cache_.manageNewComponent(top, *p_new_comp, super_comp.id(),
- //                       component_stack_.size()))
-          if (!cache_.test_manageNewComponent(top, *p_new_comp,
-                                 ana_.current_archetype(), super_comp.id(),
-                                 component_stack_.size()))
+        Component *p_new_comp = ana_.makeComponentFromArcheType();
+          if (!cache_.manageNewComponent(top, *p_new_comp, super_comp.id(),
+                        component_stack_.size())){
+//          if (!cache_.test_manageNewComponent(top, *p_new_comp,
+//                                 ana_.current_archetype(), super_comp.id(),
+//                                 component_stack_.size())){
              component_stack_.push_back(p_new_comp);
-          ana_.deactComponentInArcheType();
+          }
+         // ana_.deactComponentInArcheType();
       }
 
 
     top.set_unprocessed_components_end(component_stack_.size());
     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
   }
+
+//  void recordRemainingCompsFor(StackLevel &top) {
+//     Component & super_comp = superComponentOf(top);
+//     unsigned new_comps_start_ofs = component_stack_.size();
+//
+//     ana_.setupAnalysisContext(top, super_comp);
+//
+//     for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
+//       if (ana_.isUnseenAndActive(*vt) &&  ana_.exploreRemainingCompOf(*vt)){
+//         Component *p_new_comp = ana_.makeComponentFromArcheType();
+//        // CachedComponent *packed_comp = cache_.manageNewComponent(ana_.current_archetype(), component_stack_.size());
+//         CachedComponent *packed_comp = cache_.manageNewComponent(topn,*p_new_comp, component_stack_.size());
+//         if (packed_comp){
+//              component_stack_.push_back(p_new_comp);
+//              p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));
+//           }
+////           else
+////             ana_.deactComponentInArcheType();
+//       }
+//
+//
+//     top.set_unprocessed_components_end(component_stack_.size());
+//     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
+//   }
 
  // void sortComponentStackRange(unsigned start, unsigned end);
   void sortComponentStackRange(unsigned start, unsigned end){
