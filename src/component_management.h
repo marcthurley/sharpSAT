@@ -92,19 +92,11 @@ public:
     for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
       if (ana_.isUnseenAndActive(*vt) &&
           ana_.exploreRemainingCompOf(*vt)){
-          //TODO this is supposed to change:
-          //     do not make component directly, but pass a componentbuilder to the cache!
           Component *p_new_comp = ana_.makeComponentFromArcheType();
-      //  Component *p_new_comp = ana_.makeComponentFromArcheTypeNoDeact();
           if (!cache_.manageNewComponent(top, *p_new_comp, super_comp.id(),
                         component_stack_.size()))
-//          if (!cache_.test_manageNewComponent(top, *p_new_comp,
-//                                 ana_.current_archetype(), super_comp.id(),
-//                                 component_stack_.size()))
              component_stack_.push_back(p_new_comp);
-//          ana_.deactComponentInArcheType();
       }
-
 
     top.set_unprocessed_components_end(component_stack_.size());
     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());

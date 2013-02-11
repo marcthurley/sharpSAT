@@ -34,6 +34,31 @@ public:
     return 1 + (clauses_ofs_ * sizeof(unsigned) * 8 - bits_per_variable() - 5) / bits_per_var_diff;
   }
 
+
+  unsigned log2(unsigned v){
+      // taken from
+      // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup
+      static const char LogTable256[256] =
+      {
+      #define LT(n) n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n
+          -1, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+          LT(4), LT(5), LT(5), LT(6), LT(6), LT(6), LT(6),
+          LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7)
+      };
+
+      unsigned r;     // r will be lg(v)
+      register unsigned int t, tt; // temporaries
+
+      if (tt = v >> 16)
+      {
+        r = (t = tt >> 8) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
+      }
+      else
+      {
+        r = (t = v >> 8) ? 8 + LogTable256[t] : LogTable256[v];
+      }
+      return r;
+    }
 };
 
 
@@ -46,12 +71,8 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned 
       max_diff = *it - *(it - 1);
   }
 
-  unsigned bits_per_var_diff = (unsigned int) ceil(
-      log((double) max_diff + 1) / log(2.0));
-  if(bits_per_var_diff == 0)
-	   bits_per_var_diff = 1;
-  assert(bits_per_var_diff != 0);
-  assert((bits_per_var_diff&31)!= 0);
+
+  unsigned bits_per_var_diff =  log2(max_diff + 1) + 1;
 
   max_diff = 0;
   for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {
@@ -59,9 +80,7 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp, unsigned 
       max_diff = *jt - *(jt - 1);
   }
 
-  unsigned bits_per_clause_diff = (unsigned int) ceil(
-      log((double) max_diff + 1) / log(2.0));
-
+  unsigned bits_per_clause_diff =  log2(max_diff + 1) + 1;
 
   unsigned data_size = (bits_per_variable() + 5 + bits_per_clause() + 5
       + (rComp.num_variables() - 1) * bits_per_var_diff
