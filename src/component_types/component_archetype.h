@@ -20,7 +20,8 @@ typedef unsigned char CA_SearchState;
 #define   CA_NIL  0
 #define   CA_IN_SUP_COMP_UNSEEN  1
 #define   CA_SEEN 2
-#define   CA_IN_OTHER_COMP  3
+#define   CA_IN_OTHER_COMP  4
+#define   CA_ALL_CLAUSE_LITS_ACTIVE  8
 
 
 class Component;
@@ -85,8 +86,15 @@ public:
     }
 
     bool clause_seen(ClauseIndex cl){
-       return  clauses_seen_[cl] == CA_SEEN;
+       return  clauses_seen_[cl] & CA_SEEN;
     }
+
+   bool clause_all_lits_active(ClauseIndex cl){
+           return  clauses_seen_[cl] & CA_ALL_CLAUSE_LITS_ACTIVE;
+   }
+   void setClause_all_lits_active(ClauseIndex cl){
+          clauses_seen_[cl] |= CA_ALL_CLAUSE_LITS_ACTIVE;
+   }
 
     bool var_nil(VariableIndex v){
        return variables_seen_[v] == CA_NIL;

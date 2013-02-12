@@ -85,62 +85,29 @@ public:
        }
 
      for (auto itCl = super_comp.clsBegin(); *itCl != clsSENTINEL; itCl++)
-       //clauses_seen_[*itCl] = CA_IN_SUP_COMP_UNSEEN;
-       archetype_.setClause_in_sup_comp_unseen(*itCl);
+       //if(!isSatisfied())
+       //if(!isSatisfiedByFirstTwoLits(map_clause_id_to_ofs_[*itCl]))
+         archetype_.setClause_in_sup_comp_unseen(*itCl);
   }
 
   // returns true, iff the component found is non-trivial
   bool exploreRemainingCompOf(VariableIndex v) {
-   // assert(variables_seen_[v] == CA_IN_SUP_COMP_UNSEEN);
     assert(archetype_.var_unseen_in_sup_comp(v));
     recordComponentOf(v);
 
     if (search_stack_.size() == 1) {
       archetype_.stack_level().includeSolution(2);
-          //p_top_->includeSolution(2);
-      //variables_seen_[v] = CA_IN_OTHER_COMP;
       archetype_.setVar_in_other_comp(v);
       return false;
     }
     return true;
   }
 
+
   inline Component *makeComponentFromArcheType();
 
 
-  Component *makeComponentFromArcheTypeNoDeact(){
-             Component *p_new_comp = new Component();
-             p_new_comp->reserveSpace(search_stack_.size(),
-                 archetype_.super_comp().numLongClauses());
 
-             for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
-               if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
-                 p_new_comp->addVar(*v_it);
-                 //archetype_.setVar_in_other_comp(*v_it);
-               }
-             p_new_comp->closeVariableData();
-
-             for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-               if (archetype_.clause_seen(*it_cl)) {
-                 p_new_comp->addCl(*it_cl);
-                // archetype_.setClause_in_other_comp(*it_cl);
-               }
-             p_new_comp->closeClauseData();
-             return p_new_comp;
-  }
-
-  void deactComponentInArcheType(){
-
-              for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
-                if (archetype_.var_seen(*v_it))
-                  archetype_.setVar_in_other_comp(*v_it);
-
-
-              for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-                if (archetype_.clause_seen(*it_cl))
-                  archetype_.setClause_in_other_comp(*it_cl);
-
-   }
 
   unsigned max_clause_id(){
      return max_clause_id_;
@@ -176,6 +143,7 @@ private:
   // in one contiguous chunk of memory
   vector<unsigned> unified_variable_links_lists_pool_;
 
+  vector<unsigned> map_clause_id_to_ofs_;
   vector<unsigned> variable_link_list_offsets_;
   LiteralIndexedVector<TriValue> & literal_values_;
 
@@ -200,6 +168,10 @@ private:
   bool isSatisfied(const LiteralID lit) {
     return literal_values_[lit] == T_TRI;
   }
+
+  bool isSatisfiedByFirstTwoLits(ClauseOfs cl_ofs) {
+      return isSatisfied(getHeaderOf(cl_ofs).lit_A) || isSatisfied(getHeaderOf(cl_ofs).lit_B);
+    }
 
   bool isActive(const VariableIndex v) {
     return literal_values_[LiteralID(v, true)] == X_TRI;
@@ -259,83 +231,91 @@ private:
 };
 
 
-//Component *ComponentAnalyzer::makeComponentFromArcheType(){
-//           Component *p_new_comp = new Component();
-//           p_new_comp->reserveSpace(search_stack_.size(),
-//               archetype_.super_comp().numLongClauses());
-//
-//           for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
-//             if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
-//               p_new_comp->addVar(*v_it);
-//               archetype_.setVar_in_other_comp(*v_it);
-//             }
-//           p_new_comp->closeVariableData();
-//
-//           for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-//             if (archetype_.clause_seen(*it_cl)) {
-//               p_new_comp->addCl(*it_cl);
-//               archetype_.setClause_in_other_comp(*it_cl);
-//             }
-//           p_new_comp->closeClauseData();
-//           return p_new_comp;
-//}
-
-
-
 Component *ComponentAnalyzer::makeComponentFromArcheType(){
-            Component *p_new_comp = new Component();
-            p_new_comp->reserveSpace(search_stack_.size(),
-                archetype_.super_comp().numLongClauses());
+           Component *p_new_comp = new Component();
+           p_new_comp->reserveSpace(search_stack_.size(),
+               archetype_.super_comp().numLongClauses());
+           p_new_comp->pck_clause_data_.clear();
+           p_new_comp->pck_clause_data_.reserve(archetype_.super_comp().numLongClauses());
 
-            unsigned max_var_diff = 0;
-            unsigned max_clause_diff = 0;
-            //p_new_comp->max_var_diff_ = 0;
+           for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
+             if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
+               p_new_comp->addVar(*v_it);
+               archetype_.setVar_in_other_comp(*v_it);
+             }
+           p_new_comp->closeVariableData();
+           bool first = true;
+           for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
+             if (archetype_.clause_seen(*it_cl)) {
+               p_new_comp->addCl(*it_cl);
 
+              if(!archetype_.clause_all_lits_active(*it_cl))
+                   p_new_comp->pck_clause_data_.push_back(*it_cl);
 
-            auto vfirst_it = archetype_.super_comp().varsBegin();
-            while (!archetype_.var_seen(*vfirst_it))
-              ++vfirst_it;
-            auto vprev_it = vfirst_it;
-            //assert(*vfirst_it != varsSENTINEL);
-            p_new_comp->addVar(*vfirst_it);
-            archetype_.setVar_in_other_comp(*vfirst_it);
-            for (auto v_it = vfirst_it + 1; *v_it != varsSENTINEL; v_it++)
-              if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
-                //num_variables++;
-                p_new_comp->addVar(*v_it);
-                archetype_.setVar_in_other_comp(*v_it);
-                if (*v_it - *vprev_it > max_var_diff)
-                  max_var_diff = *v_it - *vprev_it;
-                vprev_it = v_it;
-              }
-
-            p_new_comp->closeVariableData();
-
-
-            auto cfirst_it = archetype_.super_comp().clsBegin();
-            while (!archetype_.clause_seen(*cfirst_it) && (*cfirst_it != clsSENTINEL))
-              ++cfirst_it;
-            auto cprev_it = cfirst_it;
-
-            if (*cfirst_it != clsSENTINEL) {
-              p_new_comp->addCl(*cfirst_it);
-              archetype_.setClause_in_other_comp(*cfirst_it);
-              for (auto it_cl = cfirst_it + 1; *it_cl != clsSENTINEL; it_cl++)
-                if (archetype_.clause_seen(*it_cl)) {
-                  p_new_comp->addCl(*it_cl);
-                  archetype_.setClause_in_other_comp(*it_cl);
-                  if (*it_cl - *cprev_it > max_clause_diff)
-                    max_clause_diff = *it_cl - *cprev_it;
-                  cprev_it = it_cl;
-                }
-            }
-            p_new_comp->closeClauseData();
-
-            p_new_comp->bits_per_var_diff_ = log2(max_var_diff + 1) + 1;
-            p_new_comp->bits_per_clause_diff_ = log2(max_clause_diff + 1) + 1;
-
+               archetype_.setClause_in_other_comp(*it_cl);
+               first = false;
+             }
+           p_new_comp->closeClauseData();
+           p_new_comp->pck_clause_data_.push_back(clsSENTINEL);
            return p_new_comp;
 }
+
+
+//
+//Component *ComponentAnalyzer::makeComponentFromArcheType(){
+//            Component *p_new_comp = new Component();
+//            p_new_comp->reserveSpace(search_stack_.size(),
+//                archetype_.super_comp().numLongClauses());
+//
+//            unsigned max_var_diff = 0;
+//            unsigned max_clause_diff = 0;
+//            //p_new_comp->max_var_diff_ = 0;
+//
+//
+//            auto vfirst_it = archetype_.super_comp().varsBegin();
+//            while (!archetype_.var_seen(*vfirst_it))
+//              ++vfirst_it;
+//            auto vprev_it = vfirst_it;
+//            //assert(*vfirst_it != varsSENTINEL);
+//            p_new_comp->addVar(*vfirst_it);
+//            archetype_.setVar_in_other_comp(*vfirst_it);
+//            for (auto v_it = vfirst_it + 1; *v_it != varsSENTINEL; v_it++)
+//              if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
+//                //num_variables++;
+//                p_new_comp->addVar(*v_it);
+//                archetype_.setVar_in_other_comp(*v_it);
+//                if (*v_it - *vprev_it > max_var_diff)
+//                  max_var_diff = *v_it - *vprev_it;
+//                vprev_it = v_it;
+//              }
+//
+//            p_new_comp->closeVariableData();
+//
+//
+//            auto cfirst_it = archetype_.super_comp().clsBegin();
+//            while (!archetype_.clause_seen(*cfirst_it) && (*cfirst_it != clsSENTINEL))
+//              ++cfirst_it;
+//            auto cprev_it = cfirst_it;
+//
+//            if (*cfirst_it != clsSENTINEL) {
+//              p_new_comp->addCl(*cfirst_it);
+//              archetype_.setClause_in_other_comp(*cfirst_it);
+//              for (auto it_cl = cfirst_it + 1; *it_cl != clsSENTINEL; it_cl++)
+//                if (archetype_.clause_seen(*it_cl)) {
+//                  p_new_comp->addCl(*it_cl);
+//                  archetype_.setClause_in_other_comp(*it_cl);
+//                  if (*it_cl - *cprev_it > max_clause_diff)
+//                    max_clause_diff = *it_cl - *cprev_it;
+//                  cprev_it = it_cl;
+//                }
+//            }
+//            p_new_comp->closeClauseData();
+//
+//            p_new_comp->bits_per_var_diff_ = log2(max_var_diff + 1) + 1;
+//            p_new_comp->bits_per_clause_diff_ = log2(max_clause_diff + 1) + 1;
+//
+//           return p_new_comp;
+//}
 
 //
 //Component *ComponentAnalyzer::makeComponentFromArcheType(){

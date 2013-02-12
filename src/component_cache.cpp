@@ -53,7 +53,7 @@ ComponentCache::ComponentCache(SolverConfiguration &conf,
 
 void ComponentCache::init(Component &super_comp) {
 
-	CachedComponent &packed_super_comp = *new CachedComponent(super_comp,1,1);
+	CachedComponent &packed_super_comp = *new CachedComponent(super_comp,1);
 	my_time_ = 1;
 
 	table_.clear();

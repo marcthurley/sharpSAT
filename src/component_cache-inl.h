@@ -16,6 +16,8 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
         deleteEntries();
     }
 
+    ccomp.set_creation_time(my_time_++);
+
     assert(
             statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
     if (free_entry_base_slots_.empty()) {
@@ -53,30 +55,29 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
     return id;
 }
 
-
-bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp,
-      CacheEntryID super_comp_id, unsigned comp_stack_index) {
-    if (!config_.perform_component_caching)
-      return false;
-    CachedComponent *packed_comp = new CachedComponent(comp, comp_stack_index,
-        my_time_);
-    my_time_++;
-    statistics_.num_cache_look_ups_++;
-    CacheBucket *p_bucket = bucketOf(*packed_comp);
-    if (p_bucket != nullptr)
-      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-        if (entry(*it).equals(*packed_comp)) {
-          statistics_.num_cache_hits_++;
-          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-          top.includeSolution(entry(*it).model_count());
-          delete packed_comp;
-          return true;
-        }
-    // otherwise, set up everything for a component to be explored
-
-    comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
-    return false;
-  }
+//
+//bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp, CachedComponent *packed_comp,
+//      CacheEntryID super_comp_id, unsigned comp_stack_index) {
+//    if (!config_.perform_component_caching)
+//      return false;
+//
+//    my_time_++;
+//    statistics_.num_cache_look_ups_++;
+//    CacheBucket *p_bucket = bucketOf(*packed_comp);
+//    if (p_bucket != nullptr)
+//      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+//        if (entry(*it).equals(*packed_comp)) {
+//          statistics_.num_cache_hits_++;
+//          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+//          top.includeSolution(entry(*it).model_count());
+//          delete packed_comp;
+//          return true;
+//        }
+//    // otherwise, set up everything for a component to be explored
+//
+//
+//    return false;
+//  }
 
 
 

@@ -30,13 +30,13 @@ public:
   GenericCachedComponent() {
   }
 
-  GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
-      T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
+  GenericCachedComponent(Component &comp, unsigned component_stack_id) :
+      T_Component(comp), component_stack_id_(component_stack_id) {
   }
 
-  GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
-        T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
-  }
+//  GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
+//        T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
+//  }
 //  GenericCachedComponent(Component &comp, ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
 //          T_Component(comp, archetype, creation_time), component_stack_id_(component_stack_id) {
 //    }

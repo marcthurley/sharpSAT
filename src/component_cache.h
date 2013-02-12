@@ -17,7 +17,7 @@
 
 #include "component_types/component.h"
 #include "component_types/difference_packed_component.h"
-
+//#include "component_types/simple_packed_component.h"
 
 #include "stack.h"
 /// Forward Declaration of mpz_class
@@ -31,6 +31,7 @@
 ///
 
 typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
+//typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
 
 class ComponentCache {
 public:
@@ -86,67 +87,43 @@ public:
   // check quickly if the model count of the component is cached
   // if so, incorporate it into the model count of top
   // if not, store the packed version of it in the entry_base of the cache
-  inline bool manageNewComponent(StackLevel &top,
-                          Component &comp,
-                          CacheEntryID super_comp_id,
-                          unsigned comp_stack_index);
-//    bool manageNewComponent(StackLevel &top,
-//                             Component &comp,
-//                             CacheEntryID super_comp_id,
-//                             unsigned comp_stack_index);
-//
-//    bool mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp);
-
-//  inline bool manageNewComponent(ComponentArchetype &archetype,
-//      CacheEntryID super_comp_id, unsigned comp_stack_index);
-
-//  inline bool test_manageNewComponent(StackLevel &top,
-//                           Component &comp,
-//                           ComponentArchetype &archetype,
-//                           CacheEntryID super_comp_id,
-//                           unsigned comp_stack_index);
-//  bool test_manageNewComponent(StackLevel &top,
-//      Component &comp,
-//      CachedComponent *packed_comp,
-//      CacheEntryID super_comp_id,
-//      unsigned comp_stack_index){
-  bool test_manageNewComponent(StackLevel &top,
-       CachedComponent *packed_comp){
-    if (!config_.perform_component_caching)
+  bool manageNewComponent(StackLevel &top, CachedComponent &packed_comp) {
+      if (!config_.perform_component_caching)
+        return false;
+      statistics_.num_cache_look_ups_++;
+      CacheBucket *p_bucket = bucketOf(packed_comp);
+      if (p_bucket != nullptr)
+        for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+          if (entry(*it).equals(packed_comp)) {
+            statistics_.num_cache_hits_++;
+            statistics_.sum_cache_hit_sizes_ += packed_comp.num_variables();
+            top.includeSolution(entry(*it).model_count());
+            return true;
+          }
+      // otherwise, set up everything for a component to be explored
       return false;
-    my_time_++;
-    statistics_.num_cache_look_ups_++;
-    CacheBucket *p_bucket = bucketOf(*packed_comp);
-    if (p_bucket != nullptr)
-      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-        if (entry(*it).equals(*packed_comp)) {
-          statistics_.num_cache_hits_++;
-          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-          top.includeSolution(entry(*it).model_count());
-          return true;
-        }
-    return false;
-  }
+    }
 
-  CachedComponent *manageNewComponent(ComponentArchetype &archetype,
-        unsigned comp_stack_index){
-     my_time_++;
-     CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
-                 my_time_);
 
-     statistics_.num_cache_look_ups_++;
-     CacheBucket *p_bucket = bucketOf(*packed_comp);
-     if (p_bucket)
-       for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-         if (entry(*it).equals(*packed_comp)) {
-           statistics_.num_cache_hits_++;
-           statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-           archetype.stack_level().includeSolution(entry(*it).model_count());
-           delete packed_comp;
-           return nullptr;
-         }
-     return packed_comp;
-   }
+//  CachedComponent *manageNewComponent(ComponentArchetype &archetype,
+//        unsigned comp_stack_index){
+//     my_time_++;
+//     CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
+//                 my_time_);
+//
+//     statistics_.num_cache_look_ups_++;
+//     CacheBucket *p_bucket = bucketOf(*packed_comp);
+//     if (p_bucket)
+//       for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+//         if (entry(*it).equals(*packed_comp)) {
+//           statistics_.num_cache_hits_++;
+//           statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
+//           archetype.stack_level().includeSolution(entry(*it).model_count());
+//           delete packed_comp;
+//           return nullptr;
+//         }
+//     return packed_comp;
+//   }
 
   // unchecked erase of an entry from entry_base_
   void eraseEntry(CacheEntryID id) {

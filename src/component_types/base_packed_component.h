@@ -87,7 +87,7 @@ protected:
   unsigned hashkey_ = 0;
 
   mpz_class model_count_;
-  unsigned creation_time_ = 0;
+  unsigned creation_time_ = 1;
 
 private:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry

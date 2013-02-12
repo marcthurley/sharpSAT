@@ -92,20 +92,18 @@ public:
     for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
       if (ana_.isUnseenAndActive(*vt) &&
           ana_.exploreRemainingCompOf(*vt)){
-          //TODO this is supposed to change:
-          //     do not make component directly, but pass a componentbuilder to the cache!
-     //     Component *p_new_comp = ana_.makeComponentFromArcheType();
         Component *p_new_comp = ana_.makeComponentFromArcheType();
-          if (!cache_.manageNewComponent(top, *p_new_comp, super_comp.id(),
-                        component_stack_.size())){
-//          if (!cache_.test_manageNewComponent(top, *p_new_comp,
-//                                 ana_.current_archetype(), super_comp.id(),
-//                                 component_stack_.size())){
+        CachedComponent *packed_comp = new CachedComponent(*p_new_comp, component_stack_.size());
+          if (!cache_.manageNewComponent(top, *packed_comp)){
              component_stack_.push_back(p_new_comp);
+             p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));
           }
-         // ana_.deactComponentInArcheType();
+          else {
+            delete packed_comp;
+            delete p_new_comp;
+          }
+        //  delete p_tmp_comp;
       }
-
 
     top.set_unprocessed_components_end(component_stack_.size());
     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
@@ -150,7 +148,9 @@ public:
 
 
   void gatherStatistics(){
-	  statistics_.cache_bytes_memory_usage_ =
+//	 cout <<  "cache " << statistics_.cache_bytes_memory_usage_ << ","
+//	      << cache_.recompute_bytes_memory_usage() <<endl;
+     statistics_.cache_bytes_memory_usage_ =
 	     cache_.recompute_bytes_memory_usage();
   }
 
