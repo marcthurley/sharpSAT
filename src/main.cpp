@@ -4,7 +4,24 @@
 
 using namespace std;
 
+//
+//void test(){
+//  /// some test related to bug currently being investigated
+//  cout << endl;
+//  for(int max_diff = 0; max_diff < 257; max_diff++){
+//    unsigned bits_per_diff = log2(max_diff) + 1;
+//    unsigned diff_max = 0;
+//    for (unsigned int i = 0; i < bits_per_diff; i++)
+//      diff_max = (diff_max << 1) + 1;
+//    cout << "(" << max_diff << "," << bits_per_diff << "," << diff_max << ")" << endl;
+//  }
+//
+//  cout << endl;
+//}
+
 int main(int argc, char *argv[]) {
+
+ // test();
 
   string input_file;
   Solver theSolver;

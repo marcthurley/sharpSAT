@@ -38,14 +38,22 @@ public:
       delete data_;
   }
 
+//  unsigned data_size() const {
+//    if (!data_)
+//      return 0;
+//    unsigned *p = data_;
+//    while (*p)
+//      p++;
+//    return (p - data_ + 1);
+//  }
   unsigned data_size() const {
-    if (!data_)
-      return 0;
-    unsigned *p = data_;
-    while (*p)
-      p++;
-    return (p - data_ + 1);
-  }
+      if (!data_)
+        return 0;
+      unsigned *p = data_ + clauses_ofs_;
+      while (*p)
+        p++;
+      return (p - data_ + 1);
+    }
 
   unsigned creation_time() {
     return creation_time_;
@@ -96,6 +104,21 @@ private:
 
 };
 
+//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+//  if(hashkey_ != comp.hashkey())
+//    return false;
+//  if (clauses_ofs_ != comp.clauses_ofs_)
+//    return false;
+//  unsigned* p = data_;
+//  unsigned* r = comp.data_;
+//  while (*p && *p == *r) {
+//    p++;
+//    r++;
+//  }
+//  return *p == *r;
+//}
+
+
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
   if(hashkey_ != comp.hashkey())
     return false;
@@ -103,28 +126,12 @@ bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
     return false;
   unsigned* p = data_;
   unsigned* r = comp.data_;
-  while (*p && *p == *r) {
+  while (((p - data_ < clauses_ofs_) || *p) && *p == *r) {
     p++;
     r++;
   }
   return *p == *r;
 }
 
-bool BasePackedComponent::data_only_equals(const BasePackedComponent &comp) const {
-  if (clauses_ofs_ != comp.clauses_ofs_){
-    cout <<"E";
-    return false;
-  }
-  unsigned* p = data_;
-  unsigned* r = comp.data_;
-  while (*p && *p == *r) {
-    p++;
-    r++;
-  }
-  if(*p != *r){
-    cout << "("<< p - data_<<")";
-  }
-  return *p == *r;
-}
 
 #endif /* BASE_PACKED_COMPONENT_H_ */

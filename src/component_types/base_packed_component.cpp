@@ -13,11 +13,38 @@ unsigned BasePackedComponent::_bits_per_variable = 0; // bitsperentry
 unsigned BasePackedComponent::_variable_mask = 0;
 unsigned BasePackedComponent::_clause_mask = 0; // bitsperentry
 
+
+unsigned log2(unsigned v){
+       // taken from
+       // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup
+       static const char LogTable256[256] =
+       {
+       #define LT(n) n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n
+           -1, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+           LT(4), LT(5), LT(5), LT(6), LT(6), LT(6), LT(6),
+           LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7)
+       };
+
+       unsigned r;     // r will be lg(v)
+       register unsigned int t, tt; // temporaries
+
+       if (tt = v >> 16)
+       {
+         r = (t = tt >> 8) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
+       }
+       else
+       {
+         r = (t = v >> 8) ? 8 + LogTable256[t] : LogTable256[v];
+       }
+       return r;
+     }
+
+
 void BasePackedComponent::adjustPackSize(unsigned int maxVarId,
     unsigned int maxClId) {
-  _bits_per_variable = (unsigned int) ceil(
-      log((double) maxVarId + 1) / log(2.0));
-  _bits_per_clause = (unsigned int) ceil(log((double) maxClId + 1) / log(2.0));
+
+  _bits_per_variable = log2(maxVarId) + 1;
+  _bits_per_clause   = log2(maxClId) + 1;
 
   _variable_mask = _clause_mask = 0;
   for (unsigned int i = 0; i < _bits_per_variable; i++)
