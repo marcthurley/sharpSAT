@@ -9,6 +9,7 @@
 #define CACHE_STRUCTURES_H_
 
 #include <assert.h>
+#include <vector>
 
 #include "primitive_types.h"
 
@@ -34,12 +35,6 @@ public:
       T_Component(comp), component_stack_id_(component_stack_id) {
   }
 
-//  GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
-//        T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
-//  }
-//  GenericCachedComponent(Component &comp, ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
-//          T_Component(comp, archetype, creation_time), component_stack_id_(component_stack_id) {
-//    }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack
@@ -69,8 +64,6 @@ public:
   unsigned long SizeInBytes() const {
     return sizeof(GenericCachedComponent<T_Component>)
         + T_Component::data_size() * sizeof(unsigned)
-        // and add the memory usage of model_count_
-        // which is:
         + T_Component::size_of_model_count();
   }
 

@@ -22,4 +22,19 @@ static const ClauseIndex NOT_A_CLAUSE(0);
 #define SENTINEL_CL NOT_A_CLAUSE
 
 
+enum SOLVER_StateT {
+
+  NO_STATE, SUCCESS, TIMEOUT, ABORTED
+};
+
+
+#ifdef DEBUG
+#define toDEBUGOUT(X) cout << X;
+#else
+#define toDEBUGOUT(X)
+#endif
+
+
+
+
 #endif /* PRIMITIVE_TYPES_H_ */

@@ -46,9 +46,8 @@
 //    return false;
 //  }
 
-ComponentCache::ComponentCache(SolverConfiguration &conf,
-		DataAndStatistics &statistics) :
-		config_(conf), statistics_(statistics) {
+ComponentCache::ComponentCache(DataAndStatistics &statistics) :
+		statistics_(statistics) {
 }
 
 void ComponentCache::init(Component &super_comp) {
@@ -70,22 +69,22 @@ void ComponentCache::init(Component &super_comp) {
 	uint64_t free_ram =	info.freeram *(uint64_t) info.mem_unit;
 	uint64_t max_cache_bound = 95 * (free_ram / 100);
 
-	if (config_.maximum_cache_size_bytes == 0) {
-		config_.maximum_cache_size_bytes = max_cache_bound;
+	if (statistics_.maximum_cache_size_bytes_ == 0) {
+	  statistics_.maximum_cache_size_bytes_ = max_cache_bound;
 	}
 
-	if (config_.maximum_cache_size_bytes > free_ram) {
+	if (statistics_.maximum_cache_size_bytes_ > free_ram) {
 		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
 		cout << " Free RAM " << free_ram / 1000000 << "MB" << endl;
 	}
 
 	cout << "Maximum cache size:\t"
-			<< config_.maximum_cache_size_bytes / 1000000 << " MB" << endl
+			<< statistics_.maximum_cache_size_bytes_ / 1000000 << " MB" << endl
 			<< endl;
 
 	recompute_bytes_memory_usage();
 
-	assert(statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
+	assert(statistics_.cache_bytes_memory_usage_ < statistics_.maximum_cache_size_bytes_);
 
 	if (entry_base_.capacity() == entry_base_.size())
 		entry_base_.reserve(2 * entry_base_.size());
@@ -142,7 +141,7 @@ uint64_t ComponentCache::recompute_bytes_memory_usage() {
 
 bool ComponentCache::deleteEntries() {
 	assert(
-			statistics_.cache_bytes_memory_usage_ >= config_.maximum_cache_size_bytes);
+			statistics_.cache_bytes_memory_usage_ >= statistics_.maximum_cache_size_bytes_);
 
 	vector<double> scores;
 	for (auto it = entry_base_.begin() + 1; it != entry_base_.end(); it++)

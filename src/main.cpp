@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     if (strcmp(argv[i], "-noPP") == 0)
       theSolver.config().perform_pre_processing = false;
     else if (strcmp(argv[i], "-q") == 0)
-      SolverConfiguration::quiet = true;
+      theSolver.config().quiet = true;
     else if (strcmp(argv[i], "-verbose") == 0)
       theSolver.config().verbose = true;
     else if (strcmp(argv[i], "-t") == 0) {
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
         cout << " wrong parameters" << endl;
         return -1;
       }
-      theSolver.config().maximum_cache_size_bytes = atol(argv[i + 1]) * (uint64_t) 1000000;
+      theSolver.statistics().maximum_cache_size_bytes_ = atol(argv[i + 1]) * (uint64_t) 1000000;
     } else
       input_file = argv[i];
   }

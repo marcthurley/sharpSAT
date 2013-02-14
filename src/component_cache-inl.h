@@ -12,14 +12,14 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
     CacheEntryID id;
 
     if (statistics_.cache_bytes_memory_usage_
-            >= config_.maximum_cache_size_bytes) {
+            >= statistics_.maximum_cache_size_bytes_) {
         deleteEntries();
     }
 
     ccomp.set_creation_time(my_time_++);
 
     assert(
-            statistics_.cache_bytes_memory_usage_ < config_.maximum_cache_size_bytes);
+            statistics_.cache_bytes_memory_usage_ < statistics_.maximum_cache_size_bytes_);
     if (free_entry_base_slots_.empty()) {
         if (entry_base_.capacity() == entry_base_.size()) {
             entry_base_.reserve(2 * entry_base_.size());

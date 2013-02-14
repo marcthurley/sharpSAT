@@ -19,14 +19,15 @@
 #include "containers.h"
 #include "stack.h"
 
+#include "solver_config.h"
 using namespace std;
 
 class ComponentManager {
 public:
   ComponentManager(SolverConfiguration &config, DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
-        config_(config), statistics_(statistics), cache_(config, statistics),
-        ana_(config,statistics,lit_values) {
+        config_(config), statistics_(statistics), cache_(statistics),
+        ana_(statistics,lit_values) {
   }
 
   void initialize(LiteralIndexedVector<Literal> & literals,
@@ -102,38 +103,12 @@ public:
             delete packed_comp;
             delete p_new_comp;
           }
-        //  delete p_tmp_comp;
       }
 
     top.set_unprocessed_components_end(component_stack_.size());
     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
   }
 
-//  void recordRemainingCompsFor(StackLevel &top) {
-//     Component & super_comp = superComponentOf(top);
-//     unsigned new_comps_start_ofs = component_stack_.size();
-//
-//     ana_.setupAnalysisContext(top, super_comp);
-//
-//     for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
-//       if (ana_.isUnseenAndActive(*vt) &&  ana_.exploreRemainingCompOf(*vt)){
-//         Component *p_new_comp = ana_.makeComponentFromArcheType();
-//        // CachedComponent *packed_comp = cache_.manageNewComponent(ana_.current_archetype(), component_stack_.size());
-//         CachedComponent *packed_comp = cache_.manageNewComponent(topn,*p_new_comp, component_stack_.size());
-//         if (packed_comp){
-//              component_stack_.push_back(p_new_comp);
-//              p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));
-//           }
-////           else
-////             ana_.deactComponentInArcheType();
-//       }
-//
-//
-//     top.set_unprocessed_components_end(component_stack_.size());
-//     sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
-//   }
-
- // void sortComponentStackRange(unsigned start, unsigned end);
   void sortComponentStackRange(unsigned start, unsigned end){
     assert(start <= end);
     // sort the remaining components for processing
@@ -148,8 +123,6 @@ public:
 
 
   void gatherStatistics(){
-//	 cout <<  "cache " << statistics_.cache_bytes_memory_usage_ << ","
-//	      << cache_.recompute_bytes_memory_usage() <<endl;
      statistics_.cache_bytes_memory_usage_ =
 	     cache_.recompute_bytes_memory_usage();
   }

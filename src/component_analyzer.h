@@ -10,11 +10,11 @@
 
 
 
-
+#include "statistics.h"
 #include "component_types/component.h"
 #include "component_types/base_packed_component.h"
 #include "component_types/component_archetype.h"
-#include "basic_types.h"
+
 
 
 #include <vector>
@@ -43,9 +43,9 @@ struct CAClauseHeader {
 
 class ComponentAnalyzer {
 public:
-  ComponentAnalyzer(SolverConfiguration &config, DataAndStatistics &statistics,
+  ComponentAnalyzer(DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
-        config_(config), statistics_(statistics), literal_values_(lit_values) {
+        statistics_(statistics), literal_values_(lit_values) {
   }
 
   unsigned scoreOf(VariableIndex v) {
@@ -116,8 +116,6 @@ public:
     return max_variable_id_;
   }
 private:
-
-  SolverConfiguration &config_;
   DataAndStatistics &statistics_;
 
   // the id of the last clause
@@ -217,13 +215,13 @@ private:
      unsigned r;     // r will be lg(v)
      register unsigned int t, tt; // temporaries
 
-     if (tt = v >> 16)
+     if (tt = (v >> 16))
      {
-       r = (t = tt >> 8) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
+       r = (t = (tt >> 8)) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
      }
      else
      {
-       r = (t = v >> 8) ? 8 + LogTable256[t] : LogTable256[v];
+       r = (t = (v >> 8)) ? 8 + LogTable256[t] : LogTable256[v];
      }
      return r;
    }
@@ -244,7 +242,6 @@ Component *ComponentAnalyzer::makeComponentFromArcheType(){
                archetype_.setVar_in_other_comp(*v_it);
              }
            p_new_comp->closeVariableData();
-           bool first = true;
            for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
              if (archetype_.clause_seen(*it_cl)) {
                p_new_comp->addCl(*it_cl);
@@ -253,7 +250,6 @@ Component *ComponentAnalyzer::makeComponentFromArcheType(){
                    p_new_comp->pck_clause_data_.push_back(*it_cl);
 
                archetype_.setClause_in_other_comp(*it_cl);
-               first = false;
              }
            p_new_comp->closeClauseData();
            p_new_comp->pck_clause_data_.push_back(clsSENTINEL);

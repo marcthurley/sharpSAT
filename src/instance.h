@@ -8,7 +8,7 @@
 #ifndef INSTANCE_H_
 #define INSTANCE_H_
 
-#include "basic_types.h"
+#include "statistics.h"
 #include "structures.h"
 #include "containers.h"
 

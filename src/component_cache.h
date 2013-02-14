@@ -9,9 +9,8 @@
 #define COMPONENT_CACHE_H_
 
 
-
-#include "basic_types.h"
 #include "cache_structures.h"
+#include "statistics.h"
 
 #include <gmpxx.h>
 
@@ -36,7 +35,7 @@ typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 class ComponentCache {
 public:
 
-  ComponentCache(SolverConfiguration &conf, DataAndStatistics &statistics);
+  ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
     for (auto &pbucket : table_)
@@ -88,8 +87,6 @@ public:
   // if so, incorporate it into the model count of top
   // if not, store the packed version of it in the entry_base of the cache
   bool manageNewComponent(StackLevel &top, CachedComponent &packed_comp) {
-      if (!config_.perform_component_caching)
-        return false;
       statistics_.num_cache_look_ups_++;
       CacheBucket *p_bucket = bucketOf(packed_comp);
       if (p_bucket != nullptr)
@@ -172,7 +169,6 @@ private:
   // by means of which the cache is accessed
   vector<CacheBucket *> table_;
 
-  SolverConfiguration &config_;
   DataAndStatistics &statistics_;
 
   // unsigned long num_buckets_ = 0;

@@ -175,7 +175,7 @@ void Solver::solve(const string &file_name) {
 	statistics_.time_elapsed_ = stopwatch_.getElapsedSeconds();
 
 	statistics_.writeToFile("data.out");
-	if (!SolverConfiguration::quiet)
+	if (!config_.quiet)
 		statistics_.printShort();
 }
 
