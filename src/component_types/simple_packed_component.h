@@ -11,9 +11,6 @@
 #include "base_packed_component.h"
 #include "component_archetype.h"
 
-
-typedef unsigned ComponentDataType;
-
 class SimplePackedComponent : public BasePackedComponent {
 public:
 
@@ -37,10 +34,10 @@ public:
 
 
 SimplePackedComponent::SimplePackedComponent(Component &rComp) {
-  unsigned data_size = sizeof(ComponentDataType)*((rComp.num_variables() * bits_per_variable()
+  unsigned data_size = ((rComp.num_variables() * bits_per_variable()
       + (rComp.pck_clause_data_.size()-1) * bits_per_clause())/bits_per_block() + 3);
 
-  ComponentDataType *p = data_ = (ComponentDataType *) malloc(data_size);
+  unsigned *p = data_ =  new unsigned[data_size];
 
   *p = *rComp.varsBegin();
   unsigned hashkey_vars = *p;
@@ -77,6 +74,8 @@ SimplePackedComponent::SimplePackedComponent(Component &rComp) {
   }
   *p = 0;
   hashkey_ = hashkey_vars + (((unsigned) hashkey_clauses) << 16);
+
+  assert( p - data_ + 1 == data_size);
 }
 
 //SimplePackedComponent::SimplePackedComponent(Component &rComp) {

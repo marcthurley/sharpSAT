@@ -27,8 +27,6 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
 
 
 void ComponentManager::removeAllCachePollutionsOf(StackLevel &top) {
-  if (!config_.perform_component_caching)
-    return;
   // all processed components are found in
   // [top.currentRemainingComponent(), component_stack_.size())
   // first, remove the list of descendants from the father

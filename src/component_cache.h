@@ -15,22 +15,9 @@
 #include <gmpxx.h>
 
 #include "component_types/component.h"
-#include "component_types/difference_packed_component.h"
-//#include "component_types/simple_packed_component.h"
 
 #include "stack.h"
-/// Forward Declaration of mpz_class
-//struct __mpz_struct;
-//typedef __mpz_struct mpz_t[1];
-//template<typename T, typename S>  class __gmp_expr;
-//typedef __gmp_expr<mpz_t, mpz_t> mpz_class;
 
-
-//class StackLevel;
-///
-
-typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
-//typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
 
 class ComponentCache {
 public:
@@ -92,8 +79,7 @@ public:
       if (p_bucket != nullptr)
         for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
           if (entry(*it).equals(packed_comp)) {
-            statistics_.num_cache_hits_++;
-            statistics_.sum_cache_hit_sizes_ += packed_comp.num_variables();
+            statistics_.incorporate_cache_hit(packed_comp);
             top.includeSolution(entry(*it).model_count());
             return true;
           }
@@ -102,31 +88,9 @@ public:
     }
 
 
-//  CachedComponent *manageNewComponent(ComponentArchetype &archetype,
-//        unsigned comp_stack_index){
-//     my_time_++;
-//     CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
-//                 my_time_);
-//
-//     statistics_.num_cache_look_ups_++;
-//     CacheBucket *p_bucket = bucketOf(*packed_comp);
-//     if (p_bucket)
-//       for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-//         if (entry(*it).equals(*packed_comp)) {
-//           statistics_.num_cache_hits_++;
-//           statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-//           archetype.stack_level().includeSolution(entry(*it).model_count());
-//           delete packed_comp;
-//           return nullptr;
-//         }
-//     return packed_comp;
-//   }
-
   // unchecked erase of an entry from entry_base_
   void eraseEntry(CacheEntryID id) {
-    statistics_.cache_bytes_memory_usage_ -= entry_base_[id]->SizeInBytes();
-    statistics_.sum_size_cached_components_ -= entry_base_[id]->num_variables();
-    statistics_.num_cached_components_--;
+    statistics_.incorporate_cache_erase(*entry_base_[id]);
     delete entry_base_[id];
     entry_base_[id] = nullptr;
     free_entry_base_slots_.push_back(id);

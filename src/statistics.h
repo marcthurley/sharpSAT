@@ -8,17 +8,6 @@
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
-//
-//#include <vector>
-//
-//#include <cstdlib>
-//#include <sys/time.h> // To seed random generator
-//#include <iostream>
-//#include <cstdint>
-//
-//
-//
-
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -26,6 +15,7 @@
 #include <gmpxx.h>
 
 #include "structures.h"
+#include "cache_structures.h"
 
 #include "primitive_types.h"
 
@@ -90,6 +80,25 @@ public:
   uint64_t cache_bytes_memory_usage_ = 0;
   /*end statistics */
 
+  bool cache_full(){
+    return cache_bytes_memory_usage_ >= maximum_cache_size_bytes_;
+  }
+
+  void incorporate_cache_store(CachedComponent &ccomp){
+    cache_bytes_memory_usage_ += ccomp.SizeInBytes();
+    sum_size_cached_components_ += ccomp.num_variables();
+    num_cached_components_++;
+  }
+  void incorporate_cache_erase(CachedComponent &ccomp){
+      cache_bytes_memory_usage_ -= ccomp.SizeInBytes();
+      sum_size_cached_components_ -= ccomp.num_variables();
+      num_cached_components_--;
+    }
+
+  void incorporate_cache_hit(CachedComponent &ccomp){
+      num_cache_hits_++;
+      sum_cache_hit_sizes_ += ccomp.num_variables();
+  }
   unsigned long cache_MB_memory_usage() {
       return cache_bytes_memory_usage_ / 1000000;
     }
@@ -114,6 +123,7 @@ public:
     // set final_solution_count_ = count * 2^(num_variables_ - num_used_variables_)
     mpz_mul_2exp(final_solution_count_.get_mpz_t (),count.get_mpz_t (), num_variables_ - num_used_variables_);
   }
+
   const mpz_class &final_solution_count() const {
     return final_solution_count_;
   }

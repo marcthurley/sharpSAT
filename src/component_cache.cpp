@@ -84,16 +84,14 @@ void ComponentCache::init(Component &super_comp) {
 
 	recompute_bytes_memory_usage();
 
-	assert(statistics_.cache_bytes_memory_usage_ < statistics_.maximum_cache_size_bytes_);
+	assert(!statistics_.cache_full());
 
 	if (entry_base_.capacity() == entry_base_.size())
 		entry_base_.reserve(2 * entry_base_.size());
 
 	entry_base_.push_back(&packed_super_comp);
 
-	statistics_.cache_bytes_memory_usage_ += packed_super_comp.SizeInBytes();
-	statistics_.sum_size_cached_components_ += super_comp.num_variables();
-	statistics_.num_cached_components_++;
+	statistics_.incorporate_cache_store(packed_super_comp);
 
 	super_comp.set_id(1);
 }
@@ -140,8 +138,7 @@ uint64_t ComponentCache::recompute_bytes_memory_usage() {
 
 
 bool ComponentCache::deleteEntries() {
-	assert(
-			statistics_.cache_bytes_memory_usage_ >= statistics_.maximum_cache_size_bytes_);
+	assert(statistics_.cache_full());
 
 	vector<double> scores;
 	for (auto it = entry_base_.begin() + 1; it != entry_base_.end(); it++)

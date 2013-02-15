@@ -13,12 +13,17 @@
 
 #include "primitive_types.h"
 
+#include "component_types/difference_packed_component.h"
+//#include "component_types/simple_packed_component.h"
+
+
 using namespace std;
 
 #define NIL_ENTRY 0
 
 class Component;
 class ComponentArchetype;
+
 
 // GenericCachedComponent Adds Structure to PackedComponent that is
 // necessary to store it in the cache
@@ -105,6 +110,9 @@ private:
   CacheEntryID next_sibling_ = 0;
 
 };
+
+
+typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 
 class CacheBucket: protected vector<CacheEntryID> {
   friend class ComponentCache;

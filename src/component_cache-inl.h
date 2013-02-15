@@ -11,15 +11,14 @@
 CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID super_comp_id){
     CacheEntryID id;
 
-    if (statistics_.cache_bytes_memory_usage_
-            >= statistics_.maximum_cache_size_bytes_) {
+    if (statistics_.cache_full()) {
         deleteEntries();
     }
 
     ccomp.set_creation_time(my_time_++);
 
-    assert(
-            statistics_.cache_bytes_memory_usage_ < statistics_.maximum_cache_size_bytes_);
+    assert(!statistics_.cache_full());
+
     if (free_entry_base_slots_.empty()) {
         if (entry_base_.capacity() == entry_base_.size()) {
             entry_base_.reserve(2 * entry_base_.size());
@@ -40,9 +39,10 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
     assert(hasEntry(id));
     assert(hasEntry(super_comp_id));
 
-    statistics_.cache_bytes_memory_usage_ += ccomp.SizeInBytes();
-    statistics_.sum_size_cached_components_ += ccomp.num_variables();
-    statistics_.num_cached_components_++;
+//    statistics_.cache_bytes_memory_usage_ += ccomp.SizeInBytes();
+//    statistics_.sum_size_cached_components_ += ccomp.num_variables();
+//    statistics_.num_cached_components_++;
+    statistics_.incorporate_cache_store(ccomp);
 
   #ifdef DEBUG
       for (unsigned u = 2; u < entry_base_.size(); u++)
@@ -54,66 +54,6 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
   #endif
     return id;
 }
-
-//
-//bool ComponentCache::manageNewComponent(StackLevel &top, Component &comp, CachedComponent *packed_comp,
-//      CacheEntryID super_comp_id, unsigned comp_stack_index) {
-//    if (!config_.perform_component_caching)
-//      return false;
-//
-//    my_time_++;
-//    statistics_.num_cache_look_ups_++;
-//    CacheBucket *p_bucket = bucketOf(*packed_comp);
-//    if (p_bucket != nullptr)
-//      for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-//        if (entry(*it).equals(*packed_comp)) {
-//          statistics_.num_cache_hits_++;
-//          statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-//          top.includeSolution(entry(*it).model_count());
-//          delete packed_comp;
-//          return true;
-//        }
-//    // otherwise, set up everything for a component to be explored
-//
-//
-//    return false;
-//  }
-
-
-
-//bool ComponentCache::manageNewComponent(ComponentArchetype &archetype,
-//    CacheEntryID super_comp_id, unsigned comp_stack_index){
-//  if (!config_.perform_component_caching)
-//    return false;
-//  CachedComponent *packed_comp = new CachedComponent(archetype, comp_stack_index,
-//      my_time_);
-//  my_time_++;
-//  statistics_.num_cache_look_ups_++;
-//  CacheBucket *p_bucket = bucketOf(*packed_comp);
-//  if (p_bucket != nullptr)
-//    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-//      if (entry(*it).equals(*packed_comp)) {
-//        statistics_.num_cache_hits_++;
-//        statistics_.sum_cache_hit_sizes_ += packed_comp->num_variables();
-//        archetype.stack_level().includeSolution(entry(*it).model_count());
-//        delete packed_comp;
-//        return true;
-//      }
-//  // otherwise, set up everything for a component to be explored
-//
-//  //comp.set_id(storeAsEntry(*packed_comp, super_comp_id));
-//  return false;
-//}
-
-
-
-
-
-
-
-
-
-
 
 void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
   CacheEntryID father = entry(id).father();
