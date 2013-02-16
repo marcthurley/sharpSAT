@@ -9,33 +9,20 @@
 #define COMPONENT_CACHE_H_
 
 
-
-#include "basic_types.h"
 #include "cache_structures.h"
+#include "statistics.h"
 
 #include <gmpxx.h>
 
 #include "component_types/component.h"
-#include "component_types/difference_packed_component.h"
-
 
 #include "stack.h"
-/// Forward Declaration of mpz_class
-//struct __mpz_struct;
-//typedef __mpz_struct mpz_t[1];
-//template<typename T, typename S>  class __gmp_expr;
-//typedef __gmp_expr<mpz_t, mpz_t> mpz_class;
 
-
-//class StackLevel;
-///
-
-typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 
 class ComponentCache {
 public:
 
-  ComponentCache(SolverConfiguration &conf, DataAndStatistics &statistics);
+  ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
     for (auto &pbucket : table_)
@@ -86,32 +73,24 @@ public:
   // check quickly if the model count of the component is cached
   // if so, incorporate it into the model count of top
   // if not, store the packed version of it in the entry_base of the cache
-  inline bool manageNewComponent(StackLevel &top,
-                          Component &comp,
-                          CacheEntryID super_comp_id,
-                          unsigned comp_stack_index);
-//    bool manageNewComponent(StackLevel &top,
-//                             Component &comp,
-//                             CacheEntryID super_comp_id,
-//                             unsigned comp_stack_index);
-//
-//    bool mgmNCInternal(StackLevel &top, CacheBucket *p_bucket,CachedComponent *packed_comp);
-
-  inline bool manageNewComponent(ComponentArchetype &archetype,
-      CacheEntryID super_comp_id, unsigned comp_stack_index);
-
-  inline bool test_manageNewComponent(StackLevel &top,
-                           Component &comp,
-                           ComponentArchetype &archetype,
-                           CacheEntryID super_comp_id,
-                           unsigned comp_stack_index);
+  bool manageNewComponent(StackLevel &top, CachedComponent &packed_comp) {
+      statistics_.num_cache_look_ups_++;
+      CacheBucket *p_bucket = bucketOf(packed_comp);
+      if (p_bucket != nullptr)
+        for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+          if (entry(*it).equals(packed_comp)) {
+            statistics_.incorporate_cache_hit(packed_comp);
+            top.includeSolution(entry(*it).model_count());
+            return true;
+          }
+      // otherwise, set up everything for a component to be explored
+      return false;
+    }
 
 
   // unchecked erase of an entry from entry_base_
   void eraseEntry(CacheEntryID id) {
-    statistics_.cache_bytes_memory_usage_ -= entry_base_[id]->SizeInBytes();
-    statistics_.sum_size_cached_components_ -= entry_base_[id]->num_variables();
-    statistics_.num_cached_components_--;
+    statistics_.incorporate_cache_erase(*entry_base_[id]);
     delete entry_base_[id];
     entry_base_[id] = nullptr;
     free_entry_base_slots_.push_back(id);
@@ -154,7 +133,6 @@ private:
   // by means of which the cache is accessed
   vector<CacheBucket *> table_;
 
-  SolverConfiguration &config_;
   DataAndStatistics &statistics_;
 
   // unsigned long num_buckets_ = 0;

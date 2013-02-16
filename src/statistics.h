@@ -1,61 +1,31 @@
 /*
- * basic_types.h
+ * statistics.h
  *
- *  Created on: Jun 24, 2012
- *      Author: Marc Thurley
+ *  Created on: Feb 13, 2013
+ *      Author: mthurley
  */
 
-#ifndef BASIC_TYPES_H_
-#define BASIC_TYPES_H_
+#ifndef STATISTICS_H_
+#define STATISTICS_H_
 
-#include <vector>
-
-#include <cstdlib>
-#include <sys/time.h> // To seed random generator
-#include <iostream>
+#include <string>
 #include <cstdint>
-#include "structures.h"
+#include <vector>
 
 #include <gmpxx.h>
 
+#include "structures.h"
+#include "cache_structures.h"
+
+#include "primitive_types.h"
+
 using namespace std;
-
-#ifdef DEBUG
-#define toDEBUGOUT(X) cout << X;
-#else
-#define toDEBUGOUT(X)
-#endif
-
-
-
-
-
-
-enum SOLVER_StateT {
-
-  NO_STATE, SUCCESS, TIMEOUT, ABORTED
-};
-
-struct SolverConfiguration {
-
-  bool perform_non_chron_back_track = true;
-  bool perform_component_caching = true;
-  bool perform_failed_lit_test = true;
-  bool perform_pre_processing = true;
-
-  unsigned long time_bound_seconds = 100000;
-  uint64_t maximum_cache_size_bytes = 0;
-
-  bool verbose = false;
-
-  // quiet = true will override verbose;
-  static bool quiet;
-};
 
 class DataAndStatistics {
 public:
   string input_file_;
   double time_elapsed_ = 0.0;
+  uint64_t maximum_cache_size_bytes_ = 0;
 
   SOLVER_StateT exit_state_ = NO_STATE;
   // different variable counts
@@ -110,13 +80,32 @@ public:
   uint64_t cache_bytes_memory_usage_ = 0;
   /*end statistics */
 
+  bool cache_full(){
+    return cache_bytes_memory_usage_ >= maximum_cache_size_bytes_;
+  }
+
+  void incorporate_cache_store(CachedComponent &ccomp){
+    cache_bytes_memory_usage_ += ccomp.SizeInBytes();
+    sum_size_cached_components_ += ccomp.num_variables();
+    num_cached_components_++;
+  }
+  void incorporate_cache_erase(CachedComponent &ccomp){
+      cache_bytes_memory_usage_ -= ccomp.SizeInBytes();
+      sum_size_cached_components_ -= ccomp.num_variables();
+      num_cached_components_--;
+    }
+
+  void incorporate_cache_hit(CachedComponent &ccomp){
+      num_cache_hits_++;
+      sum_cache_hit_sizes_ += ccomp.num_variables();
+  }
   unsigned long cache_MB_memory_usage() {
       return cache_bytes_memory_usage_ / 1000000;
     }
   mpz_class final_solution_count_ = 0;
 
   double implicitBCP_miss_rate() {
-	  if(num_failed_literal_tests_ == 0) return 0.0;
+      if(num_failed_literal_tests_ == 0) return 0.0;
       return (num_failed_literal_tests_ - num_failed_literals_detected_) / (double) num_failed_literal_tests_;
   }
   unsigned long num_clauses() {
@@ -134,6 +123,7 @@ public:
     // set final_solution_count_ = count * 2^(num_variables_ - num_used_variables_)
     mpz_mul_2exp(final_solution_count_.get_mpz_t (),count.get_mpz_t (), num_variables_ - num_used_variables_);
   }
+
   const mpz_class &final_solution_count() const {
     return final_solution_count_;
   }
@@ -215,4 +205,4 @@ public:
   }
 };
 
-#endif /* BASIC_TYPES_H_ */
+#endif /* STATISTICS_H_ */

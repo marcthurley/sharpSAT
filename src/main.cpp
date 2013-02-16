@@ -4,7 +4,24 @@
 
 using namespace std;
 
+//
+//void test(){
+//  /// some test related to bug currently being investigated
+//  cout << endl;
+//  for(int max_diff = 0; max_diff < 257; max_diff++){
+//    unsigned bits_per_diff = log2(max_diff) + 1;
+//    unsigned diff_max = 0;
+//    for (unsigned int i = 0; i < bits_per_diff; i++)
+//      diff_max = (diff_max << 1) + 1;
+//    cout << "(" << max_diff << "," << bits_per_diff << "," << diff_max << ")" << endl;
+//  }
+//
+//  cout << endl;
+//}
+
 int main(int argc, char *argv[]) {
+
+ // test();
 
   string input_file;
   Solver theSolver;
@@ -34,7 +51,7 @@ int main(int argc, char *argv[]) {
     if (strcmp(argv[i], "-noPP") == 0)
       theSolver.config().perform_pre_processing = false;
     else if (strcmp(argv[i], "-q") == 0)
-      SolverConfiguration::quiet = true;
+      theSolver.config().quiet = true;
     else if (strcmp(argv[i], "-verbose") == 0)
       theSolver.config().verbose = true;
     else if (strcmp(argv[i], "-t") == 0) {
@@ -50,7 +67,7 @@ int main(int argc, char *argv[]) {
         cout << " wrong parameters" << endl;
         return -1;
       }
-      theSolver.config().maximum_cache_size_bytes = atol(argv[i + 1]) * (uint64_t) 1000000;
+      theSolver.statistics().maximum_cache_size_bytes_ = atol(argv[i + 1]) * (uint64_t) 1000000;
     } else
       input_file = argv[i];
   }

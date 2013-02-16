@@ -8,9 +8,16 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-#include "basic_types.h"
+
+#include "statistics.h"
 #include "instance.h"
 #include "component_management.h"
+
+
+
+#include "solver_config.h"
+
+#include <sys/time.h>
 
 enum retStateT {
 	EXIT, RESOLVED, PROCESS_COMPONENT, BACKTRACK
@@ -87,6 +94,9 @@ public:
 		return config_;
 	}
 
+	DataAndStatistics &statistics() {
+	        return statistics_;
+	}
 	void setTimeBound(long int i) {
 		stopwatch_.setTimeBound(i);
 	}

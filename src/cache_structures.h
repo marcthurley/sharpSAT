@@ -9,8 +9,13 @@
 #define CACHE_STRUCTURES_H_
 
 #include <assert.h>
+#include <vector>
 
 #include "primitive_types.h"
+
+//#include "component_types/difference_packed_component.h"
+#include "component_types/simple_packed_component.h"
+
 
 using namespace std;
 
@@ -18,6 +23,7 @@ using namespace std;
 
 class Component;
 class ComponentArchetype;
+
 
 // GenericCachedComponent Adds Structure to PackedComponent that is
 // necessary to store it in the cache
@@ -30,13 +36,10 @@ public:
   GenericCachedComponent() {
   }
 
-  GenericCachedComponent(Component &comp, unsigned component_stack_id, unsigned creation_time) :
-      T_Component(comp, creation_time), component_stack_id_(component_stack_id) {
+  GenericCachedComponent(Component &comp, unsigned component_stack_id) :
+      T_Component(comp), component_stack_id_(component_stack_id) {
   }
 
-  GenericCachedComponent(ComponentArchetype &archetype, unsigned component_stack_id, unsigned creation_time) :
-        T_Component(archetype, creation_time), component_stack_id_(component_stack_id) {
-  }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack
@@ -66,8 +69,6 @@ public:
   unsigned long SizeInBytes() const {
     return sizeof(GenericCachedComponent<T_Component>)
         + T_Component::data_size() * sizeof(unsigned)
-        // and add the memory usage of model_count_
-        // which is:
         + T_Component::size_of_model_count();
   }
 
@@ -109,6 +110,10 @@ private:
   CacheEntryID next_sibling_ = 0;
 
 };
+
+
+//typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
+typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
 
 class CacheBucket: protected vector<CacheEntryID> {
   friend class ComponentCache;

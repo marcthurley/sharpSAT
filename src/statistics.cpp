@@ -1,17 +1,17 @@
 /*
- * basic_types.cpp
+ * statistics.cpp
  *
- *  Created on: Jun 24, 2012
- *      Author: Marc Thurley
+ *  Created on: Feb 13, 2013
+ *      Author: mthurley
  */
-#include "basic_types.h"
+
+#include "statistics.h"
+
 
 #include <iostream>
 #include <fstream>
-#include <math.h>
 
-bool SolverConfiguration::quiet = false;
-
+using namespace std;
 
 void DataAndStatistics::print_final_solution_count() {
   cout << final_solution_count_.get_str();
@@ -52,7 +52,7 @@ void DataAndStatistics::printShort() {
   cout << "/" << num_binary_conflict_clauses_ << "/" << num_unit_clauses_
       << endl << endl;
   cout << "failed literals found by implicit BCP \t " <<
-  		  num_failed_literals_detected_ << endl;;
+          num_failed_literals_detected_ << endl;;
 
     cout << "implicit BCP miss rate \t " << implicitBCP_miss_rate()*100 << "%";
     cout << endl;

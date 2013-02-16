@@ -10,6 +10,9 @@
 
 #include <assert.h>
 #include <gmpxx.h>
+#include <iostream>
+
+using namespace std;
 
 
 class BasePackedComponent {
@@ -35,14 +38,22 @@ public:
       delete data_;
   }
 
+//  unsigned data_size() const {
+//    if (!data_)
+//      return 0;
+//    unsigned *p = data_;
+//    while (*p)
+//      p++;
+//    return (p - data_ + 1);
+//  }
   unsigned data_size() const {
-    if (!data_)
-      return 0;
-    unsigned *p = data_;
-    while (*p)
-      p++;
-    return (p - data_ + 1);
-  }
+      if (!data_)
+        return 0;
+      unsigned *p = data_ + clauses_ofs_;
+      while (*p)
+        p++;
+      return (p - data_ + 1);
+    }
 
   unsigned creation_time() {
     return creation_time_;
@@ -84,7 +95,7 @@ protected:
   unsigned hashkey_ = 0;
 
   mpz_class model_count_;
-  unsigned creation_time_ = 0;
+  unsigned creation_time_ = 1;
 
 private:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
@@ -93,6 +104,21 @@ private:
 
 };
 
+//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+//  if(hashkey_ != comp.hashkey())
+//    return false;
+//  if (clauses_ofs_ != comp.clauses_ofs_)
+//    return false;
+//  unsigned* p = data_;
+//  unsigned* r = comp.data_;
+//  while (*p && *p == *r) {
+//    p++;
+//    r++;
+//  }
+//  return *p == *r;
+//}
+
+
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
   if(hashkey_ != comp.hashkey())
     return false;
@@ -100,23 +126,12 @@ bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
     return false;
   unsigned* p = data_;
   unsigned* r = comp.data_;
-  while (*p && *p == *r) {
+  while (((p - data_ < clauses_ofs_) || *p) && *p == *r) {
     p++;
     r++;
   }
   return *p == *r;
 }
 
-bool BasePackedComponent::data_only_equals(const BasePackedComponent &comp) const {
-  if (clauses_ofs_ != comp.clauses_ofs_)
-    return false;
-  unsigned* p = data_;
-  unsigned* r = comp.data_;
-  while (*p && *p == *r) {
-    p++;
-    r++;
-  }
-  return *p == *r;
-}
 
 #endif /* BASE_PACKED_COMPONENT_H_ */

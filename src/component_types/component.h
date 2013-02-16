@@ -76,6 +76,7 @@ public:
 
   void createAsDummyComponent(unsigned max_var_id, unsigned max_clause_id) {
     data_.clear();
+    //pck_clause_data_.clear();
     clauses_ofs_ = 1;
     for (unsigned idvar = 1; idvar <= max_var_id; idvar++)
       addVar(idvar);
@@ -84,8 +85,10 @@ public:
       for (unsigned idcl = 1; idcl <= max_clause_id; idcl++)
         addCl(idcl);
     closeClauseData();
+   // pck_clause_data_.push_back(1);
+   // pck_clause_data_.push_back(clsSENTINEL);
   }
-
+ // vector<unsigned> pck_clause_data_;
 private:
   // data_ stores the component data:
   // for better cache performance the
@@ -102,6 +105,8 @@ private:
   // once the model count is known, a link to the packed component will be stored
   // in the hash table
   CacheEntryID id_ = 0;
+
+
 
 };
 
