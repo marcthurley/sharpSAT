@@ -70,58 +70,11 @@ public:
   // returns true if a non-trivial non-cached component
   // has been found and is now stack_.TOS_NextComp()
   // returns false if all components have been processed;
-  bool findNextRemainingComponentOf(StackLevel &top) {
-    // record Remaining Components if there are none!
-    if (component_stack_.size() <= top.remaining_components_ofs())
-      recordRemainingCompsFor(top);
-    assert(!top.branch_found_unsat());
-    if (top.hasUnprocessedComponents())
-      return true;
-    // if no component remains
-    // make sure, at least that the current branch is considered SAT
-    top.includeSolution(1);
-    return false;
-  }
+  inline bool findNextRemainingComponentOf(StackLevel &top);
 
+  inline void recordRemainingCompsFor(StackLevel &top);
 
-  void recordRemainingCompsFor(StackLevel &top) {
-    Component & super_comp = superComponentOf(top);
-    unsigned new_comps_start_ofs = component_stack_.size();
-
-    ana_.setupAnalysisContext(top, super_comp);
-
-    for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
-      if (ana_.isUnseenAndActive(*vt) &&
-          ana_.exploreRemainingCompOf(*vt)){
-
-        Component *p_new_comp = ana_.makeComponentFromArcheType();
-        CachedComponent *packed_comp = new CachedComponent(*p_new_comp, component_stack_.size());
-          if (!cache_.manageNewComponent(top, *packed_comp)){
-             component_stack_.push_back(p_new_comp);
-             p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));
-          }
-          else {
-            delete packed_comp;
-            delete p_new_comp;
-          }
-      }
-
-    top.set_unprocessed_components_end(component_stack_.size());
-    sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
-  }
-
-  void sortComponentStackRange(unsigned start, unsigned end){
-    assert(start <= end);
-    // sort the remaining components for processing
-    for (unsigned i = start; i < end; i++)
-      for (unsigned j = i + 1; j < end; j++) {
-        if (component_stack_[i]->num_variables()
-            < component_stack_[j]->num_variables())
-          swap(component_stack_[i], component_stack_[j]);
-      }
-  }
-
-
+  inline void sortComponentStackRange(unsigned start, unsigned end);
 
   void gatherStatistics(){
      statistics_.cache_bytes_memory_usage_ =
@@ -141,5 +94,55 @@ private:
 };
 
 
+void ComponentManager::sortComponentStackRange(unsigned start, unsigned end){
+    assert(start <= end);
+    // sort the remaining components for processing
+    for (unsigned i = start; i < end; i++)
+      for (unsigned j = i + 1; j < end; j++) {
+        if (component_stack_[i]->num_variables()
+            < component_stack_[j]->num_variables())
+          swap(component_stack_[i], component_stack_[j]);
+      }
+  }
+
+bool ComponentManager::findNextRemainingComponentOf(StackLevel &top) {
+    // record Remaining Components if there are none!
+    if (component_stack_.size() <= top.remaining_components_ofs())
+      recordRemainingCompsFor(top);
+    assert(!top.branch_found_unsat());
+    if (top.hasUnprocessedComponents())
+      return true;
+    // if no component remains
+    // make sure, at least that the current branch is considered SAT
+    top.includeSolution(1);
+    return false;
+  }
+
+
+void ComponentManager::recordRemainingCompsFor(StackLevel &top) {
+   Component & super_comp = superComponentOf(top);
+   unsigned new_comps_start_ofs = component_stack_.size();
+
+   ana_.setupAnalysisContext(top, super_comp);
+
+   for (auto vt = super_comp.varsBegin(); *vt != varsSENTINEL; vt++)
+     if (ana_.isUnseenAndActive(*vt) &&
+         ana_.exploreRemainingCompOf(*vt)){
+
+       Component *p_new_comp = ana_.makeComponentFromArcheType();
+       CachedComponent *packed_comp = new CachedComponent(*p_new_comp, component_stack_.size());
+         if (!cache_.manageNewComponent(top, *packed_comp)){
+            component_stack_.push_back(p_new_comp);
+            p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));
+         }
+         else {
+           delete packed_comp;
+           delete p_new_comp;
+         }
+     }
+
+   top.set_unprocessed_components_end(component_stack_.size());
+   sortComponentStackRange(new_comps_start_ofs, component_stack_.size());
+}
 
 #endif /* COMPONENT_MANAGEMENT_H_ */

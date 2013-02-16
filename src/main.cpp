@@ -2,26 +2,12 @@
 
 #include <iostream>
 
+#include <vector>
+
 using namespace std;
 
-//
-//void test(){
-//  /// some test related to bug currently being investigated
-//  cout << endl;
-//  for(int max_diff = 0; max_diff < 257; max_diff++){
-//    unsigned bits_per_diff = log2(max_diff) + 1;
-//    unsigned diff_max = 0;
-//    for (unsigned int i = 0; i < bits_per_diff; i++)
-//      diff_max = (diff_max << 1) + 1;
-//    cout << "(" << max_diff << "," << bits_per_diff << "," << diff_max << ")" << endl;
-//  }
-//
-//  cout << endl;
-//}
 
 int main(int argc, char *argv[]) {
-
- // test();
 
   string input_file;
   Solver theSolver;
@@ -30,7 +16,6 @@ int main(int argc, char *argv[]) {
     cout << "Usage: sharpSAT [options] [CNF_File]" << endl;
     cout << "Options: " << endl;
     cout << "\t -noPP  \t turn off preprocessing" << endl;
-    //cout << "\t -noNCB \t turn off nonchronological backtracking" << endl;
     cout << "\t -q     \t quiet mode" << endl;
     cout << "\t -t [s] \t set time bound to s seconds" << endl;
     cout << "\t -noCC  \t turn off component caching" << endl;
@@ -42,8 +27,6 @@ int main(int argc, char *argv[]) {
   }
 
   for (int i = 1; i < argc; i++) {
-//    if (strcmp(argv[i], "-noNCB") == 0)
-//      theSolver.config().perform_non_chron_back_track = false;
     if (strcmp(argv[i], "-noCC") == 0)
       theSolver.config().perform_component_caching = false;
     if (strcmp(argv[i], "-noIBCP") == 0)

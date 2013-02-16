@@ -38,14 +38,6 @@ public:
       delete data_;
   }
 
-//  unsigned data_size() const {
-//    if (!data_)
-//      return 0;
-//    unsigned *p = data_;
-//    while (*p)
-//      p++;
-//    return (p - data_ + 1);
-//  }
   unsigned data_size() const {
       if (!data_)
         return 0;

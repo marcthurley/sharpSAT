@@ -89,10 +89,7 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
   search_stack_.clear();
   search_stack_.push_back(var);
 
-  //variables_seen_[var] = CA_SEEN;
   archetype_.setVar_seen(var);
-
-  vector<VariableIndex>::const_iterator itVEnd;
 
   for (auto vt = search_stack_.begin();
       vt != search_stack_.end(); vt++) {
@@ -114,13 +111,11 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     // hence  pcl_ofs = pvar + 1
     for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs++) {
       ClauseIndex clID = getClauseID(*pcl_ofs);
-     // if (clauses_seen_[clID] == CA_IN_SUP_COMP_UNSEEN) {
       if(archetype_.clause_unseen_in_sup_comp(clID)){
-        itVEnd = search_stack_.end();
+        auto itVEnd = search_stack_.end();
         bool all_lits_active = true;
         for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
-          //if (variables_seen_[itL->var()] == CA_NIL) { //i.e. the variable is not active
           if(archetype_.var_nil(itL->var())){
             all_lits_active = false;
             if (isResolved(*itL))
@@ -128,11 +123,9 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
             //BEGIN accidentally entered a satisfied clause: undo the search process
             while (search_stack_.end() != itVEnd) {
               assert(search_stack_.back() <= max_variable_id_);
-              //variables_seen_[search_stack_.back()] = CA_IN_SUP_COMP_UNSEEN;
               archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
               search_stack_.pop_back();
             }
-            //clauses_seen_[clID] = CA_NIL;
             archetype_.setClause_nil(clID);
             for (auto itX = beginOfClause(*pcl_ofs); itX != itL; itX++) {
               if (var_frequency_scores_[itX->var()] > 0)
@@ -148,12 +141,10 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
         }
 
         if (archetype_.clause_nil(clID))
-          //if(clauses_seen_[clID] == CA_NIL)
           continue;
         archetype_.setClause_seen(clID);
         if(all_lits_active)
           archetype_.setClause_all_lits_active(clID);
-        //clauses_seen_[clID] = CA_SEEN;
       }
     }
   }
