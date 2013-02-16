@@ -13,8 +13,9 @@
 
 #include "primitive_types.h"
 
-#include "component_types/difference_packed_component.h"
+//#include "component_types/difference_packed_component.h"
 //#include "component_types/simple_packed_component.h"
+#include "component_types/simple_unpacked_component.h"
 
 
 using namespace std;
@@ -112,8 +113,10 @@ private:
 };
 
 
-typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
+//typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
 //typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
+typedef GenericCachedComponent<SimpleUnpackedComponent> CachedComponent;
+
 
 class CacheBucket: protected vector<CacheEntryID> {
   friend class ComponentCache;
