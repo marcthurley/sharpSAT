@@ -233,8 +233,8 @@ Component *ComponentAnalyzer::makeComponentFromArcheType(){
            Component *p_new_comp = new Component();
            p_new_comp->reserveSpace(search_stack_.size(),
                archetype_.super_comp().numLongClauses());
-           p_new_comp->pck_clause_data_.clear();
-           p_new_comp->pck_clause_data_.reserve(archetype_.super_comp().numLongClauses());
+         //  p_new_comp->pck_clause_data_.clear();
+         //  p_new_comp->pck_clause_data_.reserve(archetype_.super_comp().numLongClauses());
 
            for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
              if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
@@ -246,13 +246,13 @@ Component *ComponentAnalyzer::makeComponentFromArcheType(){
              if (archetype_.clause_seen(*it_cl)) {
                p_new_comp->addCl(*it_cl);
 
-              if(!archetype_.clause_all_lits_active(*it_cl))
-                   p_new_comp->pck_clause_data_.push_back(*it_cl);
+           //   if(!archetype_.clause_all_lits_active(*it_cl))
+           //        p_new_comp->pck_clause_data_.push_back(*it_cl);
 
                archetype_.setClause_in_other_comp(*it_cl);
              }
            p_new_comp->closeClauseData();
-           p_new_comp->pck_clause_data_.push_back(clsSENTINEL);
+           // p_new_comp->pck_clause_data_.push_back(clsSENTINEL);
            return p_new_comp;
 }
 

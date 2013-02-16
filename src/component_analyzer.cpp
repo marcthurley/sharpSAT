@@ -12,10 +12,6 @@ void ComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 
   max_variable_id_ = literals.end_lit().var() - 1;
 
-  ComponentArchetype::initVariableData(max_variable_id_);
-  //variables_seen_ = new CA_SearchState[max_variable_id_ + 1];
-  //  memset(variables_seen_, CA_NIL,
-  //      sizeof(CA_SearchState) * (max_variable_id_ + 1));
   search_stack_.reserve(max_variable_id_ + 1);
   var_frequency_scores_.resize(max_variable_id_ + 1, 0);
   variable_occurrence_lists_pool_.clear();
@@ -59,9 +55,7 @@ void ComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
     }
   }
 
-//  clauses_seen_ = new CA_SearchState[max_clause_id_ + 1];
-//  memset(clauses_seen_, CA_NIL, sizeof(CA_SearchState) * (max_clause_id_ + 1));
-  ComponentArchetype::initClauseData(max_clause_id_);
+  ComponentArchetype::initArrays(max_variable_id_, max_clause_id_);
   // the unified link list
   unified_variable_links_lists_pool_.clear();
   unified_variable_links_lists_pool_.push_back(0);

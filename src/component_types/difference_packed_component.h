@@ -80,10 +80,10 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
       max_var_diff = (*it - *(it - 1)) - 1;
   }
 
-  unsigned hashkey_clauses = *rComp.pck_clause_data_.begin();
+  unsigned hashkey_clauses = *rComp.clsBegin();
   unsigned max_clause_diff = 0;
-  if (*rComp.pck_clause_data_.begin()) {
-    for (auto jt = rComp.pck_clause_data_.begin() + 1; *jt != clsSENTINEL;
+  if (*rComp.clsBegin()) {
+    for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL;
         jt++) {
 
       hashkey_clauses = hashkey_clauses * 3 + (*jt - *(jt - 1));
@@ -105,9 +105,9 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
 
 
   unsigned data_size_clauses = 0;
-  if(*rComp.pck_clause_data_.begin())
+  if(*rComp.clsBegin())
     data_size_clauses = bits_per_clause() + 5
-       + (rComp.pck_clause_data_.size() - 2) * bits_per_clause_diff;
+       + (rComp.numLongClauses() - 1) * bits_per_clause_diff;
 
   unsigned data_size = 1 + data_size_vars/ bits_per_block() + data_size_clauses/  bits_per_block();
     data_size+=  (data_size_vars % bits_per_block())? 1 : 0;
@@ -131,10 +131,10 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
 
   clauses_ofs_ = p - data_;
 
-  if (*rComp.pck_clause_data_.begin()) {
-    *p =  (*rComp.pck_clause_data_.begin() << 5) | bits_per_clause_diff;
+  if (*rComp.clsBegin()) {
+    *p =  (*rComp.clsBegin() << 5) | bits_per_clause_diff;
     bitpos = bits_per_clause() + 5;
-    for (auto jt = rComp.pck_clause_data_.begin() + 1; *jt != clsSENTINEL;
+    for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL;
         jt++) {
       *p |= ((*jt - *(jt - 1) - 1) << (bitpos));
       bitpos += bits_per_clause_diff;
