@@ -39,9 +39,6 @@ CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID s
     assert(hasEntry(id));
     assert(hasEntry(super_comp_id));
 
-//    statistics_.cache_bytes_memory_usage_ += ccomp.SizeInBytes();
-//    statistics_.sum_size_cached_components_ += ccomp.num_variables();
-//    statistics_.num_cached_components_++;
     statistics_.incorporate_cache_store(ccomp);
 
   #ifdef DEBUG

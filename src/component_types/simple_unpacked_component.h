@@ -51,6 +51,7 @@ SimpleUnpackedComponent::SimpleUnpackedComponent(Component &rComp) {
 
   clauses_ofs_ = (++p) - data_;
 
+ // assert(clauses_ofs_ == rComp.num_variables());
   unsigned hashkey_clauses = *p = *rComp.clsBegin();
 
   if (*rComp.clsBegin()) {
@@ -62,7 +63,7 @@ SimpleUnpackedComponent::SimpleUnpackedComponent(Component &rComp) {
   }
   hashkey_ = hashkey_vars + (((unsigned) hashkey_clauses) << 16);
 
-  assert( p - data_ + 1 == data_size);
+ // assert(p - data_ + 1 == data_size);
 }
 
 

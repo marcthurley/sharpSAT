@@ -22,6 +22,7 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
   component_stack_.back()->createAsDummyComponent(ana_.max_variable_id(),
       ana_.max_clause_id());
 
+
   cache_.init(*component_stack_.back());
 }
 

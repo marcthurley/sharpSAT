@@ -149,6 +149,8 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
   // this will tell us if we computed the data_size
   // correctly
   assert(p - data_ + 1 == data_size);
+//  if(p - data_ + 1 != data_size)
+//     cout << " " << (int) ((p - data_) + 1 - (int) data_size) << " ";
 }
 
 //DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {

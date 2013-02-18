@@ -86,6 +86,11 @@ public:
     closeClauseData();
   }
 
+  void clear() {
+    clauses_ofs_ = 0;
+    data_.clear();
+  }
+
 private:
   // data_ stores the component data:
   // for better cache performance the
