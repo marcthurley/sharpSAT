@@ -23,12 +23,12 @@ public:
 
   inline SimplePackedComponent(Component &rComp);
 
-  SimplePackedComponent(Component &rComp, const mpz_class &model_count,
-      unsigned long time) :
-      SimplePackedComponent(rComp) {
-    model_count_ = model_count;
-    creation_time_ = time;
-  }
+//  SimplePackedComponent(Component &rComp, const mpz_class &model_count,
+//      unsigned long time) :
+//      SimplePackedComponent(rComp) {
+//    model_count_ = model_count;
+//    creation_time_ = time;
+//  }
 
   unsigned num_variables() {
       return (clauses_ofs_ * sizeof(unsigned) * 8) /bits_per_variable();

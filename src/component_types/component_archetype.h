@@ -50,7 +50,7 @@ public:
     p_super_comp_ = &super_comp;
     p_stack_level_ = &stack_level;
     clearArrays();
-    current_comp_for_caching_.reserveSpace(super_comp.num_variables(),super_comp.numLongClauses());
+    //current_comp_for_caching_.reserveSpace(super_comp.num_variables(),super_comp.numLongClauses());
   }
 
   Component &super_comp() {
@@ -145,37 +145,53 @@ public:
   }
 
 
+//  Component *makeComponentFromState(unsigned stack_size) {
+//    Component *p_new_comp = new Component();
+//    p_new_comp->reserveSpace(stack_size, super_comp().numLongClauses());
+//    current_comp_for_caching_.clear();
+//
+//    for (auto v_it = super_comp().varsBegin(); *v_it != varsSENTINEL;  v_it++)
+//      if (var_seen(*v_it)) { //we have to put a var into our component
+//        p_new_comp->addVar(*v_it);
+//        current_comp_for_caching_.addVar(*v_it);
+//        setVar_in_other_comp(*v_it);
+//      }
+//    p_new_comp->closeVariableData();
+//    current_comp_for_caching_.closeVariableData();
+//
+//    for (auto it_cl = super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
+//      if (clause_seen(*it_cl)) {
+//        p_new_comp->addCl(*it_cl);
+//           if(!clause_all_lits_active(*it_cl))
+//             current_comp_for_caching_.addCl(*it_cl);
+//        setClause_in_other_comp(*it_cl);
+//      }
+//    p_new_comp->closeClauseData();
+//    current_comp_for_caching_.closeClauseData();
+//    return p_new_comp;
+//  }
   Component *makeComponentFromState(unsigned stack_size) {
-    Component *p_new_comp = new Component();
-    p_new_comp->reserveSpace(stack_size, super_comp().numLongClauses());
-    current_comp_for_caching_.clear();
+      Component *p_new_comp = new Component();
+      p_new_comp->reserveSpace(stack_size, super_comp().numLongClauses());
 
-    for (auto v_it = super_comp().varsBegin(); *v_it != varsSENTINEL;  v_it++)
-      if (var_seen(*v_it)) { //we have to put a var into our component
-        p_new_comp->addVar(*v_it);
-        current_comp_for_caching_.addVar(*v_it);
-        setVar_in_other_comp(*v_it);
-      }
-    p_new_comp->closeVariableData();
-    current_comp_for_caching_.closeVariableData();
+      for (auto v_it = super_comp().varsBegin(); *v_it != varsSENTINEL;  v_it++)
+        if (var_seen(*v_it)) { //we have to put a var into our component
+          p_new_comp->addVar(*v_it);
+          setVar_in_other_comp(*v_it);
+        }
+      p_new_comp->closeVariableData();
 
-    for (auto it_cl = super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-      if (clause_seen(*it_cl)) {
-        p_new_comp->addCl(*it_cl);
-           if(!clause_all_lits_active(*it_cl))
-             current_comp_for_caching_.addCl(*it_cl);
-        setClause_in_other_comp(*it_cl);
-      }
-    p_new_comp->closeClauseData();
-    current_comp_for_caching_.closeClauseData();
-
-    if(p_new_comp->numLongClauses() < (int) current_comp_for_caching_.numLongClauses())
-    std:cout << (int) p_new_comp->numLongClauses() - (int) current_comp_for_caching_.numLongClauses() << " ";
-    return p_new_comp;
-  }
+      for (auto it_cl = super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
+        if (clause_seen(*it_cl)) {
+          p_new_comp->addCl(*it_cl);
+          setClause_in_other_comp(*it_cl);
+        }
+      p_new_comp->closeClauseData();
+      return p_new_comp;
+    }
 
 
-  Component current_comp_for_caching_;
+ // Component current_comp_for_caching_;
 private:
   Component *p_super_comp_;
   StackLevel *p_stack_level_;

@@ -25,9 +25,6 @@ public:
   ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
-    for (auto &pbucket : table_)
-      if (pbucket != nullptr)
-        delete pbucket;
     for (auto &pentry : entry_base_)
       if (pentry != nullptr)
         delete pentry;
@@ -74,18 +71,20 @@ public:
   // if so, incorporate it into the model count of top
   // if not, store the packed version of it in the entry_base of the cache
   bool manageNewComponent(StackLevel &top, CachedComponent &packed_comp) {
-      statistics_.num_cache_look_ups_++;
-      CacheBucket *p_bucket = bucketOf(packed_comp);
-      if (p_bucket != nullptr)
-        for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-          if (entry(*it).equals(packed_comp)) {
-            statistics_.incorporate_cache_hit(packed_comp);
-            top.includeSolution(entry(*it).model_count());
-            return true;
-          }
-      // otherwise, set up everything for a component to be explored
-      return false;
-    }
+       statistics_.num_cache_look_ups_++;
+       unsigned table_ofs =  packed_comp.hashkey() % new_table_.size();
+
+       CacheEntryID act_id = new_table_[table_ofs];
+       while(act_id){
+         if (entry(act_id).equals(packed_comp)) {
+           statistics_.incorporate_cache_hit(packed_comp);
+           top.includeSolution(entry(act_id).model_count());
+           return true;
+         }
+         act_id = entry(act_id).next_bucket_element();
+       }
+       return false;
+  }
 
 
   // unchecked erase of an entry from entry_base_
@@ -110,10 +109,20 @@ public:
 
 private:
 
-  CacheBucket *bucketOf(const CachedComponent &packed_comp) {
-      return table_[packed_comp.hashkey() % table_.size()];
+  void reHashTable(unsigned size){
+    new_table_.clear();
+    new_table_.resize(size,0);
+    for (unsigned id = 2; id < entry_base_.size(); id++)
+      if (entry_base_[id] != nullptr && entry_base_[id]->count_found()) {
+        unsigned table_ofs=tableEntry(id);
+        entry_base_[id]->set_next_bucket_element(new_table_[table_ofs]);
+        new_table_[table_ofs] = id;
+    }
   }
 
+  unsigned tableEntry(CacheEntryID id){
+    return entry(id).hashkey() % new_table_.size();
+  }
   void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
       assert(descendantid != entry(compid).first_descendant());
       entry(descendantid).set_next_sibling(entry(compid).first_descendant());
@@ -131,12 +140,10 @@ private:
 
   // the actual hash table
   // by means of which the cache is accessed
-  vector<CacheBucket *> table_;
+  vector<CacheEntryID> new_table_;
 
   DataAndStatistics &statistics_;
 
-  // unsigned long num_buckets_ = 0;
-  unsigned long num_occupied_buckets_ = 0;
   unsigned long my_time_ = 0;
 };
 

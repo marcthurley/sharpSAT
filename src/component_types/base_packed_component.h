@@ -64,17 +64,42 @@ public:
     creation_time_ = time;
   }
 
-  void set_model_count(const mpz_class &rn) {
+  void set_model_count(const mpz_class &rn, unsigned time) {
     model_count_ = rn;
+    count_found_time_ = time;
   }
 
   unsigned hashkey() const  {
     return hashkey_;
   }
 
-  inline bool equals(const BasePackedComponent &comp) const;
+  bool count_found(){
+    return count_found_time_ != 0;
+  }
 
-  inline bool data_only_equals(const BasePackedComponent &comp) const;
+  unsigned count_found_time(){
+      return count_found_time_;
+  }
+
+  inline bool equals(const BasePackedComponent &comp) const;
+  // a cache entry is deletable
+  // only if it is not connected to an active
+  // component in the component stack
+  bool isDeletable() const {
+    return delete_permitted_;
+  }
+  void set_deletable() {
+    delete_permitted_ = true;
+  }
+
+  void clear() {
+    // before deleting the contents of this component,
+    // we should make sure that this component is not present in the component stack anymore!
+    assert(isDeletable());
+    if (data_)
+      delete data_;
+    data_ = nullptr;
+  }
 
 protected:
   // data_ contains in packed form the variable indices
@@ -88,6 +113,12 @@ protected:
 
   mpz_class model_count_;
   unsigned creation_time_ = 1;
+  unsigned count_found_time_ = 0;
+
+  // deletion is permitted only after
+  // the copy of this component in the stack
+  // does not exist anymore
+  bool delete_permitted_ = false;
 
 private:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry

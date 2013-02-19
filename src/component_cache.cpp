@@ -20,14 +20,14 @@ ComponentCache::ComponentCache(DataAndStatistics &statistics) :
 
 void ComponentCache::init(Component &super_comp) {
 
-	CachedComponent &packed_super_comp = *new CachedComponent(super_comp,1);
+	CachedComponent &packed_super_comp = *new CachedComponent(super_comp);
 	my_time_ = 1;
 
-	table_.clear();
 	entry_base_.clear();
 	entry_base_.reserve(2000000);
 	entry_base_.push_back(new CachedComponent()); // dummy Element
-	table_.resize(900001, NULL);
+	new_table_.clear();
+	new_table_.resize(2000003, 0);
 	free_entry_base_slots_.clear();
 	free_entry_base_slots_.reserve(10000);
 
@@ -90,27 +90,23 @@ void ComponentCache::test_descendantstree_consistency() {
 }
 
 uint64_t ComponentCache::recompute_bytes_memory_usage() {
-	statistics_.cache_bytes_memory_usage_ = sizeof(ComponentCache)
-			+ sizeof(CacheBucket *) * table_.capacity();
-	for (auto pbucket : table_)
-		if (pbucket != nullptr)
-			statistics_.cache_bytes_memory_usage_ +=
-					pbucket->getBytesMemoryUsage();
-	for (auto pentry : entry_base_)
-		if (pentry != nullptr) {
-			statistics_.cache_bytes_memory_usage_ += pentry->SizeInBytes();
-		}
-	return statistics_.cache_bytes_memory_usage_;
+  statistics_.cache_bytes_memory_usage_ = sizeof(ComponentCache)
+              + sizeof(CacheEntryID)* new_table_.capacity();
+      for (auto pentry : entry_base_)
+          if (pentry != nullptr) {
+              statistics_.cache_bytes_memory_usage_ += pentry->SizeInBytes();
+          }
+      return statistics_.cache_bytes_memory_usage_;
 }
 
 
 
 bool ComponentCache::deleteEntries() {
-	assert(statistics_.cache_full());
+  assert(statistics_.cache_full());
 
 	vector<double> scores;
 	for (auto it = entry_base_.begin() + 1; it != entry_base_.end(); it++)
-		if (*it != nullptr && (*it)->deletable()) {
+		if (*it != nullptr && (*it)->isDeletable()) {
 			scores.push_back((double) (*it)->creation_time());
 		}
 	sort(scores.begin(), scores.end());
@@ -123,27 +119,21 @@ bool ComponentCache::deleteEntries() {
 	// since index 1 is the whole formula,
 	// should always stay here!
 	for (unsigned id = 2; id < entry_base_.size(); id++)
-		if (entry_base_[id] != nullptr && entry_base_[id]->deletable()) {
-			double as = (double) entry_base_[id]->creation_time();
-			if (as <= cutoff) {
+		if (entry_base_[id] != nullptr &&
+		    entry_base_[id]->isDeletable() &&
+		      (double) entry_base_[id]->creation_time() <= cutoff) {
 				removeFromDescendantsTree(id);
 				eraseEntry(id);
-			}
-		}
+
+        }
 	// then go through the Hash Table and erase all Links to empty entries
-	for (auto pbucket : table_)
-		if (pbucket != nullptr) {
-			for (auto bt = pbucket->rbegin(); bt != pbucket->rend(); bt++) {
-				if (entry_base_[*bt] == nullptr) {
-					*bt = pbucket->back();
-					pbucket->pop_back();
-				}
-			}
-		}
+
+
 #ifdef DEBUG
 	test_descendantstree_consistency();
 #endif
 
+	reHashTable(new_table_.size());
 	statistics_.sum_size_cached_components_ = 0;
 	for (unsigned id = 2; id < entry_base_.size(); id++)
 		if (entry_base_[id] != nullptr) {

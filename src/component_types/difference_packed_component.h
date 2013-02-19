@@ -128,7 +128,7 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
        p++;
 
   clauses_ofs_ = p - data_;
-
+  bitpos = 0;
   if (*rComp.clsBegin()) {
     *p =  (*rComp.clsBegin() << 5) | bits_per_clause_diff;
     bitpos = bits_per_clause() + 5;
@@ -141,14 +141,17 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
         *(++p) = ((*jt - *(jt - 1) - 1) >> (bits_per_clause_diff - bitpos));
       }
     }
-    if (bitpos > 0)
-      p++;
   }
-  *p = 0;
-
+  if(bitpos > 0)
+    p++;
+  *p=0;
+//  if (bits_per_block() - bitpos < bits_per_clause_diff){
+//        p++;
+//  *p = 0;
+//  }
   // this will tell us if we computed the data_size
   // correctly
-  assert(p - data_ + 1 == data_size);
+  //assert(p - data_ + 1 == data_size);
 //  if(p - data_ + 1 != data_size)
 //     cout << " " << (int) ((p - data_) + 1 - (int) data_size) << " ";
 }

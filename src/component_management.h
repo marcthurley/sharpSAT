@@ -54,7 +54,7 @@ public:
   void cleanRemainingComponentsOf(StackLevel &top) {
     while (component_stack_.size() > top.remaining_components_ofs()) {
       if (cache_.hasEntry(component_stack_.back()->id()))
-        cache_.entry(component_stack_.back()->id()).eraseComponentStackID();
+        cache_.entry(component_stack_.back()->id()).set_deletable();
       delete component_stack_.back();
       component_stack_.pop_back();
     }
@@ -130,8 +130,8 @@ void ComponentManager::recordRemainingCompsFor(StackLevel &top) {
          ana_.exploreRemainingCompOf(*vt)){
 
        Component *p_new_comp = ana_.makeComponentFromArcheType();
-       //CachedComponent *packed_comp = new CachedComponent(*p_new_comp, component_stack_.size());
-       CachedComponent *packed_comp = new CachedComponent(ana_.getArchetype().current_comp_for_caching_, component_stack_.size());
+       CachedComponent *packed_comp = new CachedComponent(*p_new_comp);
+       //CachedComponent *packed_comp = new CachedComponent(ana_.getArchetype().current_comp_for_caching_);
          if (!cache_.manageNewComponent(top, *packed_comp)){
             component_stack_.push_back(p_new_comp);
             p_new_comp->set_id(cache_.storeAsEntry(*packed_comp, super_comp.id()));

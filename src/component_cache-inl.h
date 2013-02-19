@@ -79,14 +79,29 @@ void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
 }
 
 void ComponentCache::removeFromHashTable(CacheEntryID id) {
-  CacheBucket *p_bucket = bucketOf(entry(id));
-  if(p_bucket)
-    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-      if (*it == id) {
-        *it = p_bucket->back();
-        p_bucket->pop_back();
-        break;
+  //assert(false);
+  unsigned act_id = new_table_[tableEntry(id)];
+  if(act_id == id){
+    new_table_[tableEntry(id)] = entry(act_id).next_bucket_element();
+  }
+  else {
+  while (act_id) {
+        CacheEntryID next_id = entry(act_id).next_bucket_element();
+        if (next_id == id) {
+          entry(act_id).set_next_bucket_element(entry(next_id).next_bucket_element());
+          break;
+        }
+        act_id = next_id;
       }
+  }
+//  CacheBucket *p_bucket = bucketOf(entry(id));
+//  if(p_bucket)
+//    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
+//      if (*it == id) {
+//        *it = p_bucket->back();
+//        p_bucket->pop_back();
+//        break;
+//      }
 }
 
 void ComponentCache::removeFromDescendantsTree(CacheEntryID id) {
@@ -124,19 +139,17 @@ void ComponentCache::removeFromDescendantsTree(CacheEntryID id) {
 }
 
 void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count) {
-  CacheBucket *p_bucket = bucketOf(entry(id));
-  if(!p_bucket){
-    unsigned ofs = entry(id).hashkey() % table_.size();
-    p_bucket = table_[ofs] = new CacheBucket();
-    num_occupied_buckets_++;
-  }
+  unsigned table_ofs = tableEntry(id);
   // when storing the new model count the size of the model count
   // and hence that of the component will change
   statistics_.cache_bytes_memory_usage_ -= entry(id).SizeInBytes();
 
-  entry(id).set_model_count(model_count);
+  entry(id).set_model_count(model_count,my_time_);
   entry(id).set_creation_time(my_time_);
-  p_bucket->push_back(id);
+
+  entry(id).set_next_bucket_element(new_table_[table_ofs]);
+  new_table_[table_ofs] = id;
+
   statistics_.cache_bytes_memory_usage_ += entry(id).SizeInBytes();
 }
 

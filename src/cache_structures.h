@@ -13,8 +13,8 @@
 
 #include "primitive_types.h"
 
-//#include "component_types/difference_packed_component.h"
-#include "component_types/simple_packed_component.h"
+#include "component_types/difference_packed_component.h"
+//#include "component_types/simple_packed_component.h"
 //#include "component_types/simple_unpacked_component.h"
 
 
@@ -37,35 +37,9 @@ public:
   GenericCachedComponent() {
   }
 
-  GenericCachedComponent(Component &comp, unsigned component_stack_id) :
-      T_Component(comp), component_stack_id_(component_stack_id) {
+  GenericCachedComponent(Component &comp) :
+      T_Component(comp) {
   }
-
-  // a cache entry is deletable
-  // only if it is not connected to an active
-  // component in the component stack
-  bool deletable() {
-    return component_stack_id_ == 0;
-  }
-  void eraseComponentStackID() {
-    component_stack_id_ = 0;
-  }
-  void setComponentStackID(unsigned id) {
-    component_stack_id_ = id;
-  }
-  unsigned component_stack_id() {
-    return component_stack_id_;
-  }
-
-  void clear() {
-    // before deleting the contents of this component,
-    // we should make sure that this component is not present in the component stack anymore!
-    assert(component_stack_id_ == 0);
-    if (T_Component::data_)
-      delete T_Component::data_;
-    T_Component::data_ = nullptr;
-  }
-
 
   unsigned long SizeInBytes() const {
     return sizeof(GenericCachedComponent<T_Component>)
@@ -96,12 +70,21 @@ public:
     return first_descendant_;
   }
 
+
+
+  void set_next_bucket_element(CacheEntryID entry) {
+    next_bucket_element_ = entry;
+  }
+
+  CacheEntryID next_bucket_element() {
+      return next_bucket_element_;
+  }
+
 private:
-  // the position where this
-  // component is stored in the component stack
-  // if this is non-zero, we may not simply delete this
-  // component
-  unsigned component_stack_id_ = 0;
+
+
+  //
+  CacheEntryID next_bucket_element_ = 0;
 
   // theFather and theDescendants:
   // each CCacheEntry is a Node in a tree which represents the relationship
@@ -113,21 +96,8 @@ private:
 };
 
 
-//typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
-typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
+typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
+//typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
 //typedef GenericCachedComponent<SimpleUnpackedComponent> CachedComponent;
-
-
-class CacheBucket: protected vector<CacheEntryID> {
-  friend class ComponentCache;
-
-public:
-
-  using vector<CacheEntryID>::size;
-
-  unsigned long getBytesMemoryUsage() {
-    return sizeof(CacheBucket) + size() * sizeof(CacheEntryID);
-  }
-};
 
 #endif /* CACHE_STRUCTURES */
