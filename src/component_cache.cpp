@@ -20,6 +20,7 @@ ComponentCache::ComponentCache(DataAndStatistics &statistics) :
 
 void ComponentCache::init(Component &super_comp) {
 
+    cout << sizeof(CachedComponent) << " " << sizeof(mpz_class) << endl;
 	CachedComponent &packed_super_comp = *new CachedComponent(super_comp);
 	my_time_ = 1;
 

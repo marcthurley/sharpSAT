@@ -113,7 +113,7 @@ private:
     new_table_.clear();
     new_table_.resize(size,0);
     for (unsigned id = 2; id < entry_base_.size(); id++)
-      if (entry_base_[id] != nullptr && entry_base_[id]->count_found()) {
+      if (entry_base_[id] != nullptr && entry_base_[id]->modelCountFound()) {
         unsigned table_ofs=tableEntry(id);
         entry_base_[id]->set_next_bucket_element(new_table_[table_ofs]);
         new_table_[table_ofs] = id;

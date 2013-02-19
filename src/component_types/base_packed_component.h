@@ -66,20 +66,20 @@ public:
 
   void set_model_count(const mpz_class &rn, unsigned time) {
     model_count_ = rn;
-    count_found_time_ = time;
+    length_solution_period_ = time - creation_time_;
   }
 
   unsigned hashkey() const  {
     return hashkey_;
   }
 
-  bool count_found(){
-    return count_found_time_ != 0;
+  bool modelCountFound(){
+    return length_solution_period_ != 0;
   }
 
-  unsigned count_found_time(){
-      return count_found_time_;
-  }
+//  unsigned count_found_time(){
+//      return count_found_time_;
+//  }
 
   inline bool equals(const BasePackedComponent &comp) const;
   // a cache entry is deletable
@@ -113,7 +113,10 @@ protected:
 
   mpz_class model_count_;
   unsigned creation_time_ = 1;
-  unsigned count_found_time_ = 0;
+
+  // zero means unsolved
+  unsigned length_solution_period_=0;
+//  unsigned count_found_time_ = 0;
 
   // deletion is permitted only after
   // the copy of this component in the stack

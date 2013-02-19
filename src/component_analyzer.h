@@ -97,7 +97,9 @@ public:
   }
 
 
-  inline Component *makeComponentFromArcheType();
+  inline Component *makeComponentFromArcheType(){
+    return archetype_.makeComponentFromState(search_stack_.size());
+  }
 
   unsigned max_clause_id(){
      return max_clause_id_;
@@ -109,6 +111,7 @@ public:
   ComponentArchetype &getArchetype(){
     return archetype_;
   }
+
 private:
   DataAndStatistics &statistics_;
 
@@ -188,28 +191,4 @@ private:
 
 };
 
-
-Component *ComponentAnalyzer::makeComponentFromArcheType(){
-//           Component *p_new_comp = new Component();
-//           p_new_comp->reserveSpace(search_stack_.size(),
-//               archetype_.super_comp().numLongClauses());
-//           for (auto v_it = archetype_.super_comp().varsBegin(); *v_it != varsSENTINEL; v_it++)
-//             if (archetype_.var_seen(*v_it)) { //we have to put a var into our component
-//               p_new_comp->addVar(*v_it);
-//               archetype_.setVar_in_other_comp(*v_it);
-//             }
-//           p_new_comp->closeVariableData();
-//           for (auto it_cl = archetype_.super_comp().clsBegin(); *it_cl != clsSENTINEL; it_cl++)
-//             if (archetype_.clause_seen(*it_cl)) {
-//               p_new_comp->addCl(*it_cl);
-//
-//           //   if(!archetype_.clause_all_lits_active(*it_cl))
-//           //        p_new_comp->pck_clause_data_.push_back(*it_cl);
-//
-//               archetype_.setClause_in_other_comp(*it_cl);
-//             }
-//           p_new_comp->closeClauseData();
-//         return p_new_comp;
-           return archetype_.makeComponentFromState(search_stack_.size());
-}
 #endif /* COMPONENT_ANALYZER_H_ */
