@@ -25,6 +25,7 @@ public:
   ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
+    tentative_explore();
     for (auto &pentry : entry_base_)
       if (pentry != nullptr)
         delete pentry;
@@ -107,6 +108,15 @@ public:
   // test function to ensure consistency of the descendant tree
   inline void test_descendantstree_consistency();
 
+  void tentative_explore();
+  bool var_equal_to_earlier_entry(CacheEntryID id){
+    for (unsigned idp = 1; idp < id; idp++)
+         if (entry_base_[idp] != nullptr) {
+             if(entry_base_[idp]->var_equals(*entry_base_[id]))
+               return true;
+         }
+    return false;
+  }
 private:
 
   void reHashTable(unsigned size){

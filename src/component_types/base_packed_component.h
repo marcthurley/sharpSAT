@@ -81,7 +81,32 @@ public:
 //      return count_found_time_;
 //  }
 
+  unsigned clauses_ofs(){
+    return clauses_ofs_;
+  }
   inline bool equals(const BasePackedComponent &comp) const;
+
+  unsigned var_hash() const {
+      unsigned* p = data_;
+      unsigned h=0;
+      while ((p - data_ < clauses_ofs_)) {
+        h = h*3 + *(p++);
+      }
+      return h;
+    }
+
+
+  bool var_equals(const BasePackedComponent &comp) const {
+    if (clauses_ofs_ != comp.clauses_ofs_)
+      return false;
+    unsigned* p = data_;
+    unsigned* r = comp.data_;
+    while ((p - data_ < clauses_ofs_-1) && *p == *r) {
+      p++;
+      r++;
+    }
+    return *p == *r;
+  }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack
