@@ -20,6 +20,9 @@ public:
   static unsigned bits_per_variable() {
     return _bits_per_variable;
   }
+  static unsigned variable_mask() {
+      return _variable_mask;
+  }
   static unsigned bits_per_clause() {
     return _bits_per_clause;
   }
@@ -41,7 +44,7 @@ public:
   unsigned data_size() const {
       if (!data_)
         return 0;
-      unsigned *p = data_ + clauses_ofs_;
+      unsigned *p = data_;
       while (*p)
         p++;
       return (p - data_ + 1);
@@ -77,36 +80,8 @@ public:
     return length_solution_period_ != 0;
   }
 
-//  unsigned count_found_time(){
-//      return count_found_time_;
-//  }
-
-  unsigned clauses_ofs(){
-    return clauses_ofs_;
-  }
   inline bool equals(const BasePackedComponent &comp) const;
 
-  unsigned var_hash() const {
-      unsigned* p = data_;
-      unsigned h=0;
-      while ((p - data_ < clauses_ofs_)) {
-        h = h*3 + *(p++);
-      }
-      return h;
-    }
-
-
-  bool var_equals(const BasePackedComponent &comp) const {
-    if (clauses_ofs_ != comp.clauses_ofs_)
-      return false;
-    unsigned* p = data_;
-    unsigned* r = comp.data_;
-    while ((p - data_ < clauses_ofs_-1) && *p == *r) {
-      p++;
-      r++;
-    }
-    return *p == *r;
-  }
   // a cache entry is deletable
   // only if it is not connected to an active
   // component in the component stack
@@ -133,7 +108,7 @@ protected:
   // var var ... clause clause ...
   // clauses begin at clauses_ofs_
   unsigned* data_ = nullptr;
-  unsigned clauses_ofs_ = 0;
+ // unsigned clauses_ofs_ = 0;
   unsigned hashkey_ = 0;
 
   mpz_class model_count_;
@@ -155,6 +130,7 @@ private:
 
 };
 
+
 //bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
 //  if(hashkey_ != comp.hashkey())
 //    return false;
@@ -162,22 +138,19 @@ private:
 //    return false;
 //  unsigned* p = data_;
 //  unsigned* r = comp.data_;
-//  while (*p && *p == *r) {
+//  while (((p - data_ < clauses_ofs_) || *p) && *p == *r) {
 //    p++;
 //    r++;
 //  }
 //  return *p == *r;
 //}
 
-
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
   if(hashkey_ != comp.hashkey())
     return false;
-  if (clauses_ofs_ != comp.clauses_ofs_)
-    return false;
   unsigned* p = data_;
   unsigned* r = comp.data_;
-  while (((p - data_ < clauses_ofs_) || *p) && *p == *r) {
+  while (*p && *p == *r) {
     p++;
     r++;
   }
