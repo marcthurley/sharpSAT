@@ -69,7 +69,7 @@ public:
 
   void set_model_count(const mpz_class &rn, unsigned time) {
     model_count_ = rn;
-    length_solution_period_ = time - creation_time_;
+    length_solution_period_and_flags_ = (time - creation_time_) | (length_solution_period_and_flags_ & 1);
   }
 
   unsigned hashkey() const  {
@@ -77,7 +77,7 @@ public:
   }
 
   bool modelCountFound(){
-    return length_solution_period_ != 0;
+    return (length_solution_period_and_flags_ >> 1);
   }
 
   inline bool equals(const BasePackedComponent &comp) const;
@@ -86,10 +86,10 @@ public:
   // only if it is not connected to an active
   // component in the component stack
   bool isDeletable() const {
-    return delete_permitted_;
+    return length_solution_period_and_flags_ & 1;
   }
   void set_deletable() {
-    delete_permitted_ = true;
+    length_solution_period_and_flags_ |= 1;
   }
 
   void clear() {
@@ -108,20 +108,22 @@ protected:
   // var var ... clause clause ...
   // clauses begin at clauses_ofs_
   unsigned* data_ = nullptr;
- // unsigned clauses_ofs_ = 0;
+
   unsigned hashkey_ = 0;
 
   mpz_class model_count_;
+
   unsigned creation_time_ = 1;
 
-  // zero means unsolved
-  unsigned length_solution_period_=0;
-//  unsigned count_found_time_ = 0;
+
+  // this is:  length_solution_period = length_solution_period_and_flags_ >> 1
+  // length_solution_period == 0 means unsolved
+  // and the first bit is "delete_permitted"
+  unsigned length_solution_period_and_flags_ = 0;
 
   // deletion is permitted only after
   // the copy of this component in the stack
   // does not exist anymore
-  bool delete_permitted_ = false;
 
 private:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
