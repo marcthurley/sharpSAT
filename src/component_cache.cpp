@@ -20,13 +20,13 @@ ComponentCache::ComponentCache(DataAndStatistics &statistics) :
 
 void ComponentCache::init(Component &super_comp) {
 
-    cout << sizeof(CachedComponent) << " " << sizeof(mpz_class) << endl;
-	CachedComponent &packed_super_comp = *new CachedComponent(super_comp);
+    cout << sizeof(CacheableComponent) << " " << sizeof(mpz_class) << endl;
+    CacheableComponent &packed_super_comp = *new CacheableComponent(super_comp);
 	my_time_ = 1;
 
 	entry_base_.clear();
 	entry_base_.reserve(2000000);
-	entry_base_.push_back(new CachedComponent()); // dummy Element
+	entry_base_.push_back(new CacheableComponent()); // dummy Element
 	new_table_.clear();
 	new_table_.resize(2000003, 0);
 	free_entry_base_slots_.clear();

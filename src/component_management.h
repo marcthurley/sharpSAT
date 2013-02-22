@@ -130,7 +130,7 @@ void ComponentManager::recordRemainingCompsFor(StackLevel &top) {
          ana_.exploreRemainingCompOf(*vt)){
 
        Component *p_new_comp = ana_.makeComponentFromArcheType();
-       CachedComponent *packed_comp = new CachedComponent(*p_new_comp);
+       CacheableComponent *packed_comp = new CacheableComponent(*p_new_comp);
        //CachedComponent *packed_comp = new CachedComponent(ana_.getArchetype().current_comp_for_caching_);
          if (!cache_.manageNewComponent(top, *packed_comp)){
             component_stack_.push_back(p_new_comp);

@@ -12,6 +12,8 @@ unsigned BasePackedComponent::_bits_per_clause = 0;
 unsigned BasePackedComponent::_bits_per_variable = 0; // bitsperentry
 unsigned BasePackedComponent::_variable_mask = 0;
 unsigned BasePackedComponent::_clause_mask = 0; // bitsperentry
+unsigned BasePackedComponent::_end_clause_mask = 0;
+unsigned BasePackedComponent::_debug_static_val=0;
 
 
 unsigned log2(unsigned v){
@@ -51,6 +53,8 @@ void BasePackedComponent::adjustPackSize(unsigned int maxVarId,
     _variable_mask = (_variable_mask << 1) + 1;
   for (unsigned int i = 0; i < _bits_per_clause; i++)
     _clause_mask = (_clause_mask << 1) + 1;
+
+  _end_clause_mask = _clause_mask << (sizeof(unsigned)*8 - _bits_per_clause);
 }
 
 

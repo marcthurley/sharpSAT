@@ -81,35 +81,34 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
   unsigned bits_per_var_diff = log2(max_var_diff) + 1;
   unsigned bits_per_clause_diff = log2(max_clause_diff) + 1;
 
-  unsigned data_size_vars = 2*bits_per_variable() + 5
-                            + (rComp.num_variables() - 1) * bits_per_var_diff ;
+  unsigned data_size_vars = 2*bits_per_variable() + 5;
 
-  unsigned data_size_clauses = 0;
+  data_size_vars += (rComp.num_variables() - 1) * bits_per_var_diff ;
+
+  unsigned data_size_clauses = bits_per_clause();
   if(*rComp.clsBegin())
-    data_size_clauses = bits_per_clause() + 5
+    data_size_clauses += bits_per_clause() + 5
        + (rComp.numLongClauses() - 1) * bits_per_clause_diff;
 
-  unsigned data_size = 1 + (data_size_vars + data_size_clauses)/bits_per_block();
+  unsigned data_size = (data_size_vars + data_size_clauses)/bits_per_block();
     data_size+=  ((data_size_vars + data_size_clauses) % bits_per_block())? 1 : 0;
 
   unsigned *p = data_ = new unsigned[data_size];
 
   *p = (rComp.num_variables()) | (bits_per_var_diff << bits_per_variable());
-  unsigned int bitpos = bits_per_variable() + 5;
+  unsigned bitpos = bits_per_variable() + 5;
 
   *p |= *rComp.varsBegin() << bitpos;
   bitpos += bits_per_variable();
   if (bitpos >= bits_per_block()) {
-    assert(*p);
     bitpos -= bits_per_block();
     *(++p) = (*rComp.varsBegin()) >> (bits_per_variable() - bitpos);
   }
-  if(bits_per_var_diff)
+
   for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {
     *p |= (*it - *(it - 1)) << bitpos;
     bitpos += bits_per_var_diff;
     if (bitpos >= bits_per_block()) {
-      assert(*p);
       bitpos -= bits_per_block();
       *(++p) = ((*it - *(it - 1)) >> (bits_per_var_diff - bitpos));
     }
@@ -119,14 +118,12 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
     *p |= bits_per_clause_diff << bitpos;
     bitpos += 5;
     if (bitpos >= bits_per_block()) {
-      assert(*p);
       bitpos -= bits_per_block();
       *(++p) = (bits_per_clause_diff >> (5 - bitpos));
     }
     *p |= *rComp.clsBegin() << bitpos;
     bitpos += bits_per_clause();
     if (bitpos >= bits_per_block()) {
-          assert(*p);
           bitpos -= bits_per_block();
           *(++p) = (*rComp.clsBegin() >> (bits_per_clause() - bitpos));
     }
@@ -134,23 +131,20 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
       *p |= ((*jt - *(jt - 1)) << (bitpos));
       bitpos += bits_per_clause_diff;
       if (bitpos >= bits_per_block()) {
-        assert(*p);
         bitpos -= bits_per_block();
         *(++p) = ((*jt - *(jt - 1)) >> (bits_per_clause_diff - bitpos));
       }
     }
   }
 
-  if(bitpos > 0)
-    p++;
-  *p=0;
+  // to check wheter the "END" block of bits_per_clause()
+  // many zeros fits into the current
+  if (bitpos + bits_per_clause() > bits_per_block())
+    *(++p)= 0;
 
   // this will tell us if we computed the data_size
   // correctly
-//  if(p - data_ + 1 != data_size)
-//       cout << " " << (int) ((p - data_) + 1 - (int) data_size) << " " << endl;
-//  assert(p - data_  < data_size);
-  assert(p - data_ + 1 == data_size);
+  if(p - data_ + 1 != data_size);
 
 }
 

@@ -8,7 +8,7 @@
 #ifndef COMPONENT_CACHE_INL_H_
 #define COMPONENT_CACHE_INL_H_
 
-CacheEntryID ComponentCache::storeAsEntry(CachedComponent &ccomp, CacheEntryID super_comp_id){
+CacheEntryID ComponentCache::storeAsEntry(CacheableComponent &ccomp, CacheEntryID super_comp_id){
     CacheEntryID id;
 
     if (statistics_.cache_full()) {

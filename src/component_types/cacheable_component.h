@@ -1,21 +1,19 @@
 /*
- * cache_structures.h
+ * cacheable_component.h
  *
- *  Created on: Aug 23, 2012
- *      Author: Marc Thurley
+ *  Created on: Feb 21, 2013
+ *      Author: mthurley
  */
 
-#ifndef CACHE_STRUCTURES_H_
-#define CACHE_STRUCTURES_H_
+#ifndef CACHEABLE_COMPONENT_H_
+#define CACHEABLE_COMPONENT_H_
 
 #include <assert.h>
 #include <vector>
 
-#include "primitive_types.h"
+#include "../primitive_types.h"
 
-#include "component_types/difference_packed_component.h"
-//#include "component_types/simple_packed_component.h"
-//#include "component_types/simple_unpacked_component.h"
+#include "difference_packed_component.h"
 
 
 using namespace std;
@@ -26,23 +24,23 @@ class Component;
 class ComponentArchetype;
 
 
-// GenericCachedComponent Adds Structure to PackedComponent that is
+// GenericCacheableComponent Adds Structure to PackedComponent that is
 // necessary to store it in the cache
 // namely, the descendant tree structure that
 // allows for the removal of cache pollutions
 
 template< class T_Component>
-class GenericCachedComponent: public T_Component {
+class GenericCacheableComponent: public T_Component {
 public:
-  GenericCachedComponent() {
+  GenericCacheableComponent() {
   }
 
-  GenericCachedComponent(Component &comp) :
+  GenericCacheableComponent(Component &comp) :
       T_Component(comp) {
   }
 
   unsigned long SizeInBytes() const {
-    return sizeof(GenericCachedComponent<T_Component>)
+    return sizeof(GenericCacheableComponent<T_Component>)
         + T_Component::data_size() * sizeof(unsigned)
         + T_Component::size_of_model_count();
   }
@@ -96,8 +94,9 @@ private:
 };
 
 
-typedef GenericCachedComponent<DifferencePackedComponent> CachedComponent;
-//typedef GenericCachedComponent<SimplePackedComponent> CachedComponent;
-//typedef GenericCachedComponent<SimpleUnpackedComponent> CachedComponent;
+typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
 
-#endif /* CACHE_STRUCTURES */
+
+
+
+#endif /* CACHEABLE_COMPONENT_H_ */

@@ -45,7 +45,8 @@ public:
       if (!data_)
         return 0;
       unsigned *p = data_;
-      while (*p)
+      while (*p & _end_clause_mask)
+      //while (*p)
         p++;
       return (p - data_ + 1);
     }
@@ -100,7 +101,10 @@ public:
       delete data_;
     data_ = nullptr;
   }
-
+  static unsigned _debug_static_val;
+  unsigned end_clause_mask(){
+    return _end_clause_mask;
+  }
 protected:
   // data_ contains in packed form the variable indices
   // and clause indices of the component ordered
@@ -125,10 +129,15 @@ protected:
   // the copy of this component in the stack
   // does not exist anymore
 
+
 private:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
   static unsigned _variable_mask, _clause_mask;
+  static unsigned _end_clause_mask;
   static const unsigned _bits_per_block= (sizeof(unsigned) << 3);
+
+
+
 
 };
 
@@ -147,17 +156,29 @@ private:
 //  return *p == *r;
 //}
 
+//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+//  if(hashkey_ != comp.hashkey())
+//    return false;
+//  unsigned* p = data_;
+//  unsigned* r = comp.data_;
+//  while (*p && *p == *r) {
+//    p++;
+//    r++;
+//  }
+//  return *p == *r;
+//}
+
+
 bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
   if(hashkey_ != comp.hashkey())
     return false;
   unsigned* p = data_;
   unsigned* r = comp.data_;
-  while (*p && *p == *r) {
+  while ((*p & _end_clause_mask) && *p == *r) {
     p++;
     r++;
   }
   return *p == *r;
 }
-
 
 #endif /* BASE_PACKED_COMPONENT_H_ */

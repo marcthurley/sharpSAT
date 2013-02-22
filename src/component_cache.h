@@ -9,7 +9,7 @@
 #define COMPONENT_CACHE_H_
 
 
-#include "cache_structures.h"
+#include "component_types/cacheable_component.h"
 #include "statistics.h"
 
 #include <gmpxx.h>
@@ -28,6 +28,8 @@ public:
     for (auto &pentry : entry_base_)
       if (pentry != nullptr)
         delete pentry;
+
+    cout << "edst " << BasePackedComponent::_debug_static_val << endl;
   }
 
   void init(Component &super_comp);
@@ -36,13 +38,13 @@ public:
   // the value is stored in bytes_memory_usage_
   uint64_t recompute_bytes_memory_usage();
 
-  CachedComponent &entry(CacheEntryID id) {
+  CacheableComponent &entry(CacheEntryID id) {
     assert(entry_base_.size() > id);
     assert(entry_base_[id] != nullptr);
     return *entry_base_[id];
   }
 
-  CachedComponent &entry(const Component& comp) {
+  CacheableComponent &entry(const Component& comp) {
       return entry(comp.id());
   }
 
@@ -64,13 +66,13 @@ public:
   // returns the id of the entry created
   // stores in the entry the position of
   // comp which is a part of the component stack
-  inline CacheEntryID storeAsEntry(CachedComponent &ccomp,
+  inline CacheEntryID storeAsEntry(CacheableComponent &ccomp,
                             CacheEntryID super_comp_id);
 
   // check quickly if the model count of the component is cached
   // if so, incorporate it into the model count of top
   // if not, store the packed version of it in the entry_base of the cache
-  bool manageNewComponent(StackLevel &top, CachedComponent &packed_comp) {
+  bool manageNewComponent(StackLevel &top, CacheableComponent &packed_comp) {
        statistics_.num_cache_look_ups_++;
        unsigned table_ofs =  packed_comp.hashkey() % new_table_.size();
 
@@ -135,7 +137,7 @@ private:
         entry(compid).set_first_descendant(entry(desc).next_sibling());
     }
 
-  vector<CachedComponent *> entry_base_;
+  vector<CacheableComponent *> entry_base_;
   vector<CacheEntryID> free_entry_base_slots_;
 
   // the actual hash table

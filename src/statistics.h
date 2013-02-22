@@ -15,7 +15,7 @@
 #include <gmpxx.h>
 
 #include "structures.h"
-#include "cache_structures.h"
+#include "component_types/cacheable_component.h"
 
 #include "primitive_types.h"
 
@@ -84,18 +84,18 @@ public:
     return cache_bytes_memory_usage_ >= maximum_cache_size_bytes_;
   }
 
-  void incorporate_cache_store(CachedComponent &ccomp){
+  void incorporate_cache_store(CacheableComponent &ccomp){
     cache_bytes_memory_usage_ += ccomp.SizeInBytes();
     sum_size_cached_components_ += ccomp.num_variables();
     num_cached_components_++;
   }
-  void incorporate_cache_erase(CachedComponent &ccomp){
+  void incorporate_cache_erase(CacheableComponent &ccomp){
       cache_bytes_memory_usage_ -= ccomp.SizeInBytes();
       sum_size_cached_components_ -= ccomp.num_variables();
       num_cached_components_--;
     }
 
-  void incorporate_cache_hit(CachedComponent &ccomp){
+  void incorporate_cache_hit(CacheableComponent &ccomp){
       num_cache_hits_++;
       sum_cache_hit_sizes_ += ccomp.num_variables();
   }
