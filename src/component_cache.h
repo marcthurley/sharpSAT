@@ -25,18 +25,17 @@ public:
   ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
+    debug_dump_data();
     for (auto &pentry : entry_base_)
-      if (pentry != nullptr)
-        delete pentry;
-
-    cout << "edst " << BasePackedComponent::_debug_static_val << endl;
+          if (pentry != nullptr)
+            delete pentry;
   }
 
   void init(Component &super_comp);
 
   // compute the size in bytes of the component cache from scratch
   // the value is stored in bytes_memory_usage_
-  uint64_t recompute_bytes_memory_usage();
+  uint64_t compute_byte_size_infrasture();
 
   CacheableComponent &entry(CacheEntryID id) {
     assert(entry_base_.size() > id);
@@ -108,7 +107,7 @@ public:
 
   // test function to ensure consistency of the descendant tree
   inline void test_descendantstree_consistency();
-
+  void debug_dump_data();
 private:
 
   void reHashTable(unsigned size){

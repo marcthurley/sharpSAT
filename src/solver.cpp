@@ -163,8 +163,6 @@ void Solver::solve(const string &file_name) {
 		statistics_.set_final_solution_count(stack_.top().getTotalModelCount());
 		statistics_.num_long_conflict_clauses_ = num_conflict_clauses();
 
-		//comp_manager_.gatherStatistics();
-
 	} else {
 		statistics_.exit_state_ = SUCCESS;
 		statistics_.set_final_solution_count(0.0);
@@ -174,6 +172,7 @@ void Solver::solve(const string &file_name) {
 	stopwatch_.stop();
 	statistics_.time_elapsed_ = stopwatch_.getElapsedSeconds();
 
+	comp_manager_.gatherStatistics();
 	statistics_.writeToFile("data.out");
 	if (!config_.quiet)
 		statistics_.printShort();

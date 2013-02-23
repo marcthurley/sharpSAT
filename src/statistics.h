@@ -75,33 +75,54 @@ public:
 
   uint64_t num_cached_components_ = 0;
   uint64_t sum_size_cached_components_ = 0;
-  uint64_t sum_memory_size_cached_components_ = 0;
 
-  uint64_t cache_bytes_memory_usage_ = 0;
+  // the number of bytes occupied by all
+  // components
+  uint64_t sum_bytes_cached_components_ = 0;
+  // the same number, summing over all components ever stored
+  uint64_t overall_bytes_components_stored_ = 0;
+
+
+  uint64_t cache_infrastructure_bytes_memory_usage_ = 0;
+
+
+  uint64_t overall_num_cache_stores_ = 0;
   /*end statistics */
 
   bool cache_full(){
-    return cache_bytes_memory_usage_ >= maximum_cache_size_bytes_;
+    return cache_bytes_memory_usage() >= maximum_cache_size_bytes_;
   }
 
+  uint64_t cache_bytes_memory_usage(){
+    return cache_infrastructure_bytes_memory_usage_
+           + sum_bytes_cached_components_;
+  }
+
+  uint64_t overall_cache_bytes_memory_stored(){
+      return cache_infrastructure_bytes_memory_usage_
+             + overall_bytes_components_stored_;
+    }
+
   void incorporate_cache_store(CacheableComponent &ccomp){
-    cache_bytes_memory_usage_ += ccomp.SizeInBytes();
+    sum_bytes_cached_components_ += ccomp.SizeInBytes();
     sum_size_cached_components_ += ccomp.num_variables();
     num_cached_components_++;
+    overall_bytes_components_stored_ += ccomp.SizeInBytes();
+    overall_num_cache_stores_ += ccomp.num_variables();
   }
   void incorporate_cache_erase(CacheableComponent &ccomp){
-      cache_bytes_memory_usage_ -= ccomp.SizeInBytes();
+      sum_bytes_cached_components_ -= ccomp.SizeInBytes();
       sum_size_cached_components_ -= ccomp.num_variables();
       num_cached_components_--;
-    }
+  }
 
   void incorporate_cache_hit(CacheableComponent &ccomp){
       num_cache_hits_++;
       sum_cache_hit_sizes_ += ccomp.num_variables();
   }
   unsigned long cache_MB_memory_usage() {
-      return cache_bytes_memory_usage_ / 1000000;
-    }
+      return cache_bytes_memory_usage() / 1000000;
+  }
   mpz_class final_solution_count_ = 0;
 
   double implicitBCP_miss_rate() {
@@ -167,12 +188,6 @@ public:
       return 0.0;
     return (double) sum_size_cached_components_
         / (double) num_cached_components_;
-  }
-
-  double avgCachedMemSize() {
-    if (num_cache_hits_ == 0)
-      return 0.0;
-    return (double) cache_bytes_memory_usage_ / (double) num_cached_components_;
   }
 
   double avgCacheHitSize() {

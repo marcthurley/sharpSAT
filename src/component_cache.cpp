@@ -51,8 +51,6 @@ void ComponentCache::init(Component &super_comp) {
 			<< statistics_.maximum_cache_size_bytes_ / 1000000 << " MB" << endl
 			<< endl;
 
-	recompute_bytes_memory_usage();
-
 	assert(!statistics_.cache_full());
 
 	if (entry_base_.capacity() == entry_base_.size())
@@ -90,15 +88,7 @@ void ComponentCache::test_descendantstree_consistency() {
 		}
 }
 
-uint64_t ComponentCache::recompute_bytes_memory_usage() {
-  statistics_.cache_bytes_memory_usage_ = sizeof(ComponentCache)
-              + sizeof(CacheEntryID)* new_table_.capacity();
-      for (auto pentry : entry_base_)
-          if (pentry != nullptr) {
-              statistics_.cache_bytes_memory_usage_ += pentry->SizeInBytes();
-          }
-      return statistics_.cache_bytes_memory_usage_;
-}
+
 
 
 
@@ -136,17 +126,51 @@ bool ComponentCache::deleteEntries() {
 
 	reHashTable(new_table_.size());
 	statistics_.sum_size_cached_components_ = 0;
+	statistics_.sum_bytes_cached_components_ = 0;
 	for (unsigned id = 2; id < entry_base_.size(); id++)
 		if (entry_base_[id] != nullptr) {
 			statistics_.sum_size_cached_components_ +=
 					entry_base_[id]->num_variables();
+			statistics_.sum_bytes_cached_components_ +=
+			    entry_base_[id]->SizeInBytes();
 		}
 
 	statistics_.num_cached_components_ = entry_base_.size();
-	statistics_.cache_bytes_memory_usage_ = recompute_bytes_memory_usage();
+	compute_byte_size_infrasture();
 
 	//cout << " \t entries: "<< entry_base_.size() - free_entry_base_slots_.size()<< endl;
 	return true;
+}
+
+
+uint64_t ComponentCache::compute_byte_size_infrasture() {
+  statistics_.cache_infrastructure_bytes_memory_usage_ =
+      sizeof(ComponentCache)
+      + sizeof(CacheEntryID)* new_table_.capacity()
+      + sizeof(CacheableComponent *)* entry_base_.capacity()
+      + sizeof(CacheEntryID) * free_entry_base_slots_.capacity();
+  return statistics_.cache_infrastructure_bytes_memory_usage_;
+}
+
+void ComponentCache::debug_dump_data(){
+    cout << "sizeof (CacheableComponent *, CacheEntryID) "
+         << sizeof(CacheableComponent *) << ", "
+         << sizeof(CacheEntryID) << endl;
+    cout << "table (size/capacity) " << new_table_.size()
+         << "/" << new_table_.capacity() << endl;
+    cout << "entry_base_ (size/capacity) " << entry_base_.size()
+             << "/" << entry_base_.capacity() << endl;
+    cout << "free_entry_base_slots_ (size/capacity) " << free_entry_base_slots_.size()
+             << "/" << free_entry_base_slots_.capacity() << endl;
+
+//    uint64_t size_model_counts = 0;
+    uint64_t alloc_model_counts = 0;
+    for (auto &pentry : entry_base_)
+              if (pentry != nullptr){
+//                size_model_counts += pentry->size_of_model_count();
+                alloc_model_counts += pentry->alloc_of_model_count();
+              }
+    cout << "model counts size " << alloc_model_counts << endl;
 }
 
 

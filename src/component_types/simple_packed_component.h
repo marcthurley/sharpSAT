@@ -39,8 +39,8 @@ public:
 
 SimplePackedComponent::SimplePackedComponent(Component &rComp) {
   unsigned data_size_vars = bits_per_variable() + rComp.num_variables() * bits_per_variable();
-  unsigned data_size_clauses = rComp.numLongClauses() * bits_per_clause();
-  unsigned data_size = (data_size_vars + data_size_clauses)/bits_per_block() + 1;
+  unsigned data_size_clauses = bits_per_clause() + rComp.numLongClauses() * bits_per_clause();
+  unsigned data_size = (data_size_vars + data_size_clauses)/bits_per_block();
 
   data_size+=  ((data_size_vars + data_size_clauses) % bits_per_block())? 1 : 0;
 
@@ -73,9 +73,9 @@ SimplePackedComponent::SimplePackedComponent(Component &rComp) {
       }
     }
   }
-  if (bitpos > 0)
-    p++;
-  *p = 0;
+
+  if (bitpos + bits_per_clause() > bits_per_block())
+      *(++p)= 0;
   hashkey_ = hashkey_vars + (((unsigned) hashkey_clauses) << 16);
 
   assert( p - data_ + 1 == data_size);

@@ -14,6 +14,7 @@
 #include "../primitive_types.h"
 
 #include "difference_packed_component.h"
+//#include "simple_packed_component.h"
 
 
 using namespace std;
@@ -41,8 +42,7 @@ public:
 
   unsigned long SizeInBytes() const {
     return sizeof(GenericCacheableComponent<T_Component>)
-        + T_Component::data_size() * sizeof(unsigned)
-        + T_Component::size_of_model_count();
+        + T_Component::raw_data_byte_size();
   }
 
   // BEGIN Cache Pollution Management
@@ -95,6 +95,8 @@ private:
 
 
 typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
+//typedef GenericCacheableComponent<SimpleUnpackedComponent> CacheableComponent;
+//typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
 
 
 

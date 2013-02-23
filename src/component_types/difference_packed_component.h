@@ -42,13 +42,13 @@ public:
        unsigned r;     // r will be lg(v)
        register unsigned int t, tt; // temporaries
 
-       if (tt = v >> 16)
+       if ((tt = (v >> 16)))
        {
-         r = (t = tt >> 8) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
+         r = (t = (tt >> 8)) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
        }
        else
        {
-         r = (t = v >> 8) ? 8 + LogTable256[t] : LogTable256[v];
+         r = (t = (v >> 8)) ? 8 + LogTable256[t] : LogTable256[v];
        }
        return r;
      }
@@ -144,7 +144,7 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
 
   // this will tell us if we computed the data_size
   // correctly
-  if(p - data_ + 1 != data_size);
+  if(p - data_ != data_size - 1);
 
 }
 

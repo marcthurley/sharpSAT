@@ -42,14 +42,21 @@ public:
   }
 
   unsigned data_size() const {
-      if (!data_)
-        return 0;
-      unsigned *p = data_;
-      while (*p & _end_clause_mask)
-      //while (*p)
-        p++;
-      return (p - data_ + 1);
-    }
+          if (!data_)
+            return 0;
+          unsigned *p = data_;
+          while (*p & _end_clause_mask)
+          //while (*p)
+            p++;
+          return (p - data_ + 1);
+        }
+
+
+  unsigned raw_data_byte_size() const {
+    return data_size()* sizeof(unsigned)
+         + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
+
+  }
 
   unsigned creation_time() {
     return creation_time_;
@@ -59,10 +66,10 @@ public:
     return model_count_;
   }
 
-  unsigned size_of_model_count() const{
-	  return sizeof(mpz_class)
-		     + model_count_.get_mpz_t()->_mp_size * sizeof(mp_limb_t);
-  }
+  unsigned alloc_of_model_count() const{
+        return sizeof(mpz_class)
+               + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
+    }
 
   void set_creation_time(unsigned time) {
     creation_time_ = time;
@@ -130,14 +137,11 @@ protected:
   // does not exist anymore
 
 
-private:
+protected:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
   static unsigned _variable_mask, _clause_mask;
   static unsigned _end_clause_mask;
   static const unsigned _bits_per_block= (sizeof(unsigned) << 3);
-
-
-
 
 };
 

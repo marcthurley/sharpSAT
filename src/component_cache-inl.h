@@ -11,13 +11,12 @@
 CacheEntryID ComponentCache::storeAsEntry(CacheableComponent &ccomp, CacheEntryID super_comp_id){
     CacheEntryID id;
 
-    if (statistics_.cache_full()) {
+    if (statistics_.cache_full())
         deleteEntries();
-    }
-
-    ccomp.set_creation_time(my_time_++);
 
     assert(!statistics_.cache_full());
+
+    ccomp.set_creation_time(my_time_++);
 
     if (free_entry_base_slots_.empty()) {
         if (entry_base_.capacity() == entry_base_.size()) {
@@ -142,7 +141,8 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   unsigned table_ofs = tableEntry(id);
   // when storing the new model count the size of the model count
   // and hence that of the component will change
-  statistics_.cache_bytes_memory_usage_ -= entry(id).SizeInBytes();
+  statistics_.sum_bytes_cached_components_ -= entry(id).SizeInBytes();
+  statistics_.overall_bytes_components_stored_ -= entry(id).SizeInBytes();
 
   entry(id).set_model_count(model_count,my_time_);
   entry(id).set_creation_time(my_time_);
@@ -150,7 +150,8 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   entry(id).set_next_bucket_element(new_table_[table_ofs]);
   new_table_[table_ofs] = id;
 
-  statistics_.cache_bytes_memory_usage_ += entry(id).SizeInBytes();
+  statistics_.sum_bytes_cached_components_ += entry(id).SizeInBytes();
+  statistics_.overall_bytes_components_stored_ += entry(id).SizeInBytes();
 }
 
 

@@ -7,7 +7,6 @@
 
 #include "statistics.h"
 
-
 #include <iostream>
 #include <fstream>
 
@@ -51,13 +50,21 @@ void DataAndStatistics::printShort() {
   cout << num_conflict_clauses();
   cout << "/" << num_binary_conflict_clauses_ << "/" << num_unit_clauses_
       << endl << endl;
-  cout << "failed literals found by implicit BCP \t " <<
-          num_failed_literals_detected_ << endl;;
+  cout << "failed literals found by implicit BCP \t "
+      << num_failed_literals_detected_ << endl;
 
-    cout << "implicit BCP miss rate \t " << implicitBCP_miss_rate()*100 << "%";
-    cout << endl;
-  cout << "cache size " << cache_bytes_memory_usage_ / 1000000 << "MB\t"
+
+  cout << "implicit BCP miss rate \t " << implicitBCP_miss_rate() * 100 << "%";
+  cout << endl;
+  cout << "cache size " << cache_bytes_memory_usage() / 1000000 << "MB\t"
       << endl;
+
+  cout << "cache (overall) " << overall_cache_bytes_memory_stored() / 1000
+      << "KB\t" << endl;
+  cout << "cache (infra / comps) "
+      << (cache_infrastructure_bytes_memory_usage_ / 1000000) << "/"
+      << sum_bytes_cached_components_ / 1000000 << "MB\t" << endl;
+
   cout << "cache (stores / hits) \t\t\t" << num_cached_components_ << "/"
       << num_cache_hits_ << endl;
   cout << "cache miss rate " << cache_miss_rate() * 100 << "%" << endl;
