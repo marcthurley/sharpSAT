@@ -82,6 +82,12 @@ public:
   // the same number, summing over all components ever stored
   uint64_t overall_bytes_components_stored_ = 0;
 
+  // the above numbers, but without any overhead,
+  // counting only the pure data size of the components - without model counts
+  uint64_t sum_bytes_pure_cached_component_data_ = 0;
+  // the same number, summing over all components ever stored
+  uint64_t overall_bytes_pure_stored_component_data_ = 0;
+
 
   uint64_t cache_infrastructure_bytes_memory_usage_ = 0;
 
@@ -109,11 +115,15 @@ public:
     num_cached_components_++;
     overall_bytes_components_stored_ += ccomp.SizeInBytes();
     overall_num_cache_stores_ += ccomp.num_variables();
+
+    sum_bytes_pure_cached_component_data_ += ccomp.data_only_byte_size();
+    overall_bytes_pure_stored_component_data_ += ccomp.data_only_byte_size();
   }
   void incorporate_cache_erase(CacheableComponent &ccomp){
       sum_bytes_cached_components_ -= ccomp.SizeInBytes();
       sum_size_cached_components_ -= ccomp.num_variables();
       num_cached_components_--;
+      sum_bytes_pure_cached_component_data_ -= ccomp.data_only_byte_size();
   }
 
   void incorporate_cache_hit(CacheableComponent &ccomp){

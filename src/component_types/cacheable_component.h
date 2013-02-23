@@ -80,8 +80,6 @@ public:
 
 private:
 
-
-  //
   CacheEntryID next_bucket_element_ = 0;
 
   // theFather and theDescendants:
@@ -95,7 +93,7 @@ private:
 
 
 typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
-//typedef GenericCacheableComponent<SimpleUnpackedComponent> CacheableComponent;
+//typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
 //typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
 
 

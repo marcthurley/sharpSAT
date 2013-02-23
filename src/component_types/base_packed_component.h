@@ -14,6 +14,91 @@
 
 using namespace std;
 
+template <class T>
+ class BitStuffer {
+ public:
+  BitStuffer(T *data):data_start_(data),p(data){
+    *p = 0;
+  }
+
+//  void stuff(const unsigned val, const unsigned num_bits_val, unsigned mask){
+//    assert((val >> num_bits_val) == 0);
+//    assert((*p >> end_of_bits_) == 0);
+//
+//    *p |= val << end_of_bits_;
+//    end_of_bits_ += num_bits_val;
+//    if (end_of_bits_ >= _bits_per_block){
+//      assert(*p & mask);
+//      assert(*p);
+//      end_of_bits_ -= _bits_per_block;
+//      *(++p) = val >> (num_bits_val - end_of_bits_);
+//      assert(!(end_of_bits_ == 0) | (*p == 0));
+//    }
+//  }
+//  void stuff(const unsigned val, const unsigned num_bits_val){
+//      assert((val >> num_bits_val) == 0);
+//      assert((*p >> end_of_bits_) == 0);
+//
+//      *p |= val << end_of_bits_;
+//      end_of_bits_ += num_bits_val;
+//      if (end_of_bits_ >= _bits_per_block){
+//        assert(*p);
+//        end_of_bits_ -= _bits_per_block;
+//        *(++p) = val >> (num_bits_val - end_of_bits_);
+//        assert(!(end_of_bits_ == 0) | (*p == 0));
+//      }
+//  }
+  void stuff(const unsigned val, const unsigned num_bits_val){
+      assert(num_bits_val > 0);
+      assert((val >> num_bits_val) == 0);
+      if(end_of_bits_ == 0)
+        *p = 0;
+      assert((*p >> end_of_bits_) == 0);
+      *p |= val << end_of_bits_;
+      end_of_bits_ += num_bits_val;
+      if (end_of_bits_ > _bits_per_block){
+        //assert(*p);
+        end_of_bits_ -= _bits_per_block;
+        *(++p) = val >> (num_bits_val - end_of_bits_);
+        assert(!(end_of_bits_ == 0) | (*p == 0));
+      }
+      else if (end_of_bits_ == _bits_per_block){
+        end_of_bits_ -= _bits_per_block;
+        p++;
+      }
+  }
+
+  void end_check(unsigned min_bits_free_at_end){
+    if (end_of_bits_ + min_bits_free_at_end > _bits_per_block)
+        *(++p)= 0;
+    /// DEBUG
+    unsigned clm = 0;
+    for (unsigned int i = 0; i < min_bits_free_at_end; i++)
+      clm = (clm << 1) + 1;
+    unsigned eclm = clm << (sizeof(unsigned)*8 - min_bits_free_at_end);
+    assert((*p & eclm) == 0);
+    // END DEBUG
+  }
+
+
+
+  void assert_size(unsigned size){
+    if(end_of_bits_ == 0)
+       p--;
+    assert(p - data_start_ == size - 1);
+  }
+
+ private:
+  T *data_start_ = nullptr;
+  T *p = nullptr;
+  // in the current block
+  // the bit position just after the last bit written
+  unsigned end_of_bits_ = 0;
+
+  static const unsigned _bits_per_block = (sizeof(T) << 3);
+
+};
+
 
 class BasePackedComponent {
 public:
@@ -31,6 +116,10 @@ public:
 	  return _bits_per_block;
   }
 
+  static unsigned bits_of_data_size(){
+    return _bits_of_data_size;
+  }
+
   static void adjustPackSize(unsigned int maxVarId, unsigned int maxClId);
 
   BasePackedComponent() {}
@@ -40,22 +129,37 @@ public:
     if (data_)
       delete data_;
   }
+  static void outbit(unsigned v){
+   for(auto i=0; i<32;i++){
+      cout << ((v&2147483648)?"1":"0");
+      v&=2147483648-1;
+      v <<= 1;
+    }
+  }
 
-  unsigned data_size() const {
-          if (!data_)
-            return 0;
-          unsigned *p = data_;
-          while (*p & _end_clause_mask)
-          //while (*p)
-            p++;
-          return (p - data_ + 1);
-        }
+  static unsigned log2(unsigned v){
+         // taken from
+         // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup
+         static const char LogTable256[256] =
+         {
+         #define LT(n) n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n
+             -1, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+             LT(4), LT(5), LT(5), LT(6), LT(6), LT(6), LT(6),
+             LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7), LT(7)
+         };
 
+         unsigned r;     // r will be lg(v)
+         register unsigned int t, tt; // temporaries
 
-  unsigned raw_data_byte_size() const {
-    return data_size()* sizeof(unsigned)
-         + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
-
+         if ((tt = (v >> 16)))
+         {
+           r = (t = (tt >> 8)) ? 24 + LogTable256[t] : 16 + LogTable256[tt];
+         }
+         else
+         {
+           r = (t = (v >> 8)) ? 8 + LogTable256[t] : LogTable256[v];
+         }
+         return r;
   }
 
   unsigned creation_time() {
@@ -69,7 +173,7 @@ public:
   unsigned alloc_of_model_count() const{
         return sizeof(mpz_class)
                + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
-    }
+  }
 
   void set_creation_time(unsigned time) {
     creation_time_ = time;
@@ -88,7 +192,7 @@ public:
     return (length_solution_period_and_flags_ >> 1);
   }
 
-  inline bool equals(const BasePackedComponent &comp) const;
+ // inline bool equals(const BasePackedComponent &comp) const;
 
   // a cache entry is deletable
   // only if it is not connected to an active
@@ -108,10 +212,13 @@ public:
       delete data_;
     data_ = nullptr;
   }
+
   static unsigned _debug_static_val;
-  unsigned end_clause_mask(){
-    return _end_clause_mask;
-  }
+
+//  unsigned end_clause_mask(){
+//    return _end_clause_mask;
+//  }
+
 protected:
   // data_ contains in packed form the variable indices
   // and clause indices of the component ordered
@@ -139,8 +246,10 @@ protected:
 
 protected:
   static unsigned _bits_per_clause, _bits_per_variable; // bitsperentry
+  static unsigned _bits_of_data_size; // number of bits needed to store the data size
+  static unsigned _data_size_mask;
   static unsigned _variable_mask, _clause_mask;
-  static unsigned _end_clause_mask;
+  //static unsigned _end_clause_mask;
   static const unsigned _bits_per_block= (sizeof(unsigned) << 3);
 
 };
@@ -173,16 +282,31 @@ protected:
 //}
 
 
-bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
-  if(hashkey_ != comp.hashkey())
-    return false;
-  unsigned* p = data_;
-  unsigned* r = comp.data_;
-  while ((*p & _end_clause_mask) && *p == *r) {
-    p++;
-    r++;
-  }
-  return *p == *r;
-}
+//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+//  if(hashkey_ != comp.hashkey())
+//    return false;
+//  unsigned* p = data_;
+//  unsigned* r = comp.data_;
+//  while ((*p & _end_clause_mask) && *p == *r) {
+//    p++;
+//    r++;
+//  }
+//  return *p == *r;
+//}
+
+//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
+//  if(hashkey_ != comp.hashkey())
+//    return false;
+//  unsigned* p = data_;
+// /// unsigned* p_end = data_;
+//  unsigned* r = comp.data_;
+//  while ((p - data_ < data_size()-1) && *p == *r) {
+//    p++;
+//    r++;
+//  }
+//  return *p == *r;
+//}
+
+
 
 #endif /* BASE_PACKED_COMPONENT_H_ */

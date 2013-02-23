@@ -127,12 +127,16 @@ bool ComponentCache::deleteEntries() {
 	reHashTable(new_table_.size());
 	statistics_.sum_size_cached_components_ = 0;
 	statistics_.sum_bytes_cached_components_ = 0;
+	statistics_.sum_bytes_pure_cached_component_data_ = 0;
+
 	for (unsigned id = 2; id < entry_base_.size(); id++)
 		if (entry_base_[id] != nullptr) {
 			statistics_.sum_size_cached_components_ +=
 					entry_base_[id]->num_variables();
 			statistics_.sum_bytes_cached_components_ +=
 			    entry_base_[id]->SizeInBytes();
+			statistics_.sum_bytes_pure_cached_component_data_ +=
+			    entry_base_[id]->data_only_byte_size();
 		}
 
 	statistics_.num_cached_components_ = entry_base_.size();

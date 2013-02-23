@@ -25,7 +25,7 @@ public:
   ComponentCache(DataAndStatistics &statistics);
 
   ~ComponentCache() {
-    debug_dump_data();
+   // debug_dump_data();
     for (auto &pentry : entry_base_)
           if (pentry != nullptr)
             delete pentry;

@@ -24,20 +24,44 @@ public:
   inline SimpleUnpackedComponent(Component &rComp);
 
   unsigned num_variables() {
-      return *data_;
+      return *(data_+1);
   }
 
+  unsigned data_size() const {
+       return *data_;
+  }
+
+  unsigned data_only_byte_size() const {
+      return data_size()* sizeof(unsigned);
+  }
+
+  unsigned raw_data_byte_size() const {
+        return data_size()* sizeof(unsigned)
+             + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
+  }
+
+  bool equals(const SimpleUnpackedComponent &comp) const {
+      if(hashkey_ != comp.hashkey())
+        return false;
+      unsigned* p = data_;
+      unsigned* r = comp.data_;
+      while(p != data_ + data_size()) {
+          if(*(p++) != *(r++))
+              return false;
+      }
+      return true;
+    }
 };
 
 
 SimpleUnpackedComponent::SimpleUnpackedComponent(Component &rComp) {
-  _end_clause_mask = 4294967295;
-
 
   unsigned data_size = rComp.num_variables() +  rComp.numLongClauses() + 2;
 
   unsigned *p = data_ =  new unsigned[data_size];
-  *p = rComp.num_variables();
+
+  *p = data_size;
+  *(++p) = rComp.num_variables();
   unsigned hashkey_vars = 0;
   for (auto it = rComp.varsBegin(); *it != varsSENTINEL; it++) {
     *(++p) = *it;
@@ -50,7 +74,7 @@ SimpleUnpackedComponent::SimpleUnpackedComponent(Component &rComp) {
       *(++p) = *jt;
       hashkey_clauses = (hashkey_clauses *3) + *jt;
   }
-  *(++p) = 0;
+  //*(++p) = 0;
 
   hashkey_ = hashkey_vars + (((unsigned) hashkey_clauses) << 16);
 

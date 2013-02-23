@@ -56,14 +56,17 @@ void DataAndStatistics::printShort() {
 
   cout << "implicit BCP miss rate \t " << implicitBCP_miss_rate() * 100 << "%";
   cout << endl;
-  cout << "cache size " << cache_bytes_memory_usage() / 1000000 << "MB\t"
+  cout << "bytes cache size     \t" << cache_bytes_memory_usage()  << "\t"
       << endl;
 
-  cout << "cache (overall) " << overall_cache_bytes_memory_stored() / 1000
-      << "KB\t" << endl;
-  cout << "cache (infra / comps) "
-      << (cache_infrastructure_bytes_memory_usage_ / 1000000) << "/"
-      << sum_bytes_cached_components_ / 1000000 << "MB\t" << endl;
+  cout << "bytes cache (overall) \t" << overall_cache_bytes_memory_stored()
+      << "" << endl;
+  cout << "bytes cache (infra / comps) "
+      << (cache_infrastructure_bytes_memory_usage_) << "/"
+      << sum_bytes_cached_components_  << "\t" << endl;
+
+  cout << "bytes pure comp data (curr)    " << sum_bytes_pure_cached_component_data_  << "" << endl;
+  cout << "bytes pure comp data (overall) " <<overall_bytes_pure_stored_component_data_ << "" << endl;
 
   cout << "cache (stores / hits) \t\t\t" << num_cached_components_ << "/"
       << num_cache_hits_ << endl;
