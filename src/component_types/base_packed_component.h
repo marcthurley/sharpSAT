@@ -42,20 +42,18 @@ public:
   }
 
   unsigned data_size() const {
-          if (!data_)
-            return 0;
-          unsigned *p = data_;
-          while (*p & _end_clause_mask)
-          //while (*p)
-            p++;
-          return (p - data_ + 1);
-        }
+    if (!data_)
+      return 0;
+    unsigned *p = data_;
+    while (*p & _end_clause_mask)
+      p++;
+    return (p - data_ + 1);
+  }
 
 
   unsigned raw_data_byte_size() const {
     return data_size()* sizeof(unsigned)
          + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
-
   }
 
   unsigned creation_time() {
@@ -69,7 +67,7 @@ public:
   unsigned alloc_of_model_count() const{
         return sizeof(mpz_class)
                + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
-    }
+  }
 
   void set_creation_time(unsigned time) {
     creation_time_ = time;
@@ -108,10 +106,13 @@ public:
       delete data_;
     data_ = nullptr;
   }
+
   static unsigned _debug_static_val;
+
   unsigned end_clause_mask(){
     return _end_clause_mask;
   }
+
 protected:
   // data_ contains in packed form the variable indices
   // and clause indices of the component ordered

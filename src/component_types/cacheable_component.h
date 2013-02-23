@@ -14,7 +14,7 @@
 #include "../primitive_types.h"
 
 #include "difference_packed_component.h"
-//#include "simple_packed_component.h"
+#include "simple_unpacked_component.h"
 
 
 using namespace std;
@@ -80,8 +80,6 @@ public:
 
 private:
 
-
-  //
   CacheEntryID next_bucket_element_ = 0;
 
   // theFather and theDescendants:
@@ -94,8 +92,8 @@ private:
 };
 
 
-typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
-//typedef GenericCacheableComponent<SimpleUnpackedComponent> CacheableComponent;
+//typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
+typedef GenericCacheableComponent<SimpleUnpackedComponent> CacheableComponent;
 //typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
 
 
