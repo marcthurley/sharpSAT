@@ -137,6 +137,7 @@ public:
     }
   }
 
+
   static unsigned log2(unsigned v){
          // taken from
          // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup
@@ -214,6 +215,7 @@ public:
   }
 
   static unsigned _debug_static_val;
+
 
 //  unsigned end_clause_mask(){
 //    return _end_clause_mask;

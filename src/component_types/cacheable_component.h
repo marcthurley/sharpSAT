@@ -14,7 +14,7 @@
 #include "../primitive_types.h"
 
 #include "difference_packed_component.h"
-//#include "simple_packed_component.h"
+//#include "simple_unpacked_component.h"
 
 
 using namespace std;
@@ -92,9 +92,10 @@ private:
 };
 
 
+
 typedef GenericCacheableComponent<DifferencePackedComponent> CacheableComponent;
 //typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
-//typedef GenericCacheableComponent<SimplePackedComponent> CacheableComponent;
+
 
 
 
