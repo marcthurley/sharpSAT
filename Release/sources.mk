@@ -25,5 +25,4 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 src \
 src/component_types \
-. \
 

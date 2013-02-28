@@ -5,6 +5,11 @@
 #include <vector>
 
 #include <malloc.h>
+
+
+#include <sys/time.h>
+#include <sys/resource.h>
+
 using namespace std;
 
 
@@ -58,8 +63,13 @@ int main(int argc, char *argv[]) {
 
   theSolver.solve(input_file);
 
-//  cout << "MALLOC_STATS:" << endl;
-//  malloc_stats();
+  cout << "MALLOC_STATS:" << endl;
+   malloc_stats();
+
+   rusage ru;
+   getrusage(RUSAGE_SELF,&ru);
+
+   cout << "\nRus: " <<  ru.ru_maxrss*1024 << endl;
 //  cout << "\nMALLINFO:" << endl;
 //
 //  cout << "total " << mallinfo().arena + mallinfo().hblkhd << endl;

@@ -12,7 +12,6 @@ unsigned BasePackedComponent::_bits_per_clause = 0;
 unsigned BasePackedComponent::_bits_per_variable = 0; // bitsperentry
 unsigned BasePackedComponent::_variable_mask = 0;
 unsigned BasePackedComponent::_clause_mask = 0; // bitsperentry
-//unsigned BasePackedComponent::_end_clause_mask = 0;
 unsigned BasePackedComponent::_debug_static_val=0;
 unsigned BasePackedComponent::_bits_of_data_size=0;
 unsigned BasePackedComponent::_data_size_mask = 0;
@@ -33,25 +32,6 @@ void BasePackedComponent::adjustPackSize(unsigned int maxVarId,
     _clause_mask = (_clause_mask << 1) + 1;
   for (unsigned int i = 0; i < _bits_of_data_size; i++)
     _data_size_mask = (_data_size_mask << 1) + 1;
-
- // _end_clause_mask = _clause_mask << (sizeof(unsigned)*8 - _bits_per_clause);
-
-//  cout << "_bits_per_variable,_bits_per_clause  " <<_bits_per_variable <<","<<_bits_per_clause << endl;
-//  cout << "_end_clause_mask ";
-//  outbit(_end_clause_mask);
-//
-//  _end_clause_mask |= _clause_mask << (sizeof(unsigned)*8 - 2*_bits_per_clause);
-//  cout << "\n_end_clause_mask ";
-//  outbit(_end_clause_mask);
-//
-//
-//  cout << endl;
-//  cout << "_clause_mask     ";
-//  outbit(_clause_mask);
-//  cout << endl;
-//  cout << "_variable_mask   ";
-//    outbit(_variable_mask);
-//    cout << endl;
 }
 
 

@@ -144,6 +144,9 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   statistics_.sum_bytes_cached_components_ -= entry(id).SizeInBytes();
   statistics_.overall_bytes_components_stored_ -= entry(id).SizeInBytes();
 
+  statistics_.sys_overhead_sum_bytes_cached_components_ -= entry(id).sys_overhead_SizeInBytes();
+  statistics_.sys_overhead_overall_bytes_components_stored_ -= entry(id).sys_overhead_SizeInBytes();
+
   entry(id).set_model_count(model_count,my_time_);
   entry(id).set_creation_time(my_time_);
 
@@ -152,6 +155,10 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
 
   statistics_.sum_bytes_cached_components_ += entry(id).SizeInBytes();
   statistics_.overall_bytes_components_stored_ += entry(id).SizeInBytes();
+
+  statistics_.sys_overhead_sum_bytes_cached_components_ += entry(id).sys_overhead_SizeInBytes();
+   statistics_.sys_overhead_overall_bytes_components_stored_ += entry(id).sys_overhead_SizeInBytes();
+
 }
 
 

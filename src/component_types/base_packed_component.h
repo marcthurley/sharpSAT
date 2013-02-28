@@ -21,33 +21,6 @@ template <class T>
     *p = 0;
   }
 
-//  void stuff(const unsigned val, const unsigned num_bits_val, unsigned mask){
-//    assert((val >> num_bits_val) == 0);
-//    assert((*p >> end_of_bits_) == 0);
-//
-//    *p |= val << end_of_bits_;
-//    end_of_bits_ += num_bits_val;
-//    if (end_of_bits_ >= _bits_per_block){
-//      assert(*p & mask);
-//      assert(*p);
-//      end_of_bits_ -= _bits_per_block;
-//      *(++p) = val >> (num_bits_val - end_of_bits_);
-//      assert(!(end_of_bits_ == 0) | (*p == 0));
-//    }
-//  }
-//  void stuff(const unsigned val, const unsigned num_bits_val){
-//      assert((val >> num_bits_val) == 0);
-//      assert((*p >> end_of_bits_) == 0);
-//
-//      *p |= val << end_of_bits_;
-//      end_of_bits_ += num_bits_val;
-//      if (end_of_bits_ >= _bits_per_block){
-//        assert(*p);
-//        end_of_bits_ -= _bits_per_block;
-//        *(++p) = val >> (num_bits_val - end_of_bits_);
-//        assert(!(end_of_bits_ == 0) | (*p == 0));
-//      }
-//  }
   void stuff(const unsigned val, const unsigned num_bits_val){
       assert(num_bits_val > 0);
       assert((val >> num_bits_val) == 0);
@@ -216,11 +189,6 @@ public:
 
   static unsigned _debug_static_val;
 
-
-//  unsigned end_clause_mask(){
-//    return _end_clause_mask;
-//  }
-
 protected:
   // data_ contains in packed form the variable indices
   // and clause indices of the component ordered
@@ -251,64 +219,8 @@ protected:
   static unsigned _bits_of_data_size; // number of bits needed to store the data size
   static unsigned _data_size_mask;
   static unsigned _variable_mask, _clause_mask;
-  //static unsigned _end_clause_mask;
   static const unsigned _bits_per_block= (sizeof(unsigned) << 3);
 
 };
-
-
-//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
-//  if(hashkey_ != comp.hashkey())
-//    return false;
-//  if (clauses_ofs_ != comp.clauses_ofs_)
-//    return false;
-//  unsigned* p = data_;
-//  unsigned* r = comp.data_;
-//  while (((p - data_ < clauses_ofs_) || *p) && *p == *r) {
-//    p++;
-//    r++;
-//  }
-//  return *p == *r;
-//}
-
-//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
-//  if(hashkey_ != comp.hashkey())
-//    return false;
-//  unsigned* p = data_;
-//  unsigned* r = comp.data_;
-//  while (*p && *p == *r) {
-//    p++;
-//    r++;
-//  }
-//  return *p == *r;
-//}
-
-
-//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
-//  if(hashkey_ != comp.hashkey())
-//    return false;
-//  unsigned* p = data_;
-//  unsigned* r = comp.data_;
-//  while ((*p & _end_clause_mask) && *p == *r) {
-//    p++;
-//    r++;
-//  }
-//  return *p == *r;
-//}
-
-//bool BasePackedComponent::equals(const BasePackedComponent &comp) const {
-//  if(hashkey_ != comp.hashkey())
-//    return false;
-//  unsigned* p = data_;
-// /// unsigned* p_end = data_;
-//  unsigned* r = comp.data_;
-//  while ((p - data_ < data_size()-1) && *p == *r) {
-//    p++;
-//    r++;
-//  }
-//  return *p == *r;
-//}
-
-
 
 #endif /* BASE_PACKED_COMPONENT_H_ */

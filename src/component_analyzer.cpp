@@ -117,6 +117,7 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
         for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
           if(archetype_.var_nil(itL->var())){
+            assert(!isActive(*itL));
             all_lits_active = false;
             if (isResolved(*itL))
               continue;
@@ -134,6 +135,7 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
             //END accidentally entered a satisfied clause: undo the search process
             break;
           } else {
+            assert(isActive(*itL));
             var_frequency_scores_[itL->var()]++;
             if(isUnseenAndActive(itL->var()))
               setSeenAndStoreInSearchStack(itL->var());
@@ -145,6 +147,10 @@ void ComponentAnalyzer::recordComponentOf(const VariableIndex var) {
         archetype_.setClause_seen(clID);
         if(all_lits_active)
           archetype_.setClause_all_lits_active(clID);
+
+#ifndef NDEBUG
+        test_checkArchetypeRepForClause(pcl_ofs);
+#endif
       }
     }
   }

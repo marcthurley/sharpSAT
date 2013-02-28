@@ -112,6 +112,18 @@ public:
     return archetype_;
   }
 
+  //begin DEBUG
+  void test_checkArchetypeRepForClause(unsigned *pcl_ofs){
+      ClauseIndex clID = getClauseID(*pcl_ofs);
+      bool all_a = true;
+      for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; itL++) {
+        if(!isActive(*itL))
+          all_a = false;
+      }
+      assert(all_a == archetype_.clause_all_lits_active(clID));
+  }
+  //end DEBUG
+
 private:
   DataAndStatistics &statistics_;
 
@@ -154,6 +166,9 @@ private:
 
   bool isSatisfied(const LiteralID lit) {
     return literal_values_[lit] == T_TRI;
+  }
+  bool isActive(const LiteralID lit) {
+      return literal_values_[lit] == X_TRI;
   }
 
   bool isSatisfiedByFirstTwoLits(ClauseOfs cl_ofs) {
