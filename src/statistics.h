@@ -88,11 +88,6 @@ public:
   // the same number, summing over all components ever stored
   uint64_t overall_bytes_pure_stored_component_data_ = 0;
 
-
-  uint64_t sys_overhead_sum_bytes_cached_components_ = 0;
-    // the same number, summing over all components ever stored
-  uint64_t sys_overhead_overall_bytes_components_stored_ = 0;
-
   uint64_t cache_infrastructure_bytes_memory_usage_ = 0;
 
 
@@ -119,8 +114,6 @@ public:
     num_cached_components_++;
     overall_bytes_components_stored_ += ccomp.SizeInBytes();
     overall_num_cache_stores_ += ccomp.num_variables();
-    sys_overhead_sum_bytes_cached_components_ += ccomp.sys_overhead_SizeInBytes();
-    sys_overhead_overall_bytes_components_stored_ += ccomp.sys_overhead_SizeInBytes();
 
 
     sum_bytes_pure_cached_component_data_ += ccomp.data_only_byte_size();
@@ -132,7 +125,7 @@ public:
       num_cached_components_--;
       sum_bytes_pure_cached_component_data_ -= ccomp.data_only_byte_size();
 
-      sys_overhead_sum_bytes_cached_components_ -= ccomp.sys_overhead_SizeInBytes();
+
   }
 
   void incorporate_cache_hit(CacheableComponent &ccomp){

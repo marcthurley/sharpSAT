@@ -43,19 +43,6 @@ public:
                + model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
     }
 
-    // raw data size with the overhead
-    // for the supposed 16byte alignment of malloc
-    unsigned sys_overhead_raw_data_byte_size() const {
-      unsigned ds = data_size()* sizeof(unsigned);
-      unsigned ms = model_count_.get_mpz_t()->_mp_alloc * sizeof(mp_limb_t);
-//      unsigned mask = 0xfffffff8;
-//      return (ds & mask) + ((ds & 7)?8:0)
-//            +(ms & mask) + ((ms & 7)?8:0);
-      unsigned mask = 0xfffffff0;
-            return (ds & mask) + ((ds & 15)?16:0)
-                  +(ms & mask) + ((ms & 15)?16:0);
-    }
-
   bool equals(const DifferencePackedComponent &comp) const {
     if(hashkey_ != comp.hashkey())
       return false;

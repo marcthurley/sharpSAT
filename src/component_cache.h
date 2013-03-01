@@ -108,6 +108,7 @@ public:
   // test function to ensure consistency of the descendant tree
   inline void test_descendantstree_consistency();
   void debug_dump_data();
+
 private:
 
   void reHashTable(unsigned size){

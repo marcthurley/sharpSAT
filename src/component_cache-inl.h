@@ -78,7 +78,6 @@ void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
 }
 
 void ComponentCache::removeFromHashTable(CacheEntryID id) {
-  //assert(false);
   unsigned act_id = new_table_[tableEntry(id)];
   if(act_id == id){
     new_table_[tableEntry(id)] = entry(act_id).next_bucket_element();
@@ -93,14 +92,6 @@ void ComponentCache::removeFromHashTable(CacheEntryID id) {
         act_id = next_id;
       }
   }
-//  CacheBucket *p_bucket = bucketOf(entry(id));
-//  if(p_bucket)
-//    for (auto it = p_bucket->begin(); it != p_bucket->end(); it++)
-//      if (*it == id) {
-//        *it = p_bucket->back();
-//        p_bucket->pop_back();
-//        break;
-//      }
 }
 
 void ComponentCache::removeFromDescendantsTree(CacheEntryID id) {
@@ -144,9 +135,6 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   statistics_.sum_bytes_cached_components_ -= entry(id).SizeInBytes();
   statistics_.overall_bytes_components_stored_ -= entry(id).SizeInBytes();
 
-  statistics_.sys_overhead_sum_bytes_cached_components_ -= entry(id).sys_overhead_SizeInBytes();
-  statistics_.sys_overhead_overall_bytes_components_stored_ -= entry(id).sys_overhead_SizeInBytes();
-
   entry(id).set_model_count(model_count,my_time_);
   entry(id).set_creation_time(my_time_);
 
@@ -155,9 +143,6 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
 
   statistics_.sum_bytes_cached_components_ += entry(id).SizeInBytes();
   statistics_.overall_bytes_components_stored_ += entry(id).SizeInBytes();
-
-  statistics_.sys_overhead_sum_bytes_cached_components_ += entry(id).sys_overhead_SizeInBytes();
-   statistics_.sys_overhead_overall_bytes_components_stored_ += entry(id).sys_overhead_SizeInBytes();
 
 }
 

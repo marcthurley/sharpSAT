@@ -68,10 +68,6 @@ void DataAndStatistics::printShort() {
   cout << "bytes pure comp data (curr)    " << sum_bytes_pure_cached_component_data_  << "" << endl;
   cout << "bytes pure comp data (overall) " <<overall_bytes_pure_stored_component_data_ << "" << endl;
 
-  cout << "bytes cache with sysoverh (curr)    " << sys_overhead_sum_bytes_cached_components_  << "" << endl;
-  cout << "bytes cache with sysoverh (overall) " << sys_overhead_overall_bytes_components_stored_ << "" << endl;
-
-
   cout << "cache (stores / hits) \t\t\t" << num_cached_components_ << "/"
       << num_cache_hits_ << endl;
   cout << "cache miss rate " << cache_miss_rate() * 100 << "%" << endl;

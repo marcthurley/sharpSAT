@@ -63,25 +63,10 @@ int main(int argc, char *argv[]) {
 
   theSolver.solve(input_file);
 
-  cout << "MALLOC_STATS:" << endl;
-   malloc_stats();
-
    rusage ru;
    getrusage(RUSAGE_SELF,&ru);
 
    cout << "\nRus: " <<  ru.ru_maxrss*1024 << endl;
-//  cout << "\nMALLINFO:" << endl;
-//
-//  cout << "total " << mallinfo().arena + mallinfo().hblkhd << endl;
-//  cout <<  mallinfo().arena << "non-mmapped space allocated from system " << endl;
-//  cout <<  mallinfo().ordblks << "number of free chunks " << endl;
-//  cout <<  mallinfo().smblks<< "number of fastbin blocks " << endl;
-//  cout <<  mallinfo().hblks<< " number of mmapped regions " << endl;
-//  cout <<  mallinfo().hblkhd<< "space in mmapped regions " << endl;
-//  cout <<  mallinfo().usmblks<< " maximum total allocated space " << endl;
-//  cout <<  mallinfo().fsmblks<< "space available in freed fastbin blocks " << endl;
-//  cout <<  mallinfo().uordblks<< " total allocated space " << endl;
-//  cout <<  mallinfo().fordblks<< "total free space " << endl;
-//  cout <<  mallinfo().keepcost<< " top-most, releasable (via malloc_trim) space " << endl;
+
   return 0;
 }

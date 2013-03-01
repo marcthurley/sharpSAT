@@ -45,16 +45,6 @@ public:
         + T_Component::raw_data_byte_size();
   }
 
-  // the 48 = 16*3 in overhead stems from the three parts of the component
-  // being dynamically allocated (i.e. the GenericCacheableComponent itself,
-  // the data_ and the model_count data
-  unsigned long sys_overhead_SizeInBytes() const {
-      return sizeof(GenericCacheableComponent<T_Component>)
-          + T_Component::sys_overhead_raw_data_byte_size()
-         // + 24;
-          +48;
-    }
-
   // BEGIN Cache Pollution Management
 
   void set_father(CacheEntryID f) {
