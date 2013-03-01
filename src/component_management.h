@@ -12,7 +12,7 @@
 
 #include "component_types/component.h"
 #include "component_cache.h"
-#include "component_analyzer.h"
+#include "new_component_analyzer.h"
 
 #include <vector>
 #include <gmpxx.h>
@@ -21,6 +21,8 @@
 
 #include "solver_config.h"
 using namespace std;
+
+typedef NewComponentAnalyzer ComponentAnalyzer;
 
 class ComponentManager {
 public:

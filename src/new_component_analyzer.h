@@ -1,12 +1,14 @@
 /*
- * component_analyzer.h
+ * new_component_analyzer.h
  *
- *  Created on: Feb 7, 2013
+ *  Created on: Mar 1, 2013
  *      Author: mthurley
  */
 
-#ifndef COMPONENT_ANALYZER_H_
-#define COMPONENT_ANALYZER_H_
+#ifndef NEW_COMPONENT_ANALYZER_H_
+#define NEW_COMPONENT_ANALYZER_H_
+
+
 
 
 
@@ -37,11 +39,12 @@ struct CAClauseHeader {
 };
 
 
+class NewComponentAnalyzer;
 
 
-class STDComponentAnalyzer {
+class NewComponentAnalyzer {
 public:
-  STDComponentAnalyzer(DataAndStatistics &statistics,
+	NewComponentAnalyzer(DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
         statistics_(statistics), literal_values_(lit_values) {
   }
@@ -206,4 +209,6 @@ private:
 
 };
 
-#endif /* COMPONENT_ANALYZER_H_ */
+
+
+#endif /* NEW_COMPONENT_ANALYZER_H_ */

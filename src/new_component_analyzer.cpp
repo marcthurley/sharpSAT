@@ -1,13 +1,15 @@
 /*
- * component_analyzer.cpp
+ * new_component_analyzer.cpp
  *
- *  Created on: Feb 7, 2013
+ *  Created on: Mar 1, 2013
  *      Author: mthurley
  */
 
-#include "component_analyzer.h"
+#include "new_component_analyzer.h"
 
-void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
+
+
+void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
     vector<LiteralID> &lit_pool) {
 
   max_variable_id_ = literals.end_lit().var() - 1;
@@ -51,6 +53,7 @@ void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       assert(it_lit->var() <= max_variable_id_);
       literal_pool_.push_back(*it_lit);
       curr_clause_length++;
+      occs_[it_lit->var()].push_back(max_clause_id_);
       occs_[it_lit->var()].push_back(current_clause_ofs);
     }
   }
@@ -84,7 +87,7 @@ void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 
 
 
-void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
+void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
   search_stack_.clear();
   search_stack_.push_back(var);
@@ -109,12 +112,13 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     // start traversing links to long clauses
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
-    for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs++) {
-      ClauseIndex clID = getClauseID(*pcl_ofs);
+    for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
+      //ClauseIndex clID = getClauseID(*(pcl_ofs+1));
+    	ClauseIndex clID = *pcl_ofs;
       if(archetype_.clause_unseen_in_sup_comp(clID)){
         auto itVEnd = search_stack_.end();
         bool all_lits_active = true;
-        for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; itL++) {
+        for (auto itL = beginOfClause(*(pcl_ofs+1)); *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
           if(archetype_.var_nil(itL->var())){
             assert(!isActive(*itL));
@@ -128,7 +132,7 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
               search_stack_.pop_back();
             }
             archetype_.setClause_nil(clID);
-            for (auto itX = beginOfClause(*pcl_ofs); itX != itL; itX++) {
+            for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
               if (var_frequency_scores_[itX->var()] > 0)
                 var_frequency_scores_[itX->var()]--;
             }
@@ -149,10 +153,9 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
           archetype_.setClause_all_lits_active(clID);
 
 #ifndef NDEBUG
-        test_checkArchetypeRepForClause(pcl_ofs);
+        test_checkArchetypeRepForClause(pcl_ofs+1);
 #endif
       }
     }
   }
 }
-
