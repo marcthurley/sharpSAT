@@ -207,6 +207,17 @@ private:
   // after execution component_search_stack.size()==1
   void recordComponentOf(const VariableIndex var);
 
+  void pushLitsInto(vector<unsigned> &target,
+		       const vector<LiteralID> &lit_pool,
+		       unsigned start_of_cl,
+		       LiteralID & omitLit){
+	  for (auto it_lit = lit_pool.begin() + start_of_cl;
+			  (*it_lit != SENTINEL_LIT); it_lit++) {
+		  if(*it_lit != omitLit)
+			  target.push_back(it_lit->raw());
+	  }
+	  target.push_back(SENTINEL_LIT.raw());
+  }
 };
 
 

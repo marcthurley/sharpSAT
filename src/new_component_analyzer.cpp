@@ -26,9 +26,11 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
   map_clause_id_to_ofs_.push_back(0);
 
   vector<vector<ClauseOfs> > occs_(max_variable_id_ + 1);
+  vector<vector<unsigned> > occ_clauses_(max_variable_id_ + 1);
   ClauseOfs current_clause_ofs = 0;
   max_clause_id_ = 0;
   unsigned curr_clause_length = 0;
+  auto it_curr_cl_st = lit_pool.begin();
   for (auto it_lit = lit_pool.begin(); it_lit < lit_pool.end(); it_lit++) {
     if (*it_lit == SENTINEL_LIT) {
 
@@ -44,6 +46,7 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       current_clause_ofs = literal_pool_.size();
       getHeaderOf(current_clause_ofs).clause_id = max_clause_id_;
       it_lit += ClauseHeader::overheadInLits();
+      it_curr_cl_st = it_lit + 1;
       curr_clause_length = 0;
 
       assert(map_clause_id_to_ofs_.size() == max_clause_id_);
@@ -55,6 +58,8 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       curr_clause_length++;
       occs_[it_lit->var()].push_back(max_clause_id_);
       occs_[it_lit->var()].push_back(current_clause_ofs);
+      pushLitsInto(occ_clauses_[it_lit->var()],lit_pool, it_curr_cl_st - lit_pool.begin(),
+    		  *it_lit);
     }
   }
 
@@ -79,6 +84,10 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
         occs_[v].begin(),
         occs_[v].end());
     unified_variable_links_lists_pool_.push_back(0);
+    unified_variable_links_lists_pool_.insert(
+           unified_variable_links_lists_pool_.end(),
+           occ_clauses_[v].begin(),
+           occ_clauses_[v].end());
   }
 }
 

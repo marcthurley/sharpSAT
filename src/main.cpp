@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
   string input_file;
   Solver theSolver;
 
+
   if (argc <= 1) {
     cout << "Usage: sharpSAT [options] [CNF_File]" << endl;
     cout << "Options: " << endl;
@@ -63,11 +64,11 @@ int main(int argc, char *argv[]) {
 
   theSolver.solve(input_file);
 
-  cout << "MALLOC_STATS:" << endl;
-   malloc_stats();
+  cout << sizeof(LiteralID)<<"MALLOC_STATS:" << endl;
+  malloc_stats();
 
-   rusage ru;
-   getrusage(RUSAGE_SELF,&ru);
+  rusage ru;
+  getrusage(RUSAGE_SELF,&ru);
 
    cout << "\nRus: " <<  ru.ru_maxrss*1024 << endl;
 //  cout << "\nMALLINFO:" << endl;
