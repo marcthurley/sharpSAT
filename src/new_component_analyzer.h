@@ -213,7 +213,7 @@ private:
 		       LiteralID & omitLit){
 	  for (auto it_lit = lit_pool.begin() + start_of_cl;
 			  (*it_lit != SENTINEL_LIT); it_lit++) {
-		 // if(*it_lit != omitLit)
+		  //if(*it_lit != omitLit)
 			  target.push_back(it_lit->raw());
 	  }
 	  target.push_back(SENTINEL_LIT.raw());

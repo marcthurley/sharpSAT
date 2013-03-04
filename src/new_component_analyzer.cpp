@@ -62,10 +62,10 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       occs_[it_lit->var()].push_back(occ_clauses_[it_lit->var()].size());
       pushLitsInto(occ_clauses_[it_lit->var()],lit_pool, it_curr_cl_st - lit_pool.begin(),
     		  *it_lit);
-//      for(unsigned x: occ_clauses_[it_lit->var()]){
-//    	cout << ((x&1)?"-":" ") << (x >>1)<< " ";
-//      }
-//      cout << "| ";
+      for(unsigned x: occ_clauses_[it_lit->var()]){
+    	cout << ((x&1)?"-":" ") << (x >>1)<< " ";
+      }
+      cout << "( " << ((it_lit->raw()&1)?"-":" ") << (it_lit->raw() >>1) << ") " << endl;
     }
   }
 
@@ -145,8 +145,10 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
         bool all_lits_active = true;
        // for (auto itL = beginOfClause(*(pcl_ofs+1)); *itL != SENTINEL_LIT; itL++) {
         LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+        //var_frequency_scores_[var]++;
         for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
+
           if(archetype_.var_nil(itL->var())){
             assert(!isActive(*itL));
             all_lits_active = false;
@@ -164,6 +166,8 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
               if (var_frequency_scores_[itX->var()] > 0)
                 var_frequency_scores_[itX->var()]--;
             }
+//            if(var_frequency_scores_[var] > 0)
+//              var_frequency_scores_[var]--;
             //END accidentally entered a satisfied clause: undo the search process
             break;
           } else {
