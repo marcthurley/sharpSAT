@@ -76,6 +76,11 @@ void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
         occs_[v].begin(),
         occs_[v].end());
     unified_variable_links_lists_pool_.push_back(0);
+    if(v == 1){
+    	for (auto l: occs_[1]){
+    		cout << l <<" ";
+    	}
+    }
   }
 }
 
@@ -114,6 +119,7 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
       if(archetype_.clause_unseen_in_sup_comp(clID)){
         auto itVEnd = search_stack_.end();
         bool all_lits_active = true;
+        bool appeared = false;
         for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
           if(archetype_.var_nil(itL->var())){
@@ -136,6 +142,7 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
             break;
           } else {
             assert(isActive(*itL));
+            if(itL->var() == var) appeared = true;
             var_frequency_scores_[itL->var()]++;
             if(isUnseenAndActive(itL->var()))
               setSeenAndStoreInSearchStack(itL->var());
@@ -144,6 +151,14 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
         if (archetype_.clause_nil(clID))
           continue;
+        if(!appeared) {
+         cout << var << " |";
+         for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; ++itL)
+           cout << itL->var() << " ";
+           cout << endl;
+        }
+
+        assert(appeared);
         archetype_.setClause_seen(clID);
         if(all_lits_active)
           archetype_.setClause_all_lits_active(clID);

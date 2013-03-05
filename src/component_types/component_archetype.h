@@ -85,6 +85,12 @@ public:
     setClause_nil(cl);
     seen_[cl] = CA_CL_SEEN | (seen_[cl] & CA_VAR_MASK);
   }
+
+  void setClause_seen(ClauseIndex cl, bool all_lits_act) {
+      setClause_nil(cl);
+      seen_[cl] = CA_CL_SEEN | (all_lits_act?CA_CL_ALL_LITS_ACTIVE:0) | (seen_[cl] & CA_VAR_MASK);
+    }
+
   void setVar_in_other_comp(VariableIndex v) {
     seen_[v] = CA_VAR_IN_OTHER_COMP | (seen_[v] & CA_CL_MASK);
   }

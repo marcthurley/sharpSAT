@@ -64,8 +64,8 @@ int main(int argc, char *argv[]) {
 
   theSolver.solve(input_file);
 
-  cout << sizeof(LiteralID)<<"MALLOC_STATS:" << endl;
-  malloc_stats();
+//  cout << sizeof(LiteralID)<<"MALLOC_STATS:" << endl;
+//  malloc_stats();
 
   rusage ru;
   getrusage(RUSAGE_SELF,&ru);
