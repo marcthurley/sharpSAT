@@ -205,17 +205,36 @@ private:
   // after execution component_search_stack.size()==1
   void recordComponentOf(const VariableIndex var);
 
+//  void pushLitsInto(vector<unsigned> &target,
+//		       const vector<LiteralID> &lit_pool,
+//		       unsigned start_of_cl,
+//		       LiteralID & omitLit){
+//	  for (auto it_lit = lit_pool.begin() + start_of_cl;
+//			  (*it_lit != SENTINEL_LIT); it_lit++) {
+//		  if(it_lit->var() != omitLit.var())
+//			  target.push_back(it_lit->raw());
+//	  }
+//	  target.push_back(SENTINEL_LIT.raw());
+//  }
+
   void pushLitsInto(vector<unsigned> &target,
-		       const vector<LiteralID> &lit_pool,
-		       unsigned start_of_cl,
-		       LiteralID & omitLit){
+		  vector<unsigned> &target_ternary,
+ 		       const vector<LiteralID> &lit_pool,
+ 		       unsigned start_of_cl,
+ 		       LiteralID & omitLit){
+
+	  static vector<unsigned> tmp;
+	  tmp.clear();
 	  for (auto it_lit = lit_pool.begin() + start_of_cl;
-			  (*it_lit != SENTINEL_LIT); it_lit++) {
-		  if(it_lit->var() != omitLit.var())
-			  target.push_back(it_lit->raw());
-	  }
-	  target.push_back(SENTINEL_LIT.raw());
-  }
+ 			  (*it_lit != SENTINEL_LIT); it_lit++) {
+ 		  if(it_lit->var() != omitLit.var())
+ 			 tmp.push_back(it_lit->raw());
+ 	  }
+	  target.insert(target.end(),tmp.begin(),tmp.end());
+ 	  target.push_back(SENTINEL_LIT.raw());
+   }
+
+
 
 };
 

@@ -29,6 +29,7 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 
   vector<vector<ClauseOfs> > occs_(max_variable_id_ + 1);
   vector<vector<unsigned> > occ_clauses_(max_variable_id_ + 1);
+  vector<vector<unsigned> > occ_ternary_clauses_(max_variable_id_ + 1);
   ClauseOfs current_clause_ofs = 0;
   max_clause_id_ = 0;
   unsigned curr_clause_length = 0;
@@ -62,7 +63,9 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       occs_[it_lit->var()].push_back(max_clause_id_);
       //occs_[it_lit->var()].push_back(current_clause_ofs);
       occs_[it_lit->var()].push_back(occ_clauses_[it_lit->var()].size());
-      pushLitsInto(occ_clauses_[it_lit->var()],lit_pool, it_curr_cl_st - lit_pool.begin(),
+      pushLitsInto(occ_clauses_[it_lit->var()],
+    		  occ_ternary_clauses_[it_lit->var()],
+    		   lit_pool, it_curr_cl_st - lit_pool.begin(),
     		  *it_lit);
     }
   }
@@ -84,6 +87,8 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       }
     unified_variable_links_lists_pool_.push_back(0);
 
+
+    unified_variable_links_lists_pool_.push_back(0);
 //    unified_variable_links_lists_pool_.insert(
 //        unified_variable_links_lists_pool_.end(),
 //        occs_[v].begin(),
@@ -98,6 +103,8 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 //            occs_[v].end());
 
     unified_variable_links_lists_pool_.push_back(0);
+
+//    unified_variable_links_lists_pool_.push_back(0);
     unified_variable_links_lists_pool_.insert(
            unified_variable_links_lists_pool_.end(),
            occ_clauses_[v].begin(),
@@ -129,10 +136,18 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     }
     //END traverse binary clauses
 
+    //BEGIN traverse ternary clauses
+    auto pcl_ofs = pvar + 1;
+    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3) {
+
+    }
+    // END traverse ternary clauses
+
     // start traversing links to long clauses
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
-    for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
+    pcl_ofs++;
+    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
     	//ClauseIndex clID = *pcl_ofs;
       if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
         auto itVEnd = search_stack_.end();
