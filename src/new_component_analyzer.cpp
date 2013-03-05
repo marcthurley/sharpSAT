@@ -63,10 +63,6 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       occs_[it_lit->var()].push_back(occ_clauses_[it_lit->var()].size());
       pushLitsInto(occ_clauses_[it_lit->var()],lit_pool, it_curr_cl_st - lit_pool.begin(),
     		  *it_lit);
-      for(unsigned x: occ_clauses_[it_lit->var()]){
-    	cout << ((x&1)?"-":" ") << (x >>1)<< " ";
-      }
-      cout << "( " << ((it_lit->raw()&1)?"-":" ") << (it_lit->raw() >>1) << ") " << endl;
     }
   }
 
@@ -105,19 +101,10 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
            unified_variable_links_lists_pool_.end(),
            occ_clauses_[v].begin(),
            occ_clauses_[v].end());
-
-    if(v==1){
-    	cout << variable_link_list_offsets_[v] << "} ";
-    	for (auto l: unified_variable_links_lists_pool_)
-    		cout << l <<" ";
-    	cout << endl;
-    }
   }
 
 
 }
-
-
 
 void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
@@ -145,91 +132,44 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
     for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
-      ClauseIndex clID = *pcl_ofs;
-      if(archetype_.clause_unseen_in_sup_comp(clID)){
-    	  exploreClause(*vt ,clID, reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1)));
+    	//ClauseIndex clID = *pcl_ofs;
+      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+        auto itVEnd = search_stack_.end();
+        bool all_lits_active = true;
+        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+        for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
+          assert(itL->var() <= max_variable_id_);
+          if(archetype_.var_nil(itL->var())){
+            assert(!isActive(*itL));
+            all_lits_active = false;
+            if (isResolved(*itL))
+              continue;
+            //BEGIN accidentally entered a satisfied clause: undo the search process
+            while (search_stack_.end() != itVEnd) {
+              assert(search_stack_.back() <= max_variable_id_);
+              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
+              search_stack_.pop_back();
+            }
+            archetype_.setClause_nil(*pcl_ofs);
+           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
+            while(*itL != SENTINEL_LIT)
+           	  if(isActive(*(--itL)))
+           	    var_frequency_scores_[itL->var()]--;
+            //END accidentally entered a satisfied clause: undo the search process
+            break;
+          } else {
+            assert(isActive(*itL));
+            var_frequency_scores_[itL->var()]++;
+            if(isUnseenAndActive(itL->var()))
+              setSeenAndStoreInSearchStack(itL->var());
+          }
+        }
+
+        if (!archetype_.clause_nil(*pcl_ofs)){
+          var_frequency_scores_[*vt]++;
+          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
+        }
       }
     }
   }
 }
-
-
-//void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
-//
-//  search_stack_.clear();
-//  search_stack_.push_back(var);
-//
-//  archetype_.setVar_seen(var);
-//
-//  for (auto vt = search_stack_.begin();
-//      vt != search_stack_.end(); vt++) {
-//    // the for-loop is applicable here because componentSearchStack.capacity() == countAllVars()
-//    //BEGIN traverse binary clauses
-//    assert(isActive(*vt));
-//    unsigned *pvar = beginOfLinkList(*vt);
-//    for (; *pvar; pvar++) {
-//      if(isUnseenAndActive(*pvar)){
-//        setSeenAndStoreInSearchStack(*pvar);
-//        var_frequency_scores_[*pvar]++;
-//        var_frequency_scores_[*vt]++;
-//      }
-//    }
-//    //END traverse binary clauses
-//
-//    // start traversing links to long clauses
-//    // not that that list starts right after the 0 termination of the prvious list
-//    // hence  pcl_ofs = pvar + 1
-//    for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
-//      //ClauseIndex clID = getClauseID(*(pcl_ofs+1));
-//    	ClauseIndex clID = *pcl_ofs;
-//      if(archetype_.clause_unseen_in_sup_comp(clID)){
-//        auto itVEnd = search_stack_.end();
-//        bool all_lits_active = true;
-//       // for (auto itL = beginOfClause(*(pcl_ofs+1)); *itL != SENTINEL_LIT; itL++) {
-//        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
-//        //var_frequency_scores_[var]++;
-//        for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
-//          assert(itL->var() <= max_variable_id_);
-//
-//          if(archetype_.var_nil(itL->var())){
-//            assert(!isActive(*itL));
-//            all_lits_active = false;
-//            if (isResolved(*itL))
-//              continue;
-//            //BEGIN accidentally entered a satisfied clause: undo the search process
-//            while (search_stack_.end() != itVEnd) {
-//              assert(search_stack_.back() <= max_variable_id_);
-//              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-//              search_stack_.pop_back();
-//            }
-//            archetype_.setClause_nil(clID);
-//           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
-//            for (auto itX = pstart_cls; itX != itL; itX++) {
-//              if (var_frequency_scores_[itX->var()] > 0)
-//                var_frequency_scores_[itX->var()]--;
-//            }
-//            //if(var_frequency_scores_[var] > 0)
-//            //   var_frequency_scores_[var]--;
-//            //END accidentally entered a satisfied clause: undo the search process
-//            break;
-//          } else {
-//            assert(isActive(*itL));
-//            var_frequency_scores_[itL->var()]++;
-//            if(isUnseenAndActive(itL->var()))
-//              setSeenAndStoreInSearchStack(itL->var());
-//          }
-//        }
-//
-//        if (archetype_.clause_nil(clID))
-//          continue;
-//        archetype_.setClause_seen(clID);
-//        if(all_lits_active)
-//          archetype_.setClause_all_lits_active(clID);
-//
-//#ifndef NDEBUG
-//       // test_checkArchetypeRepForClause(pcl_ofs+1);
-//#endif
-//      }
-//    }
-//  }
-//}
