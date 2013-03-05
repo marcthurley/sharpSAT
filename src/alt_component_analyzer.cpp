@@ -30,6 +30,8 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
   vector<vector<ClauseOfs> > occs_(max_variable_id_ + 1);
   vector<vector<unsigned> > occ_clauses_(max_variable_id_ + 1);
   vector<vector<unsigned> > occ_ternary_clauses_(max_variable_id_ + 1);
+
+  vector<unsigned> tmp;
   ClauseOfs current_clause_ofs = 0;
   max_clause_id_ = 0;
   unsigned curr_clause_length = 0;
@@ -60,13 +62,26 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       assert(it_lit->var() <= max_variable_id_);
       literal_pool_.push_back(*it_lit);
       curr_clause_length++;
-      occs_[it_lit->var()].push_back(max_clause_id_);
-      //occs_[it_lit->var()].push_back(current_clause_ofs);
-      occs_[it_lit->var()].push_back(occ_clauses_[it_lit->var()].size());
-      pushLitsInto(occ_clauses_[it_lit->var()],
-    		  occ_ternary_clauses_[it_lit->var()],
-    		   lit_pool, it_curr_cl_st - lit_pool.begin(),
-    		  *it_lit);
+
+      getClause(tmp,it_curr_cl_st, *it_lit);
+
+      if(true){
+        occs_[it_lit->var()].push_back(max_clause_id_);
+        //occs_[it_lit->var()].push_back(current_clause_ofs);
+        occs_[it_lit->var()].push_back(occ_clauses_[it_lit->var()].size());
+        occ_clauses_[it_lit->var()].insert(occ_clauses_[it_lit->var()].end(),
+    		       tmp.begin(), tmp.end());
+        occ_clauses_[it_lit->var()].push_back(SENTINEL_LIT.raw());
+      } else {
+    	  occ_ternary_clauses_[it_lit->var()].push_back(max_clause_id_);
+    	  occ_ternary_clauses_[it_lit->var()].insert(occ_clauses_[it_lit->var()].end(),
+    	      		       tmp.begin(), tmp.end());
+
+      }
+//      pushLitsInto(occ_clauses_[it_lit->var()],
+//    		  occ_ternary_clauses_[it_lit->var()],
+//    		   lit_pool, it_curr_cl_st,
+//    		  *it_lit);
     }
   }
 
@@ -139,7 +154,23 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     //BEGIN traverse ternary clauses
     auto pcl_ofs = pvar + 1;
     for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3) {
-
+    	if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+    		LiteralID litA = *reinterpret_cast<LiteralID *>(pcl_ofs + 1);
+    		LiteralID litB = *reinterpret_cast<LiteralID *>(pcl_ofs + 2);
+    		if(isSatisfied(litA) || isSatisfied(litA))
+    			archetype_.setClause_nil(*pcl_ofs);
+    		else {
+    			assert(!archetype_.clause_nil(*pcl_ofs));
+    			var_frequency_scores_[litA.var()]++;
+    			var_frequency_scores_[litB.var()]++;
+    			var_frequency_scores_[*vt]++;
+    			if(isUnseenAndActive(litA.var()))
+    				setSeenAndStoreInSearchStack(litA.var());
+    			if(isUnseenAndActive(litB.var()))
+    				setSeenAndStoreInSearchStack(litB.var());
+    			archetype_.setClause_seen(*pcl_ofs,isActive(litA) & isActive(litA));
+    		}
+    	}
     }
     // END traverse ternary clauses
 

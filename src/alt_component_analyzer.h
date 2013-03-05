@@ -217,23 +217,35 @@ private:
 //	  target.push_back(SENTINEL_LIT.raw());
 //  }
 
-  void pushLitsInto(vector<unsigned> &target,
-		  vector<unsigned> &target_ternary,
- 		       const vector<LiteralID> &lit_pool,
- 		       unsigned start_of_cl,
- 		       LiteralID & omitLit){
+//  void pushLitsInto(vector<unsigned> &target,
+//		  vector<unsigned> &target_ternary,
+// 		       const vector<LiteralID> &lit_pool,
+// 		       vector<LiteralID>::iterator & it_start_of_cl,
+// 		       LiteralID & omitLit){
+//
+//	  static vector<unsigned> tmp;
+//	  tmp.clear();
+//	  for (auto it_lit = it_start_of_cl;*it_lit != SENTINEL_LIT; it_lit++) {
+// 		  if(it_lit->var() != omitLit.var())
+// 			 tmp.push_back(it_lit->raw());
+// 	  }
+//	 // if(tmp.size() == 2){
+//	 //	  target_ternary.insert(target_ternary.end(),tmp.begin(),tmp.end());
+//	 // } else {
+//	  target.insert(target.end(),tmp.begin(),tmp.end());
+// 	  target.push_back(SENTINEL_LIT.raw());
+//	 // }
+//   }
 
-	  static vector<unsigned> tmp;
-	  tmp.clear();
-	  for (auto it_lit = lit_pool.begin() + start_of_cl;
- 			  (*it_lit != SENTINEL_LIT); it_lit++) {
- 		  if(it_lit->var() != omitLit.var())
- 			 tmp.push_back(it_lit->raw());
- 	  }
-	  target.insert(target.end(),tmp.begin(),tmp.end());
- 	  target.push_back(SENTINEL_LIT.raw());
-   }
-
+  void getClause(vector<unsigned> &tmp,
+   		       vector<LiteralID>::iterator & it_start_of_cl,
+   		       LiteralID & omitLit){
+  	  tmp.clear();
+  	  for (auto it_lit = it_start_of_cl;*it_lit != SENTINEL_LIT; it_lit++) {
+   		  if(it_lit->var() != omitLit.var())
+   			 tmp.push_back(it_lit->raw());
+   	  }
+     }
 
 
 };
