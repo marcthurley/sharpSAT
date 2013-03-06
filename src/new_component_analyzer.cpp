@@ -48,7 +48,6 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       getHeaderOf(current_clause_ofs).clause_id = max_clause_id_;
       it_lit += ClauseHeader::overheadInLits();
       it_curr_cl_st = it_lit + 1;
-      // cout << " ("<< curr_clause_length << endl;
       curr_clause_length = 0;
 
       assert(map_clause_id_to_ofs_.size() == max_clause_id_);
@@ -83,27 +82,17 @@ void NewComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
       }
     unified_variable_links_lists_pool_.push_back(0);
 
-//    unified_variable_links_lists_pool_.insert(
-//        unified_variable_links_lists_pool_.end(),
-//        occs_[v].begin(),
-//        occs_[v].end());
    for(auto it = occs_[v].begin(); it != occs_[v].end(); it+=2){
 	   unified_variable_links_lists_pool_.push_back(*it);
 	   unified_variable_links_lists_pool_.push_back(*(it + 1) +(occs_[v].end() - it));
    }
-//    unified_variable_links_lists_pool_.insert(
-//            unified_variable_links_lists_pool_.end(),
-//            occs_[v].begin(),
-//            occs_[v].end());
 
-    unified_variable_links_lists_pool_.push_back(0);
-    unified_variable_links_lists_pool_.insert(
+   unified_variable_links_lists_pool_.push_back(0);
+   unified_variable_links_lists_pool_.insert(
            unified_variable_links_lists_pool_.end(),
            occ_clauses_[v].begin(),
            occ_clauses_[v].end());
   }
-
-
 }
 
 void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
@@ -115,7 +104,6 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
   for (auto vt = search_stack_.begin();
       vt != search_stack_.end(); vt++) {
-    // the for-loop is applicable here because componentSearchStack.capacity() == countAllVars()
     //BEGIN traverse binary clauses
     assert(isActive(*vt));
     unsigned *pvar = beginOfLinkList(*vt);
@@ -132,8 +120,8 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
     for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
-    	//ClauseIndex clID = *pcl_ofs;
-      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+      ClauseIndex clID = *pcl_ofs;
+      if(archetype_.clause_unseen_in_sup_comp(clID)){
         auto itVEnd = search_stack_.end();
         bool all_lits_active = true;
         LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
@@ -150,8 +138,7 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
               archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
               search_stack_.pop_back();
             }
-            archetype_.setClause_nil(*pcl_ofs);
-           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
+            archetype_.setClause_nil(clID);
             while(*itL != SENTINEL_LIT)
            	  if(isActive(*(--itL)))
            	    var_frequency_scores_[itL->var()]--;
@@ -165,9 +152,9 @@ void NewComponentAnalyzer::recordComponentOf(const VariableIndex var) {
           }
         }
 
-        if (!archetype_.clause_nil(*pcl_ofs)){
+        if (!archetype_.clause_nil(clID)){
           var_frequency_scores_[*vt]++;
-          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
+          archetype_.setClause_seen(clID,all_lits_active);
         }
       }
     }

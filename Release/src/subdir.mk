@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../src/component_management.cpp \
 ../src/instance.cpp \
 ../src/main.cpp \
+../src/new_component_analyzer.cpp \
 ../src/solver.cpp \
 ../src/statistics.cpp 
 
@@ -18,6 +19,7 @@ OBJS += \
 ./src/component_management.o \
 ./src/instance.o \
 ./src/main.o \
+./src/new_component_analyzer.o \
 ./src/solver.o \
 ./src/statistics.o 
 
@@ -27,6 +29,7 @@ CPP_DEPS += \
 ./src/component_management.d \
 ./src/instance.d \
 ./src/main.d \
+./src/new_component_analyzer.d \
 ./src/solver.d \
 ./src/statistics.d 
 

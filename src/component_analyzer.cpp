@@ -76,11 +76,6 @@ void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
         occs_[v].begin(),
         occs_[v].end());
     unified_variable_links_lists_pool_.push_back(0);
-    if(v == 1){
-    	for (auto l: occs_[1]){
-    		cout << l <<" ";
-    	}
-    }
   }
 }
 
@@ -151,14 +146,6 @@ void STDComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 
         if (archetype_.clause_nil(clID))
           continue;
-        if(!appeared) {
-         cout << var << " |";
-         for (auto itL = beginOfClause(*pcl_ofs); *itL != SENTINEL_LIT; ++itL)
-           cout << itL->var() << " ";
-           cout << endl;
-        }
-
-        assert(appeared);
         archetype_.setClause_seen(clID);
         if(all_lits_active)
           archetype_.setClause_all_lits_active(clID);
