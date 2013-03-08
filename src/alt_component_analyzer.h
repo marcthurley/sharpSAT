@@ -159,23 +159,9 @@ private:
     return literal_values_[LiteralID(v, true)] == X_TRI;
   }
 
-//  unsigned getClauseID(ClauseOfs cl_ofs) {
-//    return reinterpret_cast<CAClauseHeader *>(&literal_pool_[cl_ofs
-//        - CAClauseHeader::overheadInLits()])->clause_id;
-//  }
-//
-//  CAClauseHeader &getHeaderOf(ClauseOfs cl_ofs) {
-//    return *reinterpret_cast<CAClauseHeader *>(&literal_pool_[cl_ofs
-//        - CAClauseHeader::overheadInLits()]);
-//  }
-
   unsigned *beginOfLinkList(VariableIndex v) {
     return &unified_variable_links_lists_pool_[variable_link_list_offsets_[v]];
   }
-
-//  vector<LiteralID>::iterator beginOfClause(ClauseOfs cl_ofs) {
-//    return literal_pool_.begin() + cl_ofs;
-//  }
 
   // stores all information about the component of var
   // in variables_seen_, clauses_seen_ and
@@ -183,103 +169,166 @@ private:
   // we have an isolated variable iff
   // after execution component_search_stack.size()==1
   void recordComponentOf(const VariableIndex var);
-
-  void doThreeClause(const VariableIndex vt, const ClauseIndex clID,  const LiteralID * const pstart_cls){
-	  auto itVEnd = search_stack_.end();
-	  bool all_lits_active = true;
-	  for (auto itL = pstart_cls; itL != pstart_cls + 2; itL++) {
-		  assert(itL->var() <= max_variable_id_);
-		  if(archetype_.var_nil(itL->var())){
-			  assert(!isActive(*itL));
-			  all_lits_active = false;
-			  if (isResolved(*itL))
-				  continue;
-			  //BEGIN accidentally entered a satisfied clause: undo the search process
-			  while (search_stack_.end() != itVEnd) {
-				  assert(search_stack_.back() <= max_variable_id_);
-				  archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-				  search_stack_.pop_back();
-			  }
-			  archetype_.setClause_nil(clID);
-			  // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
-			  while(itL != pstart_cls - 1)
-				  if(isActive(*(--itL)))
-					  var_frequency_scores_[itL->var()]--;
-			  //END accidentally entered a satisfied clause: undo the search process
-			  break;
-		  } else {
-			  assert(isActive(*itL));
-			  var_frequency_scores_[itL->var()]++;
-			  if(isUnseenAndActive(itL->var()))
-				  setSeenAndStoreInSearchStack(itL->var());
-		  }
-	  }
-
-	  if (!archetype_.clause_nil(clID)){
-		  var_frequency_scores_[vt]++;
-		  archetype_.setClause_seen(clID,all_lits_active);
-	  }
-  }
-
-
   void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
-       const LiteralID * const pstart_cls){
-     bool all_lits_active = true;
-     auto itVEnd = search_stack_.end();
-     LiteralID litA = *pstart_cls;
-     LiteralID litB = *(pstart_cls + 1);
-     if(archetype_.var_nil(litA.var())){
-       all_lits_active = false;
-       if (!isResolved(litA)){
-       //BEGIN accidentally entered a satisfied clause: undo the search process
-       while (search_stack_.end() != itVEnd) {
-         assert(search_stack_.back() <= max_variable_id_);
-         archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-         search_stack_.pop_back();
-       }
-       archetype_.setClause_nil(clID);
-       // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
-//       while(*itL != SENTINEL_LIT)
-//         if(isActive(*(--itL)))
-//           var_frequency_scores_[itL->var()]--;
-       //END accidentally entered a satisfied clause: undo the search process
-       }
-     } else {
-       assert(isActive(litA));
-       var_frequency_scores_[litA.var()]++;
-       if(isUnseenAndActive(litA.var()))
-         setSeenAndStoreInSearchStack(litA.var());
-     }
+        const LiteralID * const pstart_cls){
+      bool litAstored = false;
+      LiteralID litA = *pstart_cls;
+      LiteralID litB = *(pstart_cls + 1);
+      VariableIndex varA = litA.var();
+      VariableIndex varB = litB.var();
+      if((archetype_.var_nil(varA) && isSatisfied(litA))
+       ||(archetype_.var_nil(varB) && isSatisfied(litB)))
+        archetype_.setClause_nil(clID);
+      else {
+//      if(!archetype_.var_nil(varA)){
+//        var_frequency_scores_[varA]++;
+//
+//      }
 
-     if(!archetype_.clause_nil(clID)){
-       if(archetype_.var_nil(litB.var())){
-         assert(!isActive(litB));
-         all_lits_active = false;
-         if (!isResolved(litB)){
+      var_frequency_scores_[varA]+= !archetype_.var_nil(varA);
+      var_frequency_scores_[varB]+= !archetype_.var_nil(varB);
 
-         //BEGIN accidentally entered a satisfied clause: undo the search process
-         while (search_stack_.end() != itVEnd) {
-           assert(search_stack_.back() <= max_variable_id_);
-           archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-           search_stack_.pop_back();
-         }
-         archetype_.setClause_nil(clID);
-         if(isActive(litA))
-           var_frequency_scores_[litA.var()]--;
-         //END accidentally entered a satisfied clause: undo the search process
-         }
-       } else {
-         assert(isActive(litB));
-         var_frequency_scores_[litB.var()]++;
-         if(isUnseenAndActive(litB.var()))
-           setSeenAndStoreInSearchStack(litB.var());
-       }
-     }
-     if (!archetype_.clause_nil(clID)){
-       var_frequency_scores_[vt]++;
-       archetype_.setClause_seen(clID,all_lits_active);
-     }
-  }
+      if(isUnseenAndActive(varA)){
+               setSeenAndStoreInSearchStack(varA);
+               litAstored = true;
+             }
+
+//        if(!archetype_.var_nil(varB)){
+//          assert(isActive(litB));
+//          var_frequency_scores_[varB]++;
+//
+//        }
+        if(isUnseenAndActive(varB))
+                   setSeenAndStoreInSearchStack(varB);
+
+      }
+
+      if (!archetype_.clause_nil(clID)){
+        var_frequency_scores_[vt]++;
+        archetype_.setClause_seen(clID,isActive(litA.var()) &
+                                       isActive(litB.var()));
+      }
+   }
+
+//  void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
+//        const LiteralID * const pstart_cls){
+//      bool litAstored = false;
+//      LiteralID litA = *pstart_cls;
+//      LiteralID litB = *(pstart_cls + 1);
+//      VariableIndex varA = litA.var();
+//      VariableIndex varB = litB.var();
+//      if((archetype_.var_nil(varA) && isSatisfied(litA))
+//       ||(archetype_.var_nil(varB) && isSatisfied(litB)))
+//        archetype_.setClause_nil(clID);
+//      else {
+//      if(!archetype_.var_nil(varA)){
+//        var_frequency_scores_[varA]++;
+//        if(isUnseenAndActive(varA)){
+//          setSeenAndStoreInSearchStack(varA);
+//          litAstored = true;
+//        }
+//      }
+//
+//        if(!archetype_.var_nil(varB)){
+//          assert(isActive(litB));
+//          var_frequency_scores_[varB]++;
+//          if(isUnseenAndActive(varB))
+//            setSeenAndStoreInSearchStack(varB);
+//        }
+//
+//      }
+//
+//      if (!archetype_.clause_nil(clID)){
+//        var_frequency_scores_[vt]++;
+//        archetype_.setClause_seen(clID,isActive(litA.var()) &
+//                                       isActive(litB.var()));
+//      }
+//   }
+
+//  void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
+//        const LiteralID * const pstart_cls){
+//      bool litAstored = false;
+//      LiteralID litA = *pstart_cls;
+//      LiteralID litB = *(pstart_cls + 1);
+//      VariableIndex varA = litA.var();
+//      VariableIndex varB = litB.var();
+//      if((archetype_.var_nil(varA) && isSatisfied(litA))
+//       ||(archetype_.var_nil(varB) && isSatisfied(litB)))
+//        archetype_.setClause_nil(clID);
+//      else {
+//      if(archetype_.var_nil(varA)){
+//        if(isSatisfied(litA))
+//          archetype_.setClause_nil(clID);
+//      } else {
+//        var_frequency_scores_[varA]++;
+//        if(isUnseenAndActive(varA)){
+//          setSeenAndStoreInSearchStack(varA);
+//          litAstored = true;
+//        }
+//      }
+//
+//        if(archetype_.var_nil(varB)){
+//
+//        } else {
+//          assert(isActive(litB));
+//          var_frequency_scores_[varB]++;
+//          if(isUnseenAndActive(varB))
+//            setSeenAndStoreInSearchStack(varB);
+//        }
+//
+//      }
+//
+//      if (!archetype_.clause_nil(clID)){
+//        var_frequency_scores_[vt]++;
+//        archetype_.setClause_seen(clID,isActive(litA.var()) &
+//                                       isActive(litB.var()));
+//      }
+//   }
+
+
+//  void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
+//       const LiteralID * const pstart_cls){
+//     bool litAstored = false;
+//     LiteralID litA = *pstart_cls;
+//     LiteralID litB = *(pstart_cls + 1);
+//     VariableIndex varA = litA.var();
+//     VariableIndex varB = litB.var();
+//     if(archetype_.var_nil(varA)){
+//       if(isSatisfied(litA))
+//         archetype_.setClause_nil(clID);
+//     } else {
+//       var_frequency_scores_[varA]++;
+//       if(isUnseenAndActive(varA)){
+//         setSeenAndStoreInSearchStack(varA);
+//         litAstored = true;
+//       }
+//     }
+//
+//     if(!archetype_.clause_nil(clID)){
+//       if(archetype_.var_nil(varB)){
+//         if (isSatisfied(litB)){
+//           if(litAstored){
+//             archetype_.setVar_in_sup_comp_unseen(varA);
+//             search_stack_.pop_back();
+//           }
+//         archetype_.setClause_nil(clID);
+//         if(isActive(litA))
+//           var_frequency_scores_[varA]--;
+//         }
+//       } else {
+//         assert(isActive(litB));
+//         var_frequency_scores_[varB]++;
+//         if(isUnseenAndActive(varB))
+//           setSeenAndStoreInSearchStack(varB);
+//       }
+//     }
+//
+//     if (!archetype_.clause_nil(clID)){
+//       var_frequency_scores_[vt]++;
+//       archetype_.setClause_seen(clID,isActive(litA.var()) &
+//                                      isActive(litB.var()));
+//     }
+//  }
 //  void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
 //      const LiteralID * const pstart_cls){
 //    bool all_lits_active = true;
@@ -323,6 +372,58 @@ private:
 
 };
 
+
+
+
+//void doThreeClauseB(const VariableIndex vt, const ClauseIndex clID,
+//      const LiteralID * const pstart_cls){
+//    bool all_lits_active = true;
+//    auto itVEnd = search_stack_.end();
+//    LiteralID litA = *pstart_cls;
+//    LiteralID litB = *(pstart_cls + 1);
+//    if(archetype_.var_nil(litA.var())){
+//      all_lits_active = false;
+//      if (!isResolved(litA)){
+//      //BEGIN accidentally entered a satisfied clause: undo the search process
+//      archetype_.setClause_nil(clID);
+//      //END accidentally entered a satisfied clause: undo the search process
+//      }
+//    } else {
+//      assert(isActive(litA));
+//      var_frequency_scores_[litA.var()]++;
+//      if(isUnseenAndActive(litA.var()))
+//        setSeenAndStoreInSearchStack(litA.var());
+//    }
+//
+//    if(!archetype_.clause_nil(clID)){
+//      if(archetype_.var_nil(litB.var())){
+//        assert(!isActive(litB));
+//        all_lits_active = false;
+//        if (!isResolved(litB)){
+//
+//        //BEGIN accidentally entered a satisfied clause: undo the search process
+//        while (search_stack_.end() != itVEnd) {
+//          assert(search_stack_.back() <= max_variable_id_);
+//          archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
+//          search_stack_.pop_back();
+//        }
+//        archetype_.setClause_nil(clID);
+//        if(isActive(litA))
+//          var_frequency_scores_[litA.var()]--;
+//        //END accidentally entered a satisfied clause: undo the search process
+//        }
+//      } else {
+//        assert(isActive(litB));
+//        var_frequency_scores_[litB.var()]++;
+//        if(isUnseenAndActive(litB.var()))
+//          setSeenAndStoreInSearchStack(litB.var());
+//      }
+//    }
+//    if (!archetype_.clause_nil(clID)){
+//      var_frequency_scores_[vt]++;
+//      archetype_.setClause_seen(clID,all_lits_active);
+//    }
+// }
 
 
 #endif /* ALT_COMPONENT_ANALYZER_H_ */

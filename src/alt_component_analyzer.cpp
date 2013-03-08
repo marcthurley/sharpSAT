@@ -138,34 +138,34 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
       vt != search_stack_.end(); vt++) {
     //BEGIN traverse binary clauses
     assert(isActive(*vt));
-    unsigned *pvar = beginOfLinkList(*vt);
-    for (; *pvar; pvar++) {
-      if(isUnseenAndActive(*pvar)){
-        setSeenAndStoreInSearchStack(*pvar);
-        var_frequency_scores_[*pvar]++;
+    unsigned *p = beginOfLinkList(*vt);
+    for (; *p; p++) {
+      if(isUnseenAndActive(*p)){
+        setSeenAndStoreInSearchStack(*p);
+        var_frequency_scores_[*p]++;
         var_frequency_scores_[*vt]++;
       }
     }
     //END traverse binary clauses
 
-    pvar++;
-    for (; *pvar ; pvar+=3) {
-         if(archetype_.clause_unseen_in_sup_comp(*pvar)){
-           const LiteralID * pstart_cls = reinterpret_cast<const LiteralID *>(pvar + 1);
-           doThreeClauseB(*vt,*pvar, pstart_cls);
-         }
+    p++;
+    for (; *p ; p+=3) {
+      if(archetype_.clause_unseen_in_sup_comp(*p)){
+        const LiteralID * pstart_cls = reinterpret_cast<const LiteralID *>(p + 1);
+        doThreeClauseB(*vt,*p, pstart_cls);
+      }
     }
 //    //END traverse ternary clauses
     //pvar++;
     // start traversing links to long clauses
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
-    for (auto pcl_ofs = pvar + 1; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
-      ClauseIndex clID = *pcl_ofs;
-      if(archetype_.clause_unseen_in_sup_comp(clID)){
+
+    for (p++; *p ; p +=2) {
+      if(archetype_.clause_unseen_in_sup_comp(*p)){
         auto itVEnd = search_stack_.end();
         bool all_lits_active = true;
-        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(p + 1 + *(p+1));
         for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
           assert(itL->var() <= max_variable_id_);
           if(archetype_.var_nil(itL->var())){
@@ -179,7 +179,7 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
               archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
               search_stack_.pop_back();
             }
-            archetype_.setClause_nil(clID);
+            archetype_.setClause_nil(*p);
             while(*itL != SENTINEL_LIT)
               if(isActive(*(--itL)))
                 var_frequency_scores_[itL->var()]--;
@@ -193,9 +193,9 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
           }
         }
 
-        if (!archetype_.clause_nil(clID)){
+        if (!archetype_.clause_nil(*p)){
           var_frequency_scores_[*vt]++;
-          archetype_.setClause_seen(clID,all_lits_active);
+          archetype_.setClause_seen(*p,all_lits_active);
         }
       }
     }
