@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/alt_component_analyzer.cpp \
 ../src/component_analyzer.cpp \
 ../src/component_cache.cpp \
 ../src/component_management.cpp \
@@ -14,6 +15,7 @@ CPP_SRCS += \
 ../src/statistics.cpp 
 
 OBJS += \
+./src/alt_component_analyzer.o \
 ./src/component_analyzer.o \
 ./src/component_cache.o \
 ./src/component_management.o \
@@ -24,6 +26,7 @@ OBJS += \
 ./src/statistics.o 
 
 CPP_DEPS += \
+./src/alt_component_analyzer.d \
 ./src/component_analyzer.d \
 ./src/component_cache.d \
 ./src/component_management.d \

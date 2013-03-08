@@ -67,8 +67,9 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
 
       getClause(tmp,it_curr_cl_st, *it_lit);
 
-//      if(true){
+   //   if(true){
       if(tmp.size() != 2){
+    	 // assert(false);
         occs_[it_lit->var()].push_back(max_clause_id_);
         //occs_[it_lit->var()].push_back(current_clause_ofs);
 
@@ -77,17 +78,12 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
     		       tmp.begin(), tmp.end());
         occ_clauses_[it_lit->var()].push_back(SENTINEL_LIT.raw());
       }
-      else {
-//      if(tmp.size() == 2){
+    //  else {
+      if(tmp.size() == 2){
     	  occ_ternary_clauses_[it_lit->var()].push_back(max_clause_id_);
     	  occ_ternary_clauses_[it_lit->var()].insert(occ_ternary_clauses_[it_lit->var()].end(),
     	      		       tmp.begin(), tmp.end());
-
       }
-//      pushLitsInto(occ_clauses_[it_lit->var()],
-//    		  occ_ternary_clauses_[it_lit->var()],
-//    		   lit_pool, it_curr_cl_st,
-//    		  *it_lit);
     }
   }
 
@@ -108,12 +104,15 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
         unified_variable_links_lists_pool_.push_back(l.var());
       }
     unified_variable_links_lists_pool_.push_back(0);
+   // unified_variable_links_lists_pool_.push_back(0);
 
     unified_variable_links_lists_pool_.insert(
                unified_variable_links_lists_pool_.end(),
                occ_ternary_clauses_[v].begin(),
                occ_ternary_clauses_[v].end());
 
+    unified_variable_links_lists_pool_.push_back(0);
+    unified_variable_links_lists_pool_.push_back(0);
     unified_variable_links_lists_pool_.push_back(0);
 //    unified_variable_links_lists_pool_.insert(
 //        unified_variable_links_lists_pool_.end(),
@@ -135,6 +134,12 @@ void AltComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
            unified_variable_links_lists_pool_.end(),
            occ_clauses_[v].begin(),
            occ_clauses_[v].end());
+
+    if(v <= 10){
+    	for(auto l = variable_link_list_offsets_[v]; l < unified_variable_links_lists_pool_.size(); l++)
+    		cout << unified_variable_links_lists_pool_[l] << " ";
+    	cout << endl;
+    }
   }
 
 
@@ -184,91 +189,115 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
 //    			archetype_.setClause_seen(*pcl_ofs,isActive(litA) & isActive(litA));
 //    		}
 //    	}
-    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3)
-      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
-    	        auto itVEnd = search_stack_.end();
-    	        bool all_lits_active = true;
-    	        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1);
-    	        for (auto itL = pstart_cls; itL != pstart_cls + 2; itL++) {
-    	          assert(itL->var() <= max_variable_id_);
-    	          if(archetype_.var_nil(itL->var())){
-    	            assert(!isActive(*itL));
-    	            all_lits_active = false;
-    	            if (isResolved(*itL))
-    	              continue;
-    	            //BEGIN accidentally entered a satisfied clause: undo the search process
-    	            while (search_stack_.end() != itVEnd) {
-    	              assert(search_stack_.back() <= max_variable_id_);
-    	              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-    	              search_stack_.pop_back();
-    	            }
-    	            archetype_.setClause_nil(*pcl_ofs);
-    	           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
-    	            while(*itL != SENTINEL_LIT)
-    	           	  if(isActive(*(--itL)))
-    	           	    var_frequency_scores_[itL->var()]--;
-    	            //END accidentally entered a satisfied clause: undo the search process
-    	            break;
-    	          } else {
-    	            assert(isActive(*itL));
-    	            var_frequency_scores_[itL->var()]++;
-    	            if(isUnseenAndActive(itL->var()))
-    	              setSeenAndStoreInSearchStack(itL->var());
-    	          }
-    	        }
+//    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3)
+//      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+//    	        auto itVEnd = search_stack_.end();
+//    	        bool all_lits_active = true;
+//    	        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1);
+//    	        for (auto itL = pstart_cls; itL != pstart_cls + 2; itL++) {
+//    	          assert(itL->var() <= max_variable_id_);
+//    	          if(archetype_.var_nil(itL->var())){
+//    	            assert(!isActive(*itL));
+//    	            all_lits_active = false;
+//    	            if (isResolved(*itL))
+//    	              continue;
+//    	            //BEGIN accidentally entered a satisfied clause: undo the search process
+//    	            while (search_stack_.end() != itVEnd) {
+//    	              assert(search_stack_.back() <= max_variable_id_);
+//    	              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
+//    	              search_stack_.pop_back();
+//    	            }
+//    	            archetype_.setClause_nil(*pcl_ofs);
+//    	           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
+//    	            while(*itL != SENTINEL_LIT)
+//    	           	  if(isActive(*(--itL)))
+//    	           	    var_frequency_scores_[itL->var()]--;
+//    	            //END accidentally entered a satisfied clause: undo the search process
+//    	            break;
+//    	          } else {
+//    	            assert(isActive(*itL));
+//    	            var_frequency_scores_[itL->var()]++;
+//    	            if(isUnseenAndActive(itL->var()))
+//    	              setSeenAndStoreInSearchStack(itL->var());
+//    	          }
+//    	        }
+//
+//    	        if (!archetype_.clause_nil(*pcl_ofs)){
+//    	          var_frequency_scores_[*vt]++;
+//    	          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
+//    	        }
+//    	      }
 
-    	        if (!archetype_.clause_nil(*pcl_ofs)){
-    	          var_frequency_scores_[*vt]++;
-    	          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
-    	        }
-    	      }
+    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3) {
+       	//ClauseIndex clID = *pcl_ofs;
+    	assert(*pcl_ofs);
+    	assert(*(pcl_ofs+1));
+    	assert(*(pcl_ofs+2));
 
+         if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+           LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1);
+           doThreeClause(*vt,*pcl_ofs, pstart_cls);
+         }
+    }
+
+
+   /* for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=3) {
+
+    }*/
     	// END traverse ternary clauses
 
     // start traversing links to long clauses
     // not that that list starts right after the 0 termination of the prvious list
     // hence  pcl_ofs = pvar + 1
-    pcl_ofs++;
+    pcl_ofs+=3;
     for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
-    	//ClauseIndex clID = *pcl_ofs;
-      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
-        auto itVEnd = search_stack_.end();
-        bool all_lits_active = true;
-        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
-        for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
-          assert(itL->var() <= max_variable_id_);
-          if(archetype_.var_nil(itL->var())){
-            assert(!isActive(*itL));
-            all_lits_active = false;
-            if (isResolved(*itL))
-              continue;
-            //BEGIN accidentally entered a satisfied clause: undo the search process
-            while (search_stack_.end() != itVEnd) {
-              assert(search_stack_.back() <= max_variable_id_);
-              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
-              search_stack_.pop_back();
-            }
-            archetype_.setClause_nil(*pcl_ofs);
-           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
-            while(*itL != SENTINEL_LIT)
-           	  if(isActive(*(--itL)))
-           	    var_frequency_scores_[itL->var()]--;
-            //END accidentally entered a satisfied clause: undo the search process
-            break;
-          } else {
-            assert(isActive(*itL));
-            var_frequency_scores_[itL->var()]++;
-            if(isUnseenAndActive(itL->var()))
-              setSeenAndStoreInSearchStack(itL->var());
-          }
-        }
-
-        if (!archetype_.clause_nil(*pcl_ofs)){
-          var_frequency_scores_[*vt]++;
-          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
-        }
-      }
-    }
+     	//ClauseIndex clID = *pcl_ofs;
+    	assert(!archetype_.clause_unseen_in_sup_comp(*pcl_ofs));
+       if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+         LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+         doThreeClause(*vt,*pcl_ofs,pstart_cls);
+       }
+     }
+//    for (; *pcl_ofs != SENTINEL_CL; pcl_ofs+=2) {
+//    	//ClauseIndex clID = *pcl_ofs;
+//      if(archetype_.clause_unseen_in_sup_comp(*pcl_ofs)){
+//        auto itVEnd = search_stack_.end();
+//        bool all_lits_active = true;
+//        LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+//        for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
+//          assert(itL->var() <= max_variable_id_);
+//          if(archetype_.var_nil(itL->var())){
+//            assert(!isActive(*itL));
+//            all_lits_active = false;
+//            if (isResolved(*itL))
+//              continue;
+//            //BEGIN accidentally entered a satisfied clause: undo the search process
+//            while (search_stack_.end() != itVEnd) {
+//              assert(search_stack_.back() <= max_variable_id_);
+//              archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
+//              search_stack_.pop_back();
+//            }
+//            archetype_.setClause_nil(*pcl_ofs);
+//           // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
+//            while(*itL != SENTINEL_LIT)
+//           	  if(isActive(*(--itL)))
+//           	    var_frequency_scores_[itL->var()]--;
+//            //END accidentally entered a satisfied clause: undo the search process
+//            break;
+//          } else {
+//            assert(isActive(*itL));
+//            var_frequency_scores_[itL->var()]++;
+//            if(isUnseenAndActive(itL->var()))
+//              setSeenAndStoreInSearchStack(itL->var());
+//          }
+//        }
+//
+//        if (!archetype_.clause_nil(*pcl_ofs)){
+//          var_frequency_scores_[*vt]++;
+//          archetype_.setClause_seen(*pcl_ofs,all_lits_active);
+//        }
+//      }
+//    }
   }
 }
 

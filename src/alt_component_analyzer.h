@@ -205,6 +205,45 @@ private:
   // after execution component_search_stack.size()==1
   void recordComponentOf(const VariableIndex var);
 
+  void doThreeClause(VariableIndex vt, ClauseIndex clID,  LiteralID * pstart_cls){
+	  auto itVEnd = search_stack_.end();
+	  bool all_lits_active = true;
+	  //	           LiteralID * pstart_cls = reinterpret_cast<LiteralID *>(pcl_ofs + 1 + *(pcl_ofs+1));
+	  //for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
+	  for (auto itL = pstart_cls; itL != pstart_cls + 2; itL++) {
+		  assert(itL->var() <= max_variable_id_);
+		  if(archetype_.var_nil(itL->var())){
+			  assert(!isActive(*itL));
+			  all_lits_active = false;
+			  if (isResolved(*itL))
+				  continue;
+			  //BEGIN accidentally entered a satisfied clause: undo the search process
+			  while (search_stack_.end() != itVEnd) {
+				  assert(search_stack_.back() <= max_variable_id_);
+				  archetype_.setVar_in_sup_comp_unseen(search_stack_.back());
+				  search_stack_.pop_back();
+			  }
+			  archetype_.setClause_nil(clID);
+			  // for (auto itX = beginOfClause(*(pcl_ofs+1)); itX != itL; itX++) {
+			  while(*itL != SENTINEL_LIT)
+				  if(isActive(*(--itL)))
+					  var_frequency_scores_[itL->var()]--;
+			  //END accidentally entered a satisfied clause: undo the search process
+			  break;
+		  } else {
+			  assert(isActive(*itL));
+			  var_frequency_scores_[itL->var()]++;
+			  if(isUnseenAndActive(itL->var()))
+				  setSeenAndStoreInSearchStack(itL->var());
+		  }
+	  }
+
+	  if (!archetype_.clause_nil(clID)){
+		  var_frequency_scores_[vt]++;
+		  archetype_.setClause_seen(clID,all_lits_active);
+	  }
+  }
+
 //  void pushLitsInto(vector<unsigned> &target,
 //		       const vector<LiteralID> &lit_pool,
 //		       unsigned start_of_cl,
