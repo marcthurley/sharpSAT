@@ -27,8 +27,10 @@ void ComponentCache::init(Component &super_comp) {
 	entry_base_.clear();
 	entry_base_.reserve(2000000);
 	entry_base_.push_back(new CacheableComponent()); // dummy Element
-	new_table_.clear();
-	new_table_.resize(2000003, 0);
+	table_.clear();
+	table_.resize(1024*1024, 0);
+	table_size_mask_ = table_.size() - 1;
+
 	free_entry_base_slots_.clear();
 	free_entry_base_slots_.reserve(10000);
 
@@ -124,7 +126,7 @@ bool ComponentCache::deleteEntries() {
 	test_descendantstree_consistency();
 #endif
 
-	reHashTable(new_table_.size());
+	reHashTable(table_.size());
 	statistics_.sum_size_cached_components_ = 0;
 	statistics_.sum_bytes_cached_components_ = 0;
 	 statistics_.sys_overhead_sum_bytes_cached_components_ =0;
@@ -154,7 +156,7 @@ bool ComponentCache::deleteEntries() {
 uint64_t ComponentCache::compute_byte_size_infrasture() {
   statistics_.cache_infrastructure_bytes_memory_usage_ =
       sizeof(ComponentCache)
-      + sizeof(CacheEntryID)* new_table_.capacity()
+      + sizeof(CacheEntryID)* table_.capacity()
       + sizeof(CacheableComponent *)* entry_base_.capacity()
       + sizeof(CacheEntryID) * free_entry_base_slots_.capacity();
   return statistics_.cache_infrastructure_bytes_memory_usage_;
@@ -164,8 +166,8 @@ void ComponentCache::debug_dump_data(){
     cout << "sizeof (CacheableComponent *, CacheEntryID) "
          << sizeof(CacheableComponent *) << ", "
          << sizeof(CacheEntryID) << endl;
-    cout << "table (size/capacity) " << new_table_.size()
-         << "/" << new_table_.capacity() << endl;
+    cout << "table (size/capacity) " << table_.size()
+         << "/" << table_.capacity() << endl;
     cout << "entry_base_ (size/capacity) " << entry_base_.size()
              << "/" << entry_base_.capacity() << endl;
     cout << "free_entry_base_slots_ (size/capacity) " << free_entry_base_slots_.size()

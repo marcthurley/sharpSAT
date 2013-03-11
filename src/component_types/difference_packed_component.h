@@ -69,8 +69,66 @@ public:
   }
 
 private:
-
+  inline uint32_t SuperFastHash (const char * data, int len);
 };
+
+#include <stdint.h> /* Replace with <stdint.h> if appropriate */
+#undef get16bits
+#if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
+  || defined(_MSC_VER) || defined (__BORLANDC__) || defined (__TURBOC__)
+#define get16bits(d) (*((const uint16_t *) (d)))
+#endif
+
+#if !defined (get16bits)
+#define get16bits(d) ((((uint32_t)(((const uint8_t *)(d))[1])) << 8)\
+                       +(uint32_t)(((const uint8_t *)(d))[0]) )
+#endif
+
+uint32_t DifferencePackedComponent::SuperFastHash (const char * data, int len) {
+uint32_t hash = len, tmp;
+int rem;
+
+    if (len <= 0 || data == NULL) return 0;
+
+    rem = len & 3;
+    len >>= 2;
+
+    /* Main loop */
+    for (;len > 0; len--) {
+        hash  += get16bits (data);
+        tmp    = (get16bits (data+2) << 11) ^ hash;
+        hash   = (hash << 16) ^ tmp;
+        data  += 2*sizeof (uint16_t);
+        hash  += hash >> 11;
+    }
+
+    /* Handle end cases */
+    switch (rem) {
+        case 3: hash += get16bits (data);
+                hash ^= hash << 16;
+                hash ^= ((signed char)data[sizeof (uint16_t)]) << 18;
+                hash += hash >> 11;
+                break;
+        case 2: hash += get16bits (data);
+                hash ^= hash << 11;
+                hash += hash >> 17;
+                break;
+        case 1: hash += (signed char)*data;
+                hash ^= hash << 10;
+                hash += hash >> 1;
+    }
+
+    /* Force "avalanching" of final 127 bits */
+    hash ^= hash << 3;
+    hash += hash >> 5;
+    hash ^= hash << 4;
+    hash += hash >> 17;
+    hash ^= hash << 25;
+    hash += hash >> 6;
+
+    return hash;
+}
+
 
 DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
 
@@ -78,6 +136,8 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
   unsigned hashkey_vars = *rComp.varsBegin();
   for (auto it = rComp.varsBegin() + 1; *it != varsSENTINEL; it++) {
     hashkey_vars = (hashkey_vars * 3) + *it;
+    //hashkey_vars = (hashkey_vars * 33) + *it - *(it-1);
+    //hashkey_vars =(hashkey_vars<<4)^(hashkey_vars>>28)^(*it);
     if ((*it - *(it - 1)) - 1 > max_var_diff)
       max_var_diff = (*it - *(it - 1)) - 1 ;
   }
@@ -86,13 +146,15 @@ DifferencePackedComponent::DifferencePackedComponent(Component &rComp) {
   unsigned max_clause_diff = 0;
   if (*rComp.clsBegin()) {
     for (auto jt = rComp.clsBegin() + 1; *jt != clsSENTINEL; jt++) {
-      hashkey_clauses = hashkey_clauses * 3 + *jt;
+      hashkey_clauses = hashkey_clauses*3 + *jt;
+      //hashkey_clauses = hashkey_clauses * 33 + (*jt - *(jt -1);
+      //hashkey_clauses =(hashkey_clauses<<4)^(hashkey_clauses>>28)^(*jt);
       if (*jt - *(jt - 1) - 1 > max_clause_diff)
         max_clause_diff = *jt - *(jt - 1) - 1;
     }
   }
 
-  hashkey_ = hashkey_vars + (((unsigned) hashkey_clauses) << 16);
+  hashkey_ = hashkey_vars + ((unsigned) hashkey_clauses << 11) + ((unsigned) hashkey_clauses >> 23);
 
   //VERIFIED the definition of bits_per_var_diff and bits_per_clause_diff
   unsigned bits_per_var_diff = log2(max_var_diff) + 1;

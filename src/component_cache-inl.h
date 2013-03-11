@@ -79,9 +79,9 @@ void ComponentCache::cleanPollutionsInvolving(CacheEntryID id) {
 
 void ComponentCache::removeFromHashTable(CacheEntryID id) {
   //assert(false);
-  unsigned act_id = new_table_[tableEntry(id)];
+  unsigned act_id = table_[tableEntry(id)];
   if(act_id == id){
-    new_table_[tableEntry(id)] = entry(act_id).next_bucket_element();
+    table_[tableEntry(id)] = entry(act_id).next_bucket_element();
   }
   else {
   while (act_id) {
@@ -138,6 +138,7 @@ void ComponentCache::removeFromDescendantsTree(CacheEntryID id) {
 }
 
 void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count) {
+  considerCacheResize();
   unsigned table_ofs = tableEntry(id);
   // when storing the new model count the size of the model count
   // and hence that of the component will change
@@ -150,8 +151,8 @@ void ComponentCache::storeValueOf(CacheEntryID id, const mpz_class &model_count)
   entry(id).set_model_count(model_count,my_time_);
   entry(id).set_creation_time(my_time_);
 
-  entry(id).set_next_bucket_element(new_table_[table_ofs]);
-  new_table_[table_ofs] = id;
+  entry(id).set_next_bucket_element(table_[table_ofs]);
+  table_[table_ofs] = id;
 
   statistics_.sum_bytes_cached_components_ += entry(id).SizeInBytes();
   statistics_.overall_bytes_components_stored_ += entry(id).SizeInBytes();

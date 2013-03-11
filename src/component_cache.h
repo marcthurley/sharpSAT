@@ -73,9 +73,9 @@ public:
   // if not, store the packed version of it in the entry_base of the cache
   bool manageNewComponent(StackLevel &top, CacheableComponent &packed_comp) {
        statistics_.num_cache_look_ups_++;
-       unsigned table_ofs =  packed_comp.hashkey() % new_table_.size();
+       unsigned table_ofs =  packed_comp.hashkey() & table_size_mask_;
 
-       CacheEntryID act_id = new_table_[table_ofs];
+       CacheEntryID act_id = table_[table_ofs];
        while(act_id){
          if (entry(act_id).equals(packed_comp)) {
            statistics_.incorporate_cache_hit(packed_comp);
@@ -110,19 +110,36 @@ public:
   void debug_dump_data();
 private:
 
-  void reHashTable(unsigned size){
-    new_table_.clear();
-    new_table_.resize(size,0);
-    for (unsigned id = 2; id < entry_base_.size(); id++)
-      if (entry_base_[id] != nullptr && entry_base_[id]->modelCountFound()) {
-        unsigned table_ofs=tableEntry(id);
-        entry_base_[id]->set_next_bucket_element(new_table_[table_ofs]);
-        new_table_[table_ofs] = id;
+  void considerCacheResize(){
+    if (entry_base_.size() > table_.size()) {
+      reHashTable(2*table_.size());
     }
+  }
+  void reHashTable(unsigned size){
+
+    table_.clear();
+    table_.resize(size,0);
+    // we assert that table size is a power of 2
+    // otherwise the table_size_mask_ doesn't work
+    assert(table_.size() & (table_.size() - 1) == 0);
+    table_size_mask_ = table_.size() - 1;
+    cout << "ts " << table_.size() << " " << table_size_mask_ << endl;
+    unsigned collisions = 0;
+    for (unsigned id = 2; id < entry_base_.size(); id++)
+      if (entry_base_[id] != nullptr ){
+        entry_base_[id]->set_next_bucket_element(0);
+       if(entry_base_[id]->modelCountFound()) {
+        unsigned table_ofs=tableEntry(id);
+        collisions += (table_[table_ofs] > 0 ? 1 : 0);
+        entry_base_[id]->set_next_bucket_element(table_[table_ofs]);
+        table_[table_ofs] = id;
+       }
+    }
+    cout << "coll " << collisions << endl;
   }
 
   unsigned tableEntry(CacheEntryID id){
-    return entry(id).hashkey() % new_table_.size();
+    return entry(id).hashkey() & table_size_mask_;
   }
   void add_descendant(CacheEntryID compid, CacheEntryID descendantid) {
       assert(descendantid != entry(compid).first_descendant());
@@ -141,7 +158,9 @@ private:
 
   // the actual hash table
   // by means of which the cache is accessed
-  vector<CacheEntryID> new_table_;
+  vector<CacheEntryID> table_;
+
+  unsigned table_size_mask_;
 
   DataAndStatistics &statistics_;
 
