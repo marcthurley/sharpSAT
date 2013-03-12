@@ -41,20 +41,6 @@ template <class T>
       }
   }
 
-  void end_check(unsigned min_bits_free_at_end){
-    if (end_of_bits_ + min_bits_free_at_end > _bits_per_block)
-        *(++p)= 0;
-    /// DEBUG
-    unsigned clm = 0;
-    for (unsigned int i = 0; i < min_bits_free_at_end; i++)
-      clm = (clm << 1) + 1;
-    unsigned eclm = clm << (sizeof(unsigned)*8 - min_bits_free_at_end);
-    assert((*p & eclm) == 0);
-    // END DEBUG
-  }
-
-
-
   void assert_size(unsigned size){
     if(end_of_bits_ == 0)
        p--;
@@ -65,7 +51,7 @@ template <class T>
   T *data_start_ = nullptr;
   T *p = nullptr;
   // in the current block
-  // the bit position just after the last bit written
+  // the bit postion just after the last bit written
   unsigned end_of_bits_ = 0;
 
   static const unsigned _bits_per_block = (sizeof(T) << 3);
