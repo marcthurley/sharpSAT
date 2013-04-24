@@ -53,13 +53,16 @@ public:
   // returns true iff the underlying variable was unseen before
   //
   bool manageSearchOccurrenceOf(LiteralID lit){
-    var_frequency_scores_[lit.var()]+= isActive(lit);
-    if(archetype_.var_unseen_in_sup_comp(lit.var())){
-      search_stack_.push_back(lit.var());
-      archetype_.setVar_seen(lit.var());
-      return true;
+      if(archetype_.var_unseen_in_sup_comp(lit.var())){
+        search_stack_.push_back(lit.var());
+        archetype_.setVar_seen(lit.var());
+        return true;
+      }
+      return false;
     }
-    return false;
+  bool manageSearchOccurrenceAndScoreOf(LiteralID lit){
+    var_frequency_scores_[lit.var()]+= isActive(lit);
+    return manageSearchOccurrenceOf(lit);
   }
 
   void setSeenAndStoreInSearchStack(VariableIndex v){
@@ -187,7 +190,7 @@ private:
     for (auto itL = pstart_cls; *itL != SENTINEL_LIT; itL++) {
       assert(itL->var() <= max_variable_id_);
       if(!archetype_.var_nil(itL->var()))
-        manageSearchOccurrenceOf(*itL);
+        manageSearchOccurrenceAndScoreOf(*itL);
       else {
         assert(!isActive(*itL));
         all_lits_active = false;

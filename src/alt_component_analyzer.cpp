@@ -163,6 +163,7 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
     unsigned *p = beginOfLinkList(*vt);
     for (; *p; p++) {
       if(manageSearchOccurrenceOf(LiteralID(*p,true))){
+        var_frequency_scores_[*p]++;
         var_frequency_scores_[*vt]++;
       }
     }
@@ -176,8 +177,8 @@ void AltComponentAnalyzer::recordComponentOf(const VariableIndex var) {
           archetype_.setClause_nil(*p);
         else {
           var_frequency_scores_[*vt]++;
-          manageSearchOccurrenceOf(litA);
-          manageSearchOccurrenceOf(litB);
+          manageSearchOccurrenceAndScoreOf(litA);
+          manageSearchOccurrenceAndScoreOf(litB);
           archetype_.setClause_seen(*p,isActive(litA) &
               isActive(litB));
         }

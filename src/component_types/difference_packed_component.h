@@ -9,7 +9,6 @@
 #define DIFFERENCE_PACKED_COMPONENT_H_
 
 #include "base_packed_component.h"
-#include "component_archetype.h"
 #include "component.h"
 
 #include <math.h>
