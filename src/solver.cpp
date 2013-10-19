@@ -242,9 +242,10 @@ void Solver::decideLiteral() {
 	setLiteralIfFree(theLit);
 	statistics_.num_decisions_++;
 
-	if (statistics_.num_decisions_ % 128 == 0)
-		decayActivities();
-
+//	if (statistics_.num_decisions_ % 128 == 0)
+    if (statistics_.num_conflicts_ % 128 == 0)
+     decayActivities();
+       // decayActivitiesOf(comp_manager_.superComponentOf(stack_.top()));
 	assert(
 			stack_.top().remaining_components_ofs() <= comp_manager_.component_stack_size());
 }

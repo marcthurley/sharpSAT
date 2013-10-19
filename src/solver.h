@@ -131,6 +131,13 @@ private:
 	void decideLiteral();
 	bool bcp();
 
+
+	 void decayActivitiesOf(Component & comp) {
+	   for (auto it = comp.varsBegin(); *it != varsSENTINEL; it++) {
+	          literal(LiteralID(*it,true)).activity_score_ *=0.5;
+	          literal(LiteralID(*it,false)).activity_score_ *=0.5;
+	       }
+	}
 	///  this method performs Failed literal tests online
 	bool implicitBCP();
 
@@ -154,6 +161,9 @@ private:
 		float score = comp_manager_.scoreOf(v);
 		score += 10.0 * literal(LiteralID(v, true)).activity_score_;
 		score += 10.0 * literal(LiteralID(v, false)).activity_score_;
+//		score += (10*stack_.get_decision_level()) * literal(LiteralID(v, true)).activity_score_;
+//		score += (10*stack_.get_decision_level()) * literal(LiteralID(v, false)).activity_score_;
+
 		return score;
 	}
 
@@ -165,7 +175,7 @@ private:
 		var(lit).ante = ant;
 		literal_stack_.push_back(lit);
 		if (ant.isAClause() && ant.asCl() != NOT_A_CLAUSE)
-			getHeaderOf(ant.asCl()).increaseActivity();
+			getHeaderOf(ant.asCl()).increaseScore();
 		literal_values_[lit] = T_TRI;
 		literal_values_[lit.neg()] = F_TRI;
 		return true;
@@ -183,7 +193,7 @@ private:
 		violated_clause.push_back(litB);
 	}
 	void setConflictState(ClauseOfs cl_ofs) {
-		getHeaderOf(cl_ofs).increaseActivity();
+		getHeaderOf(cl_ofs).increaseScore();
 		violated_clause.clear();
 		for (auto it = beginOf(cl_ofs); *it != SENTINEL_LIT; it++)
 			violated_clause.push_back(*it);

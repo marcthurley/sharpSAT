@@ -25,4 +25,10 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 src \
 src/component_types \
+Testing/src \
+Testing/src/component_types \
+Release32/src \
+Release32/src/component_types \
+PerfTesting/src \
+PerfTesting/src/component_types \
 

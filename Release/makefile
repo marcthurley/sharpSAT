@@ -10,6 +10,12 @@ RM := rm -rf
 -include sources.mk
 -include src/component_types/subdir.mk
 -include src/subdir.mk
+-include Testing/src/component_types/subdir.mk
+-include Testing/src/subdir.mk
+-include Release32/src/component_types/subdir.mk
+-include Release32/src/subdir.mk
+-include PerfTesting/src/component_types/subdir.mk
+-include PerfTesting/src/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -45,7 +51,7 @@ all: sharpSAT
 sharpSAT: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++-4.7 -L/usr/lib/ -o "sharpSAT" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++-4.8 -L/opt/local/lib -o "sharpSAT" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

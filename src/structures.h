@@ -183,8 +183,11 @@ class ClauseHeader {
   unsigned length_;
 public:
 
-  void increaseActivity() {
+  void increaseScore() {
     score_++;
+  }
+  void decayScore() {
+      score_ >>= 1;
   }
   unsigned score() {
       return score_;

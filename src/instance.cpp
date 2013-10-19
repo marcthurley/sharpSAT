@@ -212,6 +212,33 @@ void Instance::compactConflictLiteralPool(){
 }
 
 
+//bool Instance::deleteConflictClauses() {
+//  statistics_.times_conflict_clauses_cleaned_++;
+//  vector<ClauseOfs> tmp_conflict_clauses = conflict_clauses_;
+//  conflict_clauses_.clear();
+//  vector<double> tmp_ratios;
+//  double score, lifetime;
+//  for(auto clause_ofs: tmp_conflict_clauses){
+//    score = getHeaderOf(clause_ofs).score();
+//    lifetime = statistics_.num_conflicts_ - getHeaderOf(clause_ofs).creation_time();
+//    tmp_ratios.push_back(score/lifetime/(getHeaderOf(clause_ofs).length()));
+//  }
+//  vector<double> tmp_ratiosB = tmp_ratios;
+//
+//  sort(tmp_ratiosB.begin(), tmp_ratiosB.end());
+//
+//  double cutoff = tmp_ratiosB[tmp_ratiosB.size()/2];
+//
+//  for(unsigned i = 0; i < tmp_conflict_clauses.size(); i++){
+//    if(tmp_ratios[i] < cutoff){
+//      if(!markClauseDeleted(tmp_conflict_clauses[i]))
+//        conflict_clauses_.push_back(tmp_conflict_clauses[i]);
+//    } else
+//      conflict_clauses_.push_back(tmp_conflict_clauses[i]);
+//  }
+//  return true;
+//}
+
 bool Instance::deleteConflictClauses() {
   statistics_.times_conflict_clauses_cleaned_++;
   vector<ClauseOfs> tmp_conflict_clauses = conflict_clauses_;
@@ -221,7 +248,9 @@ bool Instance::deleteConflictClauses() {
   for(auto clause_ofs: tmp_conflict_clauses){
     score = getHeaderOf(clause_ofs).score();
     lifetime = statistics_.num_conflicts_ - getHeaderOf(clause_ofs).creation_time();
-    tmp_ratios.push_back(score/lifetime/(getHeaderOf(clause_ofs).length()));
+   // tmp_ratios.push_back(score/lifetime);
+    tmp_ratios.push_back(score);
+
   }
   vector<double> tmp_ratiosB = tmp_ratios;
 

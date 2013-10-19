@@ -106,11 +106,15 @@ protected:
   void decayActivities() {
     for (auto l_it = literals_.begin(); l_it != literals_.end(); l_it++)
       l_it->activity_score_ *= 0.5;
+
+    for(auto clause_ofs: conflict_clauses_)
+        getHeaderOf(clause_ofs).decayScore();
+
   }
 //  void decayActivities();
 
   void updateActivities(ClauseOfs clause_ofs) {
-    getHeaderOf(clause_ofs).increaseActivity();
+    getHeaderOf(clause_ofs).increaseScore();
     for (auto it = beginOf(clause_ofs); *it != SENTINEL_LIT; it++) {
       literal(*it).increaseActivity();
     }

@@ -8,8 +8,43 @@
 #include "component_cache.h"
 
 #include <algorithm>
+
+#ifdef __linux__
+
 #include <sys/sysinfo.h>
 #include <cstdint>
+
+uint64_t freeram() {
+
+  struct sysinfo info;
+      sysinfo(&info);
+
+  return info.freeram *(uint64_t) info.mem_unit;
+}
+
+#elif __APPLE__ && __MACH__
+
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
+
+uint64_t freeram() {
+
+  int mib[2];
+  int64_t physical_memory;
+  mib[0] = CTL_HW;
+  mib[1] = HW_MEMSIZE;
+  size_t length = sizeof(int64_t);
+  sysctl(mib, 2, &physical_memory, &length, NULL, 0);
+
+  return physical_memory;
+}
+
+#else
+
+#endif
+
+
 
 #include "stack.h"
 
@@ -34,10 +69,7 @@ void ComponentCache::init(Component &super_comp) {
 	free_entry_base_slots_.clear();
 	free_entry_base_slots_.reserve(10000);
 
-	struct sysinfo info;
-	sysinfo(&info);
-
-	uint64_t free_ram =	info.freeram *(uint64_t) info.mem_unit;
+	uint64_t free_ram = freeram();
 	uint64_t max_cache_bound = 95 * (free_ram / 100);
 
 	if (statistics_.maximum_cache_size_bytes_ == 0) {
