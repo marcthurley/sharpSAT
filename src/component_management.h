@@ -13,6 +13,7 @@
 #include "component_types/component.h"
 #include "component_cache.h"
 #include "alt_component_analyzer.h"
+//#include "component_analyzer.h"
 
 #include <vector>
 #include <gmpxx.h>

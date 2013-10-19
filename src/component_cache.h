@@ -121,7 +121,7 @@ private:
     table_.resize(size,0);
     // we assert that table size is a power of 2
     // otherwise the table_size_mask_ doesn't work
-    assert(table_.size() & (table_.size() - 1) == 0);
+    assert((table_.size() & (table_.size() - 1)) == 0);
     table_size_mask_ = table_.size() - 1;
     cout << "ts " << table_.size() << " " << table_size_mask_ << endl;
     unsigned collisions = 0;

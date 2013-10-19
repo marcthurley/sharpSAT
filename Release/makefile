@@ -51,7 +51,7 @@ all: sharpSAT
 sharpSAT: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++-4.8 -L/opt/local/lib -o "sharpSAT" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++-4.8 -L/opt/local/lib -pg -o "sharpSAT" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
