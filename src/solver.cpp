@@ -711,7 +711,7 @@ void Solver::recordLastUIPCauses() {
 
 			for (auto it = beginOf(getAntecedent(curr_lit).asCl()) + 1;
 					*it != SENTINEL_CL; it++) {
-				if (seen[it->var()] || var(*it).decision_level == 0
+				if (seen[it->var()] || (var(*it).decision_level == 0)
 						|| existsUnitClauseOf(it->var()))
 					continue;
 				if (var(*it).decision_level < DL)
@@ -724,7 +724,7 @@ void Solver::recordLastUIPCauses() {
 			LiteralID alit = getAntecedent(curr_lit).asLit();
 			literal(alit).increaseActivity();
 			literal(curr_lit).increaseActivity();
-			if (!seen[alit.var()] && !var(alit).decision_level == 0
+			if (!seen[alit.var()] && !(var(alit).decision_level == 0)
 					&& !existsUnitClauseOf(alit.var())) {
 				if (var(alit).decision_level < DL)
 					tmp_clause.push_back(alit);
@@ -804,7 +804,7 @@ void Solver::recordAllUIPCauses() {
 
 			for (auto it = beginOf(getAntecedent(curr_lit).asCl()) + 1;
 					*it != SENTINEL_CL; it++) {
-				if (seen[it->var()] || var(*it).decision_level == 0
+				if (seen[it->var()] || (var(*it).decision_level == 0)
 						|| existsUnitClauseOf(it->var()))
 					continue;
 				if (var(*it).decision_level < DL)
@@ -817,7 +817,7 @@ void Solver::recordAllUIPCauses() {
 			LiteralID alit = getAntecedent(curr_lit).asLit();
 			literal(alit).increaseActivity();
 			literal(curr_lit).increaseActivity();
-			if (!seen[alit.var()] && !var(alit).decision_level == 0
+			if (!seen[alit.var()] && !(var(alit).decision_level == 0)
 					&& !existsUnitClauseOf(alit.var())) {
 				if (var(alit).decision_level < DL)
 					tmp_clause.push_back(alit);
