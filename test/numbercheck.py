@@ -37,7 +37,7 @@ def read_modelcounts(filename):
     with open(filename, "r") as countscsvfile:
         countreader = csv.reader(countscsvfile)
         for row in countreader:
-            list.append([row[0], row[1].strip()])
+            list.append([row[0].rstrip(), row[1].strip()])
     return list
 
 

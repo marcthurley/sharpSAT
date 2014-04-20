@@ -109,7 +109,7 @@ public:
          };
 
          unsigned r;     // r will be lg(v)
-         register unsigned int t, tt; // temporaries
+         unsigned int t, tt; // temporaries
 
          if ((tt = (v >> 16)))
          {

@@ -22,11 +22,11 @@ public:
 			vector<_T>(size * 2, __value) {
 	}
 	inline _T &operator[](const LiteralID lit) {
-		return *(vector<_T>::_M_impl._M_start + lit.raw());
+		return *(vector<_T>::begin() + lit.raw());
 	}
 
 	inline const _T &operator[](const LiteralID &lit) const {
-		return *(vector<_T>::_M_impl._M_start + lit.raw());
+		return *(vector<_T>::begin() + lit.raw());
 	}
 
 	inline typename vector<_T>::iterator begin() {
