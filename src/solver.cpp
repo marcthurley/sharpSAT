@@ -242,8 +242,8 @@ void Solver::decideLiteral() {
 	setLiteralIfFree(theLit);
 	statistics_.num_decisions_++;
 
-//	if (statistics_.num_decisions_ % 128 == 0)
-    if (statistics_.num_conflicts_ % 128 == 0)
+	if (statistics_.num_decisions_ % 128 == 0)
+//    if (statistics_.num_conflicts_ % 128 == 0)
      decayActivities();
        // decayActivitiesOf(comp_manager_.superComponentOf(stack_.top()));
 	assert(
