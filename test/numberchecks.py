@@ -3,20 +3,13 @@ import csv
 import os
 import subprocess
 import sys
-from pycolorterm import pycolorterm
-from processcall import run_with_timeout
+from helpers.pycolortermhelp import bcolors
+from helpers.sharpsathelper import run_sharpsat_get_number
 
 SECONDS = 10
 
 __author__ = 'thurley'
 #
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
 
 def printPassed(s):
     print(bcolors.OKGREEN + "PASSED " + bcolors.ENDC + s)
@@ -24,14 +17,6 @@ def printWarn(s):
     print(bcolors.WARNING + "WARN " + bcolors.ENDC + s)
 def printFAIL(s):
     print(bcolors.FAIL + "FAIL " + bcolors.ENDC + s)
-
-
-PATH_TO_SHARPSAT_BINARY = os.path.expandvars(os.path.expanduser(sys.argv[1]))
-
-#CSV file containing file, modelcount
-CHECKFILE = os.path.expandvars(os.path.expanduser(sys.argv[2]))
-
-print(sys.argv[1], CHECKFILE)
 
 def read_modelcounts(filename):
     list = []
@@ -42,28 +27,11 @@ def read_modelcounts(filename):
             list.append([cnfname, row[1].strip()])
     return list
 
-
-
-
-def run_sharpsat_get_number(binary, arg):
-    try:
-        print("Running " + binary + " " + arg)
-        output = run_with_timeout(SECONDS, [binary, arg], stderr=subprocess.STDOUT)
-        #print(output)
-    except OSError as E:
-        print("OS Error")
-        print(E.message)
-        #print(output)
-        return "0"
-    i = output.find("# solutions")
-    j = output.find("# END")
-    return output[i:j].split("\n")[1]
-
 def run_on_countlist(binary, countlist):
     numfail = 0
     for p in countlist:
         try:
-            number = run_sharpsat_get_number(binary, p[0])
+            number = run_sharpsat_get_number(binary, p[0], SECONDS)
             if p[1] == number:
                 printPassed(p[0] + "; " + p[1])
             else:
@@ -77,6 +45,13 @@ def run_on_countlist(binary, countlist):
     return numfail
 
 
+
+PATH_TO_SHARPSAT_BINARY = os.path.expandvars(os.path.expanduser(sys.argv[1]))
+
+#CSV file containing file, modelcount
+CHECKFILE = os.path.expandvars(os.path.expanduser(sys.argv[2]))
+
+print(sys.argv[1], CHECKFILE)
 
 counts = read_modelcounts(CHECKFILE)
 numfail = run_on_countlist(PATH_TO_SHARPSAT_BINARY, counts)
