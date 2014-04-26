@@ -8,7 +8,7 @@ from helpers.sharpsathelper import run_sharpsat_get_number
 
 __author__ = 'thurley'
 
-TIMEOUT = 200  # timeout in seconds
+TIMEOUT = 100  # timeout in seconds
 
 
 def read_filelist(filename):
@@ -30,6 +30,10 @@ def take_time(binary, arg, timeout):
     except subprocess.CalledProcessError as E:
         erroroutput = "sharpSAT exited with exit code" + str(E.returncode) + "\n" + E.output
         time_taken = 2*timeout
+
+    stringtime = '--' if time_taken >= TIMEOUT else repr(round(time_taken, 3))
+
+    print("Time " + '\t' + stringtime + "s")
     return time_taken
 
 
@@ -63,31 +67,53 @@ def bold(s, yes):
 def store_results(filename, binary1, binary2, list):
     f = open(filename, 'w')
 
+    num_instances = len(list)
     num_successes1 = 0
     total_time1 = 0
+    sync_total_time1 = 0
     num_successes2 = 0
     total_time2 = 0
+    sync_total_time2 = 0
     for p in list:
 
         if p[1] < TIMEOUT:
             num_successes1 += 1
             total_time1 += p[1]
+            if p[2] < TIMEOUT:
+                sync_total_time1 += p[1]
+                sync_total_time2 += p[2]
 
         if p[2] < TIMEOUT:
             num_successes2 += 1
             total_time2 += p[2]
 
+
+    total_penalty_time1 = TIMEOUT*(num_instances - num_successes1)
+    total_penalty_time2 = TIMEOUT*(num_instances - num_successes2)
+
+
     f.write("<!DOCTYPE html><html><header></header>\n<body>")
-    f.write("<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" style=\"font-style:italic;width:854px\">")
+    f.write("<table border=\"1\" cellpadding=\"2\" cellspacing=\"2\" style=\"font-family:arial;width:854px\">\n")
     f.write("<thead><tr>")
     f.write("<td>Name</td><td>" + binary1 + "</td><td>" + binary2 + "</td>")
+    f.write("</tr>")
+    f.write("<tr>")
     f.write("</tr>")
     f.write("<tr>")
     f.write("<td>Solved</td><td>" + repr(num_successes1) + "/" + repr(len(list)) + "</td><td>" + repr(num_successes2) + "/" + repr(len(list)) + "</td>")
     f.write("</tr>")
     f.write("<tr>")
     onesmaller = total_time1 < total_time2
+
     f.write("<td>Time </td><td>" + bold(repr(round(total_time1, 3)), onesmaller)+ "</td><td>" + bold(repr(round(total_time2, 3)), not onesmaller) + "</td>")
+    onesmaller = sync_total_time1 < sync_total_time2
+    f.write("</tr>")
+    f.write("<tr>")
+    f.write("<td>Time (only where both succeeded) </td><td>" + bold(repr(round(sync_total_time1, 3)), onesmaller)+ "</td><td>" + bold(repr(round(sync_total_time2, 3)), not onesmaller) + "</td>")
+    onesmaller = total_time1 + total_penalty_time1 < total_time2 + total_penalty_time2
+    f.write("</tr>")
+    f.write("<tr>")
+    f.write("<td>Time (with TIMEOUT penalties) </td><td>" + bold(repr(round(total_time1+total_penalty_time1, 3)), onesmaller)+ "</td><td>" + bold(repr(round(total_time2+total_penalty_time2, 3)), not onesmaller) + "</td>")
     f.write("</tr></thead>")
     f.write("<tbody>")
     for p in list:
