@@ -4,60 +4,15 @@ import os
 import subprocess
 import sys
 import time
-from helpers.sharpsathelper import run_sharpsat_get_number
+from helpers.inputhelper import read_filelist
+from helpers.sharpsathelper import run_sharpsat_get_number, take_time, run_all_on_list
 
 __author__ = 'thurley'
 
 TIMEOUT = 100  # timeout in seconds
 
-
-def read_filelist(filename):
-    list = []
-    with open(filename, "r") as countscsvfile:
-        #countreader = csv.reader(countscsvfile)
-        for line in countscsvfile:
-            cnfname = os.path.expandvars(os.path.expanduser(line))
-            list.append(cnfname.rstrip())
-    return list
-
-def take_time(binary, arg, timeout):
-    try:
-        start = time.time()
-        number = run_sharpsat_get_number(binary, arg, timeout)
-        time_taken = time.time() - start
-    except RuntimeError as e:
-        time_taken = 2*timeout
-    except subprocess.CalledProcessError as E:
-        erroroutput = "sharpSAT exited with exit code" + str(E.returncode) + "\n" + E.output
-        time_taken = 2*timeout
-
-    stringtime = '--' if time_taken >= TIMEOUT else repr(round(time_taken, 3))
-
-    print("Time " + '\t' + stringtime + "s")
-    return time_taken
-
-
-def compare_on_list(binary1, binary2, cnf_list):
-    numfail = 0
-    list = []
-    for p in cnf_list:
-
-        time1 = take_time(binary1, p, TIMEOUT)
-        time2 = take_time(binary2, p, TIMEOUT)
-
-        list.append([p, time1, time2])
-    return list
-
-def print_results(binary1, binary2, list):
-    print('\t\t\t\t\t' + binary1 + '\t' + binary2)
-
-    for p in list:
-
-        stringtime1 = '--' if p[1] >= TIMEOUT else repr(round(p[1], 3))
-        stringtime2 = '--' if p[2] >= TIMEOUT else repr(round(p[2], 3))
-
-        print(p[0] + '\t' + stringtime1 + '\t' + stringtime2)
-
+def time_to_string(time, timeout):
+    return '--' if time >= timeout else repr(round(time, 3))
 
 def bold(s, yes):
     if yes :
@@ -131,13 +86,18 @@ def store_results(filename, binary1, binary2, list):
     f.write("</body>\n</html>")
 
 
-PATH_TO_SHARPSAT_BINARY1 = os.path.expandvars(os.path.expanduser(sys.argv[1]))
-PATH_TO_SHARPSAT_BINARY2 = os.path.expandvars(os.path.expanduser(sys.argv[2]))
+if len(sys.argv) < 3:
+    print("Usage:")
+    print("\t /comparetimes.py LIST_FILE BINARY1 BINARY2")
+    print("\t /comparetimes.py DIRECTORY BINARY1 BINARY2")
+    exit(0)
 
-cnflist = read_filelist(os.path.expandvars(os.path.expanduser(sys.argv[3])))
 
-compare_data = compare_on_list(PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2, cnflist)
+PATH_TO_SHARPSAT_BINARY1 = os.path.expandvars(os.path.expanduser(sys.argv[2]))
+PATH_TO_SHARPSAT_BINARY2 = os.path.expandvars(os.path.expanduser(sys.argv[3]))
 
-print_results(PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2, compare_data)
+cnflist = read_filelist(os.path.expandvars(os.path.expanduser(sys.argv[1])))
 
-store_results("results.html", PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2, compare_data)
+compare_data = run_all_on_list(TIMEOUT, cnflist, PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2)
+
+store_results("compare_results.html", PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2, compare_data)
