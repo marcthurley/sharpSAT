@@ -98,6 +98,6 @@ PATH_TO_SHARPSAT_BINARY2 = os.path.expandvars(os.path.expanduser(sys.argv[3]))
 
 cnflist = read_filelist(os.path.expandvars(os.path.expanduser(sys.argv[1])))
 
-compare_data = run_all_on_list(TIMEOUT, cnflist, PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2)
+compare_data = run_all_on_list(TIMEOUT, cnflist, [PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2])
 
 store_results("compare_results.html", PATH_TO_SHARPSAT_BINARY1, PATH_TO_SHARPSAT_BINARY2, compare_data)

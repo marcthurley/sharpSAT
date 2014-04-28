@@ -76,17 +76,24 @@ def get_filelist(cnffile_source):
     return list
 
 
-PATH_TO_SHARPSAT_BINARY = os.path.expandvars(os.path.expanduser(sys.argv[2]))
+def extract_from_args():
+    binaries = []
+    for i in [2, len(sys.argv) - 1]:
+        binaries.append(os.path.expandvars(os.path.expanduser(sys.argv[i])))
+    return os.path.expandvars(os.path.expanduser(sys.argv[1])), binaries
 
-cnffile_source = os.path.expandvars(os.path.expanduser(sys.argv[1]))
+
+if len(sys.argv) < 3:
+    print("Usage: ")
+    print("       taketime.py CNF_SOURCE BINARY1 [BINARY2 [BINARY3 ... ]]")
 
 
-
+cnffile_source, binaries = extract_from_args()
 cnflist = get_filelist(cnffile_source)
 
 #for f in cnflist:
 #    print(f)
 
-compare_data = run_all_on_list(TIMEOUT, cnflist, PATH_TO_SHARPSAT_BINARY)
+compare_data = run_all_on_list(TIMEOUT, cnflist, binaries)
 
-store_results("results.html", PATH_TO_SHARPSAT_BINARY, compare_data)
+store_results("results.html", binaries[0], compare_data)

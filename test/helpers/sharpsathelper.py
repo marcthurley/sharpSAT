@@ -6,10 +6,9 @@ __author__ = 'thurley'
 
 
 
-def run_all_on_list(timeout, cnf_list, *binaries):
+def run_all_on_list(timeout, cnf_list, binaries):
     list = []
     for p in cnf_list:
-
         instance_entry = [p]
         for binary in binaries:
             time = take_time(binary, p, timeout)
