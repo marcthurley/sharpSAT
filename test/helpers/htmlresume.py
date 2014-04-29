@@ -1,7 +1,7 @@
 __author__ = 'thurley'
 
 
-class htmlwriter:
+class Htmlwriter:
     # file object
 
     def __init__(self, filename):
@@ -37,14 +37,14 @@ def produce_html_rows(rowlist):
         rowcontent = ""
         for cell in row:
             rowcontent += add_cell(cell)
-            htmlrows += add_row(rowcontent)
+        htmlrows += add_row(rowcontent)
     return htmlrows
 
-class htmltable:
+class Htmltable:
 
     def __init__(self):
-        self.head = []
-        self.content = []
+        self.head = [[]]
+        self.content = [[]]
 
     def add_row(self, cells):
         self.content.append(cells)

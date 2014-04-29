@@ -3,6 +3,7 @@ import os
 import sys
 
 from os import listdir
+from helpers.htmlresume import Htmltable, Htmlwriter
 from helpers.inputhelper import read_filelist
 from helpers.sharpsathelper import run_all_on_list
 
@@ -58,6 +59,52 @@ def store_results(filename, binary, list):
     f.write("</table>")
     f.write("</body>\n</html>")
 
+def concat(a, list):
+    l = [a]
+    l.extend(list)
+    return l
+
+def store_results_as_html(filename, binaries, list):
+
+
+    htmlwriter = Htmlwriter("test.html")
+
+    htmltable = Htmltable()
+
+    num_instances = len(list)
+    all_successes = []
+    all_total_time = []
+    all_with_penalty_time = []
+    for i in [1, len(binaries)]:
+        num_successes = 0
+        total_time = 0
+        penalty_time = 0
+        for p in list:
+            if p[i] < TIMEOUT:
+                num_successes += 1
+                total_time += p[i]
+            else:
+                penalty_time += TIMEOUT
+        all_successes.append(repr(num_successes))
+        all_total_time.append(repr(round(total_time, 3)))
+        all_with_penalty_time.append(repr(round(total_time + penalty_time, 3)))
+
+
+
+    htmltable.add_header(concat("Name", binaries))
+    htmltable.add_header(concat("Solved (out of " + repr(num_instances) + ")", all_successes))
+    htmltable.add_header(concat("Time", all_total_time))
+    htmltable.add_header(concat("Time (with penalties)", all_with_penalty_time))
+
+    for p in list:
+        row_of_times = []
+        for i in [1, len(binaries)]:
+            stringtime = '--' if p[i] >= TIMEOUT else repr(round(p[i], 3))
+            row_of_times.append(stringtime)
+        htmltable.add_row(concat(p[0], row_of_times))
+
+    htmlwriter.make_document("", htmltable.make())
+
 def get_filelist(cnffile_source):
     list = []
     if os.path.isdir(cnffile_source):
@@ -82,7 +129,6 @@ def extract_from_args():
         binaries.append(os.path.expandvars(os.path.expanduser(sys.argv[i])))
     return os.path.expandvars(os.path.expanduser(sys.argv[1])), binaries
 
-
 if len(sys.argv) < 3:
     print("Usage: ")
     print("       taketime.py CNF_SOURCE BINARY1 [BINARY2 [BINARY3 ... ]]")
@@ -97,3 +143,4 @@ cnflist = get_filelist(cnffile_source)
 compare_data = run_all_on_list(TIMEOUT, cnflist, binaries)
 
 store_results("results.html", binaries[0], compare_data)
+store_results_as_html("test.html", binaries, compare_data)
