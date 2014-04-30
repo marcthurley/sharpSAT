@@ -75,7 +75,11 @@ def store_results_as_html(filename, binaries, list):
     all_successes = []
     all_total_time = []
     all_with_penalty_time = []
-    for i in [1, len(binaries)]:
+
+    opt_successes = 0
+    opt_total_time = len(list) * TIMEOUT
+    opt_with_penalty_time = len(list) * TIMEOUT
+    for i in range(1, len(binaries)+1):
         num_successes = 0
         total_time = 0
         penalty_time = 0
@@ -85,25 +89,52 @@ def store_results_as_html(filename, binaries, list):
                 total_time += p[i]
             else:
                 penalty_time += TIMEOUT
-        all_successes.append(repr(num_successes))
-        all_total_time.append(repr(round(total_time, 3)))
-        all_with_penalty_time.append(repr(round(total_time + penalty_time, 3)))
 
+        if num_successes > opt_successes:
+            opt_successes = num_successes
+        if total_time < opt_total_time:
+            opt_total_time = total_time
+        if total_time + penalty_time < opt_with_penalty_time:
+            opt_with_penalty_time = total_time + penalty_time
 
+        all_successes.append(num_successes)
+        all_total_time.append(total_time)
+        all_with_penalty_time.append(total_time + penalty_time)
 
-    htmltable.add_header(concat("Name", binaries))
-    htmltable.add_header(concat("Solved (out of " + repr(num_instances) + ")", all_successes))
-    htmltable.add_header(concat("Time", all_total_time))
-    htmltable.add_header(concat("Time (with penalties)", all_with_penalty_time))
+    str_all_successes = []
+    str_all_total_time = []
+    str_all_with_penalty_time = []
+
+    for i in range(0, len(all_successes)):
+        str_all_successes.append(["opt-head" if all_successes[i] >= opt_successes else "", repr(all_successes[i])])
+        str_all_total_time.append(["opt-head" if all_total_time[i] <= opt_total_time else "", repr(round(all_total_time[i], 3))])
+        str_all_with_penalty_time.append(["opt-head" if all_with_penalty_time[i] <= opt_with_penalty_time else "", repr(round(all_with_penalty_time[i], 3))])
+
+    head = [["head", "Name"]]
+    for b in binaries:
+        head.append(["head", b])
+
+    htmltable.add_header_w_cell_classes(head)
+    htmltable.add_header_w_cell_classes(concat(["head", "Solved (out of " + repr(num_instances) + ")"], str_all_successes))
+    htmltable.add_header_w_cell_classes(concat(["head", "Time"], str_all_total_time))
+    htmltable.add_header_w_cell_classes(concat(["head", "Time (with penalties)"], str_all_with_penalty_time))
 
     for p in list:
         row_of_times = []
-        for i in [1, len(binaries)]:
+        opt = 1
+        for i in range(1, len(binaries)+1):
             stringtime = '--' if p[i] >= TIMEOUT else repr(round(p[i], 3))
-            row_of_times.append(stringtime)
-        htmltable.add_row(concat(p[0], row_of_times))
+            if (p[i] < p[opt]):
+                opt = i
+            row_of_times.append(["", stringtime])
 
-    htmlwriter.make_document("", htmltable.make())
+        for i in range(1, len(binaries)+1):
+            if (p[i] == p[opt]):
+                row_of_times[i-1][0] = "optimal"
+
+        htmltable.add_row_w_cell_classes(concat(["", p[0]], row_of_times))
+
+    htmlwriter.make_document("<style type=\"text/css\"> .optimal{ background: lightgreen; } .head { font-weight:bold; }  .opt-head{ background: lightgrey;}</style>", htmltable.make())
 
 def get_filelist(cnffile_source):
     list = []
@@ -125,7 +156,7 @@ def get_filelist(cnffile_source):
 
 def extract_from_args():
     binaries = []
-    for i in [2, len(sys.argv) - 1]:
+    for i in range(2, len(sys.argv)):
         binaries.append(os.path.expandvars(os.path.expanduser(sys.argv[i])))
     return os.path.expandvars(os.path.expanduser(sys.argv[1])), binaries
 
@@ -137,8 +168,8 @@ if len(sys.argv) < 3:
 cnffile_source, binaries = extract_from_args()
 cnflist = get_filelist(cnffile_source)
 
-#for f in cnflist:
-#    print(f)
+for f in binaries:
+    print(f)
 
 compare_data = run_all_on_list(TIMEOUT, cnflist, binaries)
 
