@@ -840,29 +840,31 @@ void Solver::printOnlineStats() {
 
 	cout << endl;
 	cout << "time elapsed: " << stopwatch_.getElapsedSeconds() << "s" << endl;
-	cout << "conflict clauses (all / bin / unit) \t";
-	cout << num_conflict_clauses();
-	cout << "/" << statistics_.num_binary_conflict_clauses_ << "/"
-			<< unit_clauses_.size() << endl;
-	cout << "failed literals found by implicit BCP \t "
-			<< statistics_.num_failed_literals_detected_ << endl;
-	;
+	if(config_.verbose) {
+	  cout << "conflict clauses (all / bin / unit) \t";
+	  cout << num_conflict_clauses();
+	  cout << "/" << statistics_.num_binary_conflict_clauses_ << "/"
+	      << unit_clauses_.size() << endl;
+	  cout << "failed literals found by implicit BCP \t "
+	      << statistics_.num_failed_literals_detected_ << endl;
+	  ;
 
-	cout << "implicit BCP miss rate \t "
-			<< statistics_.implicitBCP_miss_rate() * 100 << "%";
-	cout << endl;
+	  cout << "implicit BCP miss rate \t "
+	      << statistics_.implicitBCP_miss_rate() * 100 << "%";
+	  cout << endl;
 
-	comp_manager_.gatherStatistics();
+	  comp_manager_.gatherStatistics();
 
-	cout << "cache size " << statistics_.cache_MB_memory_usage()	<< "MB" << endl;
-	cout << "components (stored / hits) \t\t"
-			<< statistics_.cached_component_count() << "/"
-			<< statistics_.cache_hits() << endl;
-	cout << "avg. variable count (stored / hits) \t"
-			<< statistics_.getAvgComponentSize() << "/"
-			<< statistics_.getAvgCacheHitSize();
-	cout << endl;
-	cout << "cache miss rate " << statistics_.cache_miss_rate() * 100 << "%"
-			<< endl;
+	  cout << "cache size " << statistics_.cache_MB_memory_usage()	<< "MB" << endl;
+	  cout << "components (stored / hits) \t\t"
+	      << statistics_.cached_component_count() << "/"
+	      << statistics_.cache_hits() << endl;
+	  cout << "avg. variable count (stored / hits) \t"
+	      << statistics_.getAvgComponentSize() << "/"
+	      << statistics_.getAvgCacheHitSize();
+	  cout << endl;
+	  cout << "cache miss rate " << statistics_.cache_miss_rate() * 100 << "%"
+	      << endl;
+	}
 }
 
