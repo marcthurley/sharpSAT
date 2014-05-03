@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
       theSolver.config().perform_pre_processing = false;
     else if (strcmp(argv[i], "-q") == 0)
       theSolver.config().quiet = true;
-    else if (strcmp(argv[i], "-verbose") == 0)
+    else if (strcmp(argv[i], "-v") == 0)
       theSolver.config().verbose = true;
     else if (strcmp(argv[i], "-t") == 0) {
       if (argc <= i + 1) {
