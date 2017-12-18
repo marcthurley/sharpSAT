@@ -27,9 +27,13 @@ Options:
 Building
 =========
 
-It suffices to change to the ./Release subdirectory and run
+It suffices to run the bash script:
 
-make
+`setupdev.sh`
+
+Then change into the subdirectory "./build/Release/" and run:
+
+`make`
 
 
 NOTE:
