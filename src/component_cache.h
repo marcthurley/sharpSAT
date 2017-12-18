@@ -17,12 +17,14 @@
 #include "component_types/component.h"
 
 #include "stack.h"
+#include "solver_config.h"
 
 
 class ComponentCache {
 public:
 
-  ComponentCache(DataAndStatistics &statistics);
+  ComponentCache(DataAndStatistics &statistics,
+                 SolverConfiguration& config);
 
   ~ComponentCache() {
    // debug_dump_data();
@@ -163,6 +165,7 @@ private:
   unsigned table_size_mask_;
 
   DataAndStatistics &statistics_;
+  SolverConfiguration &config_;
 
   unsigned long my_time_ = 0;
 };
