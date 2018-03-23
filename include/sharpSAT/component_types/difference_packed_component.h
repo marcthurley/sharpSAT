@@ -8,8 +8,8 @@
 #ifndef DIFFERENCE_PACKED_COMPONENT_H_
 #define DIFFERENCE_PACKED_COMPONENT_H_
 
-#include "base_packed_component.h"
-#include "component.h"
+#include <sharpSAT/component_types/base_packed_component.h>
+#include <sharpSAT/component_types/component.h>
 
 #include <math.h>
 

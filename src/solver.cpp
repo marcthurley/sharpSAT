@@ -4,9 +4,8 @@
  *  Created on: Aug 23, 2012
  *      Author: marc
  */
-#include "solver.h"
+#include <sharpSAT/solver.h>
 #include <deque>
-
 #include <algorithm>
 
 

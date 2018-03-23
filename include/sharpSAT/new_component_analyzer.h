@@ -10,20 +10,17 @@
 
 
 
-
-
-#include "statistics.h"
-#include "component_types/component.h"
-#include "component_types/base_packed_component.h"
-#include "component_types/component_archetype.h"
-
+#include <sharpSAT/containers.h>
+#include <sharpSAT/stack.h>
+#include <sharpSAT/statistics.h>
+#include <sharpSAT/component_types/component.h>
+#include <sharpSAT/component_types/base_packed_component.h>
+#include <sharpSAT/component_types/component_archetype.h>
 
 
 #include <vector>
 #include <cmath>
 #include <gmpxx.h>
-#include "containers.h"
-#include "stack.h"
 
 using namespace std;
 

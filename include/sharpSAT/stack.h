@@ -8,7 +8,11 @@
 #ifndef STACK_H_
 #define STACK_H_
 
+#include <cassert>
+#include <vector>
 #include <gmpxx.h>
+
+using std::vector;
 
 class StackLevel {
   /// active Component, once initialized, it should not change

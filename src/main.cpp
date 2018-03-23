@@ -1,12 +1,8 @@
-#include "solver.h"
+#include <sharpSAT/solver.h>
 
 #include <iostream>
-
 #include <vector>
-
-//#include <malloc.h>
 #include <string>
-
 #include <sys/time.h>
 #include <sys/resource.h>
 

@@ -5,7 +5,7 @@
  *      Author: Marc Thurley
  */
 
-#include "component_management.h"
+#include <sharpSAT/component_management.h>
 
 void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
     vector<LiteralID> &lit_pool) {

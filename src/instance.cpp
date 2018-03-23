@@ -5,7 +5,7 @@
  *      Author: Marc Thurley
  */
 
-#include "instance.h"
+#include <sharpSAT/instance.h>
 
 #include <algorithm>
 #include <fstream>

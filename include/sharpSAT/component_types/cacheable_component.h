@@ -11,10 +11,8 @@
 #include <assert.h>
 #include <vector>
 
-#include "../primitive_types.h"
-
-#include "difference_packed_component.h"
-//#include "simple_unpacked_component.h"
+#include <sharpSAT/primitive_types.h>
+#include <sharpSAT/component_types/difference_packed_component.h>
 
 
 using namespace std;

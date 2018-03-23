@@ -9,13 +9,10 @@
 #define SOLVER_H_
 
 
-#include "statistics.h"
-#include "instance.h"
-#include "component_management.h"
-
-
-
-#include "solver_config.h"
+#include <sharpSAT/statistics.h>
+#include <sharpSAT/instance.h>
+#include <sharpSAT/component_management.h>
+#include <sharpSAT/solver_config.h>
 
 #include <sys/time.h>
 

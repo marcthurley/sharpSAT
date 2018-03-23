@@ -9,13 +9,9 @@
 #define COMPONENT_ARCHETYPE_H_
 
 
-#include "../primitive_types.h"
-#include "component.h"
-
-
-#include "cacheable_component.h"
-
-
+#include <sharpSAT/primitive_types.h>
+#include <sharpSAT/component_types/component.h>
+#include <sharpSAT/component_types/cacheable_component.h>
 
 
 

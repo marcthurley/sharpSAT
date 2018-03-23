@@ -9,14 +9,13 @@
 #define COMPONENT_CACHE_H_
 
 
-#include "component_types/cacheable_component.h"
-#include "statistics.h"
+#include <sharpSAT/stack.h>
+#include <sharpSAT/statistics.h>
+#include <sharpSAT/component_types/component.h>
+#include <sharpSAT/component_types/cacheable_component.h>
 
 #include <gmpxx.h>
 
-#include "component_types/component.h"
-
-#include "stack.h"
 
 
 class ComponentCache {
@@ -168,7 +167,7 @@ private:
 };
 
 
-#include "component_cache-inl.h"
+#include <sharpSAT/component_cache-inl.h>
 
 
 #endif /* COMPONENT_CACHE_H_ */

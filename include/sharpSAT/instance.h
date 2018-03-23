@@ -8,9 +8,9 @@
 #ifndef INSTANCE_H_
 #define INSTANCE_H_
 
-#include "statistics.h"
-#include "structures.h"
-#include "containers.h"
+#include <sharpSAT/statistics.h>
+#include <sharpSAT/structures.h>
+#include <sharpSAT/containers.h>
 
 #include <assert.h>
 

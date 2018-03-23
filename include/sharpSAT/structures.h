@@ -8,9 +8,9 @@
 #ifndef STRUCTURES_H_
 #define STRUCTURES_H_
 
+#include <sharpSAT/primitive_types.h>
 #include <vector>
 #include <iostream>
-#include "primitive_types.h"
 using namespace std;
 
 

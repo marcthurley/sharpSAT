@@ -8,11 +8,9 @@
 #ifndef SIMPLE_PACKED_COMPONENT_H_
 #define SIMPLE_PACKED_COMPONENT_H_
 
-#include "base_packed_component.h"
-#include "component.h"
-
-
-#include "../primitive_types.h"
+#include <sharpSAT/component_types/base_packed_component.h>
+#include <sharpSAT/component_types/component.h>
+#include <sharpSAT/primitive_types.h>
 
 class SimplePackedComponent : public BasePackedComponent {
 public:

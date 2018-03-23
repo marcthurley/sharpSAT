@@ -6,7 +6,7 @@
  */
 
 
-#include "alt_component_analyzer.h"
+#include <sharpSAT/alt_component_analyzer.h>
 
 
 

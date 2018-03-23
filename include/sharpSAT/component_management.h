@@ -10,17 +10,15 @@
 
 
 
-#include "component_types/component.h"
-#include "component_cache.h"
-#include "alt_component_analyzer.h"
-//#include "component_analyzer.h"
+#include <sharpSAT/alt_component_analyzer.h>
+#include <sharpSAT/component_cache.h>
+#include <sharpSAT/containers.h>
+#include <sharpSAT/stack.h>
+#include <sharpSAT/solver_config.h>
+#include <sharpSAT/component_types/component.h>
 
 #include <vector>
 #include <gmpxx.h>
-#include "containers.h"
-#include "stack.h"
-
-#include "solver_config.h"
 using namespace std;
 
 typedef AltComponentAnalyzer ComponentAnalyzer;

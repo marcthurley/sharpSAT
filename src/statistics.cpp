@@ -5,7 +5,7 @@
  *      Author: mthurley
  */
 
-#include "statistics.h"
+#include <sharpSAT/statistics.h>
 
 #include <iostream>
 #include <fstream>

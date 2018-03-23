@@ -5,7 +5,7 @@
  *      Author: mthurley
  */
 
-#include "component_analyzer.h"
+#include <sharpSAT/component_analyzer.h>
 
 void STDComponentAnalyzer::initialize(LiteralIndexedVector<Literal> & literals,
     vector<LiteralID> &lit_pool) {

@@ -8,16 +8,16 @@
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
+#include <sharpSAT/structures.h>
+#include <sharpSAT/component_types/cacheable_component.h>
+#include <sharpSAT/primitive_types.h>
+
 #include <string>
 #include <cstdint>
 #include <vector>
 
 #include <gmpxx.h>
 
-#include "structures.h"
-#include "component_types/cacheable_component.h"
-
-#include "primitive_types.h"
 
 using namespace std;
 

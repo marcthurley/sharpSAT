@@ -5,7 +5,8 @@
  *      Author: mthurley
  */
 
-#include "component_cache.h"
+#include <sharpSAT/component_cache.h>
+#include <sharpSAT/stack.h>
 
 #include <algorithm>
 
@@ -41,12 +42,10 @@ uint64_t freeram() {
 }
 
 #else
-
+// ToDo: Provide something like freeram
+#error "freeram function not provided for this platform"
 #endif
 
-
-
-#include "stack.h"
 
 
 ComponentCache::ComponentCache(DataAndStatistics &statistics) :

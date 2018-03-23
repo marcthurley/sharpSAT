@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <vector>
 
-#include "../primitive_types.h"
+#include <sharpSAT/primitive_types.h>
 
 using namespace std;
 

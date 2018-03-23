@@ -8,7 +8,7 @@
 #ifndef CONTAINERS_H_
 #define CONTAINERS_H_
 
-#include "structures.h"
+#include <sharpSAT/structures.h>
 
 template<class _T>
 class LiteralIndexedVector: protected vector<_T> {
