@@ -27,9 +27,9 @@ using namespace std;
 
 class AltComponentAnalyzer {
 public:
-	AltComponentAnalyzer(DataAndStatistics &statistics,
+	AltComponentAnalyzer(DataAndStatistics&,
         LiteralIndexedVector<TriValue> & lit_values) :
-        statistics_(statistics), literal_values_(lit_values) {
+        literal_values_(lit_values) {
   }
 
   unsigned scoreOf(VariableIndex v) {
@@ -115,7 +115,6 @@ public:
   }
 
 private:
-  DataAndStatistics &statistics_;
 
   // the id of the last clause
   // note that clause ID is the clause number,

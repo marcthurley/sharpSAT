@@ -27,7 +27,7 @@ class ComponentManager {
 public:
   ComponentManager(SolverConfiguration &config, DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
-        config_(config), statistics_(statistics), cache_(statistics),
+        config_(config), cache_(statistics),
         ana_(statistics,lit_values) {
   }
 
@@ -88,7 +88,6 @@ public:
 private:
 
   SolverConfiguration &config_;
-  DataAndStatistics &statistics_;
 
   vector<Component *> component_stack_;
   ComponentCache cache_;
