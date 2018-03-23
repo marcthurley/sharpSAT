@@ -12,7 +12,6 @@
 
 #include <sharpSAT/containers.h>
 #include <sharpSAT/stack.h>
-#include <sharpSAT/statistics.h>
 #include <sharpSAT/component_types/component.h>
 #include <sharpSAT/component_types/base_packed_component.h>
 #include <sharpSAT/component_types/component_archetype.h>
@@ -41,8 +40,7 @@ struct CAClauseHeader {
 
 class STDComponentAnalyzer {
 public:
-  STDComponentAnalyzer(DataAndStatistics&,
-        LiteralIndexedVector<TriValue> & lit_values) :
+  STDComponentAnalyzer(LiteralIndexedVector<TriValue>& lit_values) :
         literal_values_(lit_values) {
   }
 

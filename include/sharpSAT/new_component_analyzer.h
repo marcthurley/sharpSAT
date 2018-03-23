@@ -12,7 +12,6 @@
 
 #include <sharpSAT/containers.h>
 #include <sharpSAT/stack.h>
-#include <sharpSAT/statistics.h>
 #include <sharpSAT/component_types/component.h>
 #include <sharpSAT/component_types/base_packed_component.h>
 #include <sharpSAT/component_types/component_archetype.h>
@@ -41,9 +40,8 @@ class NewComponentAnalyzer;
 
 class NewComponentAnalyzer {
 public:
-	NewComponentAnalyzer(DataAndStatistics &statistics,
-        LiteralIndexedVector<TriValue> & lit_values) :
-        statistics_(statistics), literal_values_(lit_values) {
+	NewComponentAnalyzer(LiteralIndexedVector<TriValue> & lit_values) :
+        literal_values_(lit_values) {
   }
 
   unsigned scoreOf(VariableIndex v) {
@@ -125,8 +123,6 @@ public:
   //end DEBUG
 
 private:
-  DataAndStatistics &statistics_;
-
   // the id of the last clause
   // note that clause ID is the clause number,
   // different from the offset of the clause in the literal pool

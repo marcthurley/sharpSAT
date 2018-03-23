@@ -28,7 +28,7 @@ public:
   ComponentManager(SolverConfiguration &config, DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
         config_(config), cache_(statistics),
-        ana_(statistics,lit_values) {
+        ana_(lit_values) {
   }
 
   void initialize(LiteralIndexedVector<Literal> & literals,

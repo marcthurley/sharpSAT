@@ -12,7 +12,6 @@
 
 #include <sharpSAT/containers.h>
 #include <sharpSAT/stack.h>
-#include <sharpSAT/statistics.h>
 #include <sharpSAT/component_types/component.h>
 #include <sharpSAT/component_types/base_packed_component.h>
 #include <sharpSAT/component_types/component_archetype.h>
@@ -27,8 +26,7 @@ using namespace std;
 
 class AltComponentAnalyzer {
 public:
-	AltComponentAnalyzer(DataAndStatistics&,
-        LiteralIndexedVector<TriValue> & lit_values) :
+	AltComponentAnalyzer(LiteralIndexedVector<TriValue> & lit_values) :
         literal_values_(lit_values) {
   }
 
@@ -115,7 +113,6 @@ public:
   }
 
 private:
-
   // the id of the last clause
   // note that clause ID is the clause number,
   // different from the offset of the clause in the literal pool
