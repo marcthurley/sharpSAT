@@ -1,6 +1,8 @@
 =========
 sharpSAT
 =========
+[![Build Status](https://travis-ci.org/master-keying/sharpSAT.svg?branch=master)](https://travis-ci.org/master-keying/sharpSAT)
+
 
 sharpSAT is a #SAT solver based on modern DPLL based SAT solver technology.
 This is a new version with several incremental improvements over the 2006
