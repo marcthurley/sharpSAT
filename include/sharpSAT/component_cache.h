@@ -11,6 +11,7 @@
 
 #include <sharpSAT/stack.h>
 #include <sharpSAT/statistics.h>
+#include <sharpSAT/solver_config.h>
 #include <sharpSAT/component_types/component.h>
 #include <sharpSAT/component_types/cacheable_component.h>
 
@@ -30,7 +31,7 @@ public:
             delete pentry;
   }
 
-  void init(Component &super_comp);
+  void init(Component &super_comp, SolverConfiguration &config);
 
   // compute the size in bytes of the component cache from scratch
   // the value is stored in bytes_memory_usage_
@@ -122,7 +123,7 @@ private:
     // otherwise the table_size_mask_ doesn't work
     assert((table_.size() & (table_.size() - 1)) == 0);
     table_size_mask_ = table_.size() - 1;
-    cout << "ts " << table_.size() << " " << table_size_mask_ << endl;
+    // cout << "ts " << table_.size() << " " << table_size_mask_ << endl;
     unsigned collisions = 0;
     for (unsigned id = 2; id < entry_base_.size(); id++)
       if (entry_base_[id] != nullptr ){
@@ -134,7 +135,7 @@ private:
         table_[table_ofs] = id;
        }
     }
-    cout << "coll " << collisions << endl;
+    // cout << "coll " << collisions << endl;
   }
 
   unsigned tableEntry(CacheEntryID id){

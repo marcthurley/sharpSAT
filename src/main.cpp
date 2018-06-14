@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
     cout << "Options: " << endl;
     cout << "\t -noPP  \t turn off preprocessing" << endl;
     cout << "\t -q     \t quiet mode" << endl;
+    cout << "\t -v     \t verbose mode" << endl;
     cout << "\t -t [s] \t set time bound to s seconds" << endl;
     cout << "\t -noCC  \t turn off component caching" << endl;
     cout << "\t -cs [n]\t set max cache size to n MB" << endl;

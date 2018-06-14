@@ -23,7 +23,7 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
       ana_.max_clause_id());
 
 
-  cache_.init(*component_stack_.back());
+  cache_.init(*component_stack_.back(), config_);
 }
 
 
