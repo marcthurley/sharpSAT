@@ -8,6 +8,7 @@
 #ifndef SOLVER_CONFIG_H_
 #define SOLVER_CONFIG_H_
 
+#include <gmpxx.h>
 
 struct SolverConfiguration {
 
@@ -24,6 +25,10 @@ struct SolverConfiguration {
 
   // quiet = true will override verbose;
   bool quiet = false;
+
+  // expected value
+  // negative = not set
+  mpz_class expected_solution_count = -1;
 };
 
 #endif /* SOLVER_CONFIG_H_ */

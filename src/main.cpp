@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 #include <sys/time.h>
 #include <sys/resource.h>
 
@@ -18,13 +19,17 @@ int main(int argc, char *argv[]) {
   if (argc <= 1) {
     cout << "Usage: sharpSAT [options] [CNF_File]" << endl;
     cout << "Options: " << endl;
-    cout << "\t -noPP  \t turn off preprocessing" << endl;
-    cout << "\t -q     \t quiet mode" << endl;
-    cout << "\t -v     \t verbose mode" << endl;
-    cout << "\t -t [s] \t set time bound to s seconds" << endl;
-    cout << "\t -noCC  \t turn off component caching" << endl;
-    cout << "\t -cs [n]\t set max cache size to n MB" << endl;
-    cout << "\t -noIBCP\t turn off implicit BCP" << endl;
+    cout << "\t -noPP   \t turn off preprocessing" << endl;
+    cout << "\t -q      \t quiet mode" << endl;
+    cout << "\t -v      \t verbose mode" << endl;
+    cout << "\t -t [s]  \t set time bound to s seconds" << endl;
+    cout << "\t -noCC   \t turn off component caching" << endl;
+    cout << "\t -cs [n] \t set max cache size to n MB" << endl;
+    cout << "\t -noIBCP \t turn off implicit BCP" << endl;
+    cout << "\t -e [n]  \t expected number of models" << endl;
+    cout << "\t -e @file\t read expected number of" << endl;
+    cout << "\t         \t models from a file" << endl;
+
     cout << "\t" << endl;
 
     return -1;
@@ -55,6 +60,26 @@ int main(int argc, char *argv[]) {
         return -1;
       }
       theSolver.statistics().maximum_cache_size_bytes_ = atol(argv[i + 1]) * (uint64_t) 1000000;
+    } else if (strcmp(argv[i], "-e") == 0) {
+      if (argc <= i + 1) {
+        cout << " wrong parameters" << endl;
+        return -1;
+      }
+
+      if (argv[i + 1][0] == '@') {
+        std::ifstream t(argv[i + 1] + 1);
+        std::string str((std::istreambuf_iterator<char>(t)),
+                         std::istreambuf_iterator<char>());
+        if (theSolver.config().expected_solution_count.set_str(str.c_str(), 10)) {
+          cout << "Content of the '" << argv[i + 1] + 1 << "' file is not a number." << endl;
+          return -1;
+        }
+      } else {
+        if (theSolver.config().expected_solution_count.set_str(argv[i + 1], 10)) {
+          cout << "Argument to -e is not a number." << endl;
+          return -1;
+        }
+      }
     } else
       input_file = argv[i];
   }

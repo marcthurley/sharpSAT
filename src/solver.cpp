@@ -172,6 +172,13 @@ void Solver::solve(const string &file_name) {
 	statistics_.time_elapsed_ = stopwatch_.getElapsedSeconds();
 
 	comp_manager_.gatherStatistics();
+
+	if (config_.expected_solution_count >= mpz_class(0)) {
+		if (statistics_.final_solution_count_ != config_.expected_solution_count) {
+			throw std::runtime_error("ERROR: Expected number of models mismatch.");
+		}
+	}
+
 	if (config_.verbose) {
 		statistics_.writeToFile("data.out");
 		statistics_.printShort();
