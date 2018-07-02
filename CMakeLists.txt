@@ -8,7 +8,7 @@ endif()
 include(GNUInstallDirs)
 
 add_library(libsharpSAT STATIC
-    src/alt_component_analyzer.cpp 
+    src/alt_component_analyzer.cpp
 	src/component_analyzer.cpp
 	src/component_cache.cpp
 	src/component_management.cpp
@@ -16,7 +16,7 @@ add_library(libsharpSAT STATIC
 	src/new_component_analyzer.cpp
 	src/solver.cpp
 	src/statistics.cpp
-	src/component_types/base_packed_component.cpp 
+	src/component_types/base_packed_component.cpp
 	src/component_types/component_archetype.cpp
 )
 
@@ -74,6 +74,27 @@ set_target_properties(libsharpSAT sharpSAT
     PROPERTIES
       CXX_EXTENSIONS OFF
 )
+
+
+
+#########
+# Tests
+##
+enable_testing()
+
+# Read all easy instances from a file
+file(READ "${PROJECT_SOURCE_DIR}/test/benchmark/easy.txt" SHARPSAT_AUTORUN_TESTS)
+string(REGEX REPLACE ";" "\\\\;" SHARPSAT_AUTORUN_TESTS "${SHARPSAT_AUTORUN_TESTS}")
+string(REGEX REPLACE "\n" ";" SHARPSAT_AUTORUN_TESTS "${SHARPSAT_AUTORUN_TESTS}")
+
+# Add 1 test for each easy instance
+foreach(AUTORUN_TEST ${SHARPSAT_AUTORUN_TESTS})
+    add_test(NAME "${AUTORUN_TEST}"
+        COMMAND sharpSAT -e @test/benchmark/${AUTORUN_TEST}.txt test/benchmark/${AUTORUN_TEST}.cnf
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    )
+endforeach(AUTORUN_TEST)
+
 
 
 ###############

@@ -42,3 +42,4 @@ script:
   - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug
   - cd Build-Debug
   - make -j 2
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
