@@ -4,9 +4,8 @@
  *  Created on: Aug 23, 2012
  *      Author: marc
  */
-#include "solver.h"
+#include <sharpSAT/solver.h>
 #include <deque>
-
 #include <algorithm>
 
 
@@ -135,19 +134,19 @@ void Solver::solve(const string &file_name) {
 	createfromFile(file_name);
 	initStack(num_variables());
 
-	if (!config_.quiet) {
+	if (config_.verbose) {
 		cout << "Solving " << file_name << endl;
 		statistics_.printShortFormulaInfo();
 	}
-	if (!config_.quiet)
+	if (config_.verbose)
 		cout << endl << "Preprocessing .." << flush;
 	bool notfoundUNSAT = simplePreProcess();
-	if (!config_.quiet)
+	if (config_.verbose)
 		cout << " DONE" << endl;
 
 	if (notfoundUNSAT) {
 
-		if (!config_.quiet) {
+		if (config_.verbose) {
 			statistics_.printShortFormulaInfo();
 		}
 
@@ -173,9 +172,20 @@ void Solver::solve(const string &file_name) {
 	statistics_.time_elapsed_ = stopwatch_.getElapsedSeconds();
 
 	comp_manager_.gatherStatistics();
-	statistics_.writeToFile("data.out");
-	if (!config_.quiet)
+
+	if (config_.expected_solution_count >= mpz_class(0)) {
+		if (statistics_.final_solution_count_ != config_.expected_solution_count) {
+			throw std::runtime_error("ERROR: Expected number of models mismatch.");
+		}
+	}
+
+	if (config_.verbose) {
+		statistics_.writeToFile("data.out");
 		statistics_.printShort();
+	} else if (!config_.quiet) {
+		statistics_.print_final_solution_count();
+		cout << endl;
+	}
 }
 
 SOLVER_StateT Solver::countSAT() {
@@ -838,9 +848,9 @@ void Solver::printOnlineStats() {
 	if (config_.quiet)
 		return;
 
-	cout << endl;
-	cout << "time elapsed: " << stopwatch_.getElapsedSeconds() << "s" << endl;
 	if(config_.verbose) {
+	  cout << endl;
+	  cout << "time elapsed: " << stopwatch_.getElapsedSeconds() << "s" << endl;
 	  cout << "conflict clauses (all / bin / unit) \t";
 	  cout << num_conflict_clauses();
 	  cout << "/" << statistics_.num_binary_conflict_clauses_ << "/"

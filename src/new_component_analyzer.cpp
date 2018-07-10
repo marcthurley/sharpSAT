@@ -5,7 +5,7 @@
  *      Author: mthurley
  */
 
-#include "new_component_analyzer.h"
+#include <sharpSAT/new_component_analyzer.h>
 
 
 

@@ -5,7 +5,7 @@
  *      Author: Marc Thurley
  */
 
-#include "component_management.h"
+#include <sharpSAT/component_management.h>
 
 void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
     vector<LiteralID> &lit_pool) {
@@ -23,7 +23,7 @@ void ComponentManager::initialize(LiteralIndexedVector<Literal> & literals,
       ana_.max_clause_id());
 
 
-  cache_.init(*component_stack_.back());
+  cache_.init(*component_stack_.back(), config_);
 }
 
 

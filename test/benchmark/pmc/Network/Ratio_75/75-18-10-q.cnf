@@ -1,0 +1,4061 @@
+c network grid_problem
+c 324 BN nodes, expanded to 324 nodes, and 1224 added nodes, 2448 clauses
+p cnf 1548 2448
+c var 1		v_1_1		0.319105
+c var 2		v_1_2		-1
+c var 3		v_1_3		-1
+c var 4		v_1_4		-1
+c var 5		v_1_5		-1
+c var 6		v_1_6		-1
+c var 7		v_1_7		-1
+c var 8		v_1_8		-1
+c var 9		v_1_9		-1
+c var 10		v_1_10		-1
+c var 11		v_1_11		-1
+c var 12		v_1_12		-1
+c var 13		v_1_13		-1
+c var 14		v_1_14		-1
+c var 15		v_1_15		-1
+c var 16		v_1_16		-1
+c var 17		v_1_17		-1
+c var 18		v_1_18		-1
+c var 19		v_2_1		-1
+c var 20		v_2_2		-1
+c var 21		v_2_3		-1
+c var 22		v_2_4		-1
+c var 23		v_2_5		-1
+c var 24		v_2_6		-1
+c var 25		v_2_7		-1
+c var 26		v_2_8		-1
+c var 27		v_2_9		-1
+c var 28		v_2_10		-1
+c var 29		v_2_11		-1
+c var 30		v_2_12		-1
+c var 31		v_2_13		-1
+c var 32		v_2_14		-1
+c var 33		v_2_15		-1
+c var 34		v_2_16		-1
+c var 35		v_2_17		-1
+c var 36		v_2_18		-1
+c var 37		v_3_1		-1
+c var 38		v_3_2		-1
+c var 39		v_3_3		-1
+c var 40		v_3_4		-1
+c var 41		v_3_5		-1
+c var 42		v_3_6		-1
+c var 43		v_3_7		-1
+c var 44		v_3_8		-1
+c var 45		v_3_9		-1
+c var 46		v_3_10		-1
+c var 47		v_3_11		-1
+c var 48		v_3_12		-1
+c var 49		v_3_13		-1
+c var 50		v_3_14		-1
+c var 51		v_3_15		-1
+c var 52		v_3_16		-1
+c var 53		v_3_17		-1
+c var 54		v_3_18		-1
+c var 55		v_4_1		-1
+c var 56		v_4_2		-1
+c var 57		v_4_3		-1
+c var 58		v_4_4		-1
+c var 59		v_4_5		-1
+c var 60		v_4_6		-1
+c var 61		v_4_7		-1
+c var 62		v_4_8		-1
+c var 63		v_4_9		-1
+c var 64		v_4_10		-1
+c var 65		v_4_11		-1
+c var 66		v_4_12		-1
+c var 67		v_4_13		-1
+c var 68		v_4_14		-1
+c var 69		v_4_15		-1
+c var 70		v_4_16		-1
+c var 71		v_4_17		-1
+c var 72		v_4_18		-1
+c var 73		v_5_1		-1
+c var 74		v_5_2		-1
+c var 75		v_5_3		-1
+c var 76		v_5_4		-1
+c var 77		v_5_5		-1
+c var 78		v_5_6		-1
+c var 79		v_5_7		-1
+c var 80		v_5_8		-1
+c var 81		v_5_9		-1
+c var 82		v_5_10		-1
+c var 83		v_5_11		-1
+c var 84		v_5_12		-1
+c var 85		v_5_13		-1
+c var 86		v_5_14		-1
+c var 87		v_5_15		-1
+c var 88		v_5_16		-1
+c var 89		v_5_17		-1
+c var 90		v_5_18		-1
+c var 91		v_6_1		-1
+c var 92		v_6_2		-1
+c var 93		v_6_3		-1
+c var 94		v_6_4		-1
+c var 95		v_6_5		-1
+c var 96		v_6_6		-1
+c var 97		v_6_7		-1
+c var 98		v_6_8		-1
+c var 99		v_6_9		-1
+c var 100		v_6_10		-1
+c var 101		v_6_11		-1
+c var 102		v_6_12		-1
+c var 103		v_6_13		-1
+c var 104		v_6_14		-1
+c var 105		v_6_15		-1
+c var 106		v_6_16		-1
+c var 107		v_6_17		-1
+c var 108		v_6_18		-1
+c var 109		v_7_1		-1
+c var 110		v_7_2		-1
+c var 111		v_7_3		-1
+c var 112		v_7_4		-1
+c var 113		v_7_5		-1
+c var 114		v_7_6		-1
+c var 115		v_7_7		-1
+c var 116		v_7_8		-1
+c var 117		v_7_9		-1
+c var 118		v_7_10		-1
+c var 119		v_7_11		-1
+c var 120		v_7_12		-1
+c var 121		v_7_13		-1
+c var 122		v_7_14		-1
+c var 123		v_7_15		-1
+c var 124		v_7_16		-1
+c var 125		v_7_17		-1
+c var 126		v_7_18		-1
+c var 127		v_8_1		-1
+c var 128		v_8_2		-1
+c var 129		v_8_3		-1
+c var 130		v_8_4		-1
+c var 131		v_8_5		-1
+c var 132		v_8_6		-1
+c var 133		v_8_7		-1
+c var 134		v_8_8		-1
+c var 135		v_8_9		-1
+c var 136		v_8_10		-1
+c var 137		v_8_11		-1
+c var 138		v_8_12		-1
+c var 139		v_8_13		-1
+c var 140		v_8_14		-1
+c var 141		v_8_15		-1
+c var 142		v_8_16		-1
+c var 143		v_8_17		-1
+c var 144		v_8_18		-1
+c var 145		v_9_1		-1
+c var 146		v_9_2		-1
+c var 147		v_9_3		-1
+c var 148		v_9_4		-1
+c var 149		v_9_5		-1
+c var 150		v_9_6		-1
+c var 151		v_9_7		-1
+c var 152		v_9_8		-1
+c var 153		v_9_9		-1
+c var 154		v_9_10		-1
+c var 155		v_9_11		-1
+c var 156		v_9_12		-1
+c var 157		v_9_13		-1
+c var 158		v_9_14		-1
+c var 159		v_9_15		-1
+c var 160		v_9_16		-1
+c var 161		v_9_17		-1
+c var 162		v_9_18		-1
+c var 163		v_10_1		-1
+c var 164		v_10_2		-1
+c var 165		v_10_3		-1
+c var 166		v_10_4		-1
+c var 167		v_10_5		-1
+c var 168		v_10_6		-1
+c var 169		v_10_7		-1
+c var 170		v_10_8		-1
+c var 171		v_10_9		-1
+c var 172		v_10_10		-1
+c var 173		v_10_11		-1
+c var 174		v_10_12		-1
+c var 175		v_10_13		-1
+c var 176		v_10_14		-1
+c var 177		v_10_15		-1
+c var 178		v_10_16		-1
+c var 179		v_10_17		-1
+c var 180		v_10_18		-1
+c var 181		v_11_1		-1
+c var 182		v_11_2		-1
+c var 183		v_11_3		-1
+c var 184		v_11_4		-1
+c var 185		v_11_5		-1
+c var 186		v_11_6		-1
+c var 187		v_11_7		-1
+c var 188		v_11_8		-1
+c var 189		v_11_9		-1
+c var 190		v_11_10		-1
+c var 191		v_11_11		-1
+c var 192		v_11_12		-1
+c var 193		v_11_13		-1
+c var 194		v_11_14		-1
+c var 195		v_11_15		-1
+c var 196		v_11_16		-1
+c var 197		v_11_17		-1
+c var 198		v_11_18		-1
+c var 199		v_12_1		-1
+c var 200		v_12_2		-1
+c var 201		v_12_3		-1
+c var 202		v_12_4		-1
+c var 203		v_12_5		-1
+c var 204		v_12_6		-1
+c var 205		v_12_7		-1
+c var 206		v_12_8		-1
+c var 207		v_12_9		-1
+c var 208		v_12_10		-1
+c var 209		v_12_11		-1
+c var 210		v_12_12		-1
+c var 211		v_12_13		-1
+c var 212		v_12_14		-1
+c var 213		v_12_15		-1
+c var 214		v_12_16		-1
+c var 215		v_12_17		-1
+c var 216		v_12_18		-1
+c var 217		v_13_1		-1
+c var 218		v_13_2		-1
+c var 219		v_13_3		-1
+c var 220		v_13_4		-1
+c var 221		v_13_5		-1
+c var 222		v_13_6		-1
+c var 223		v_13_7		-1
+c var 224		v_13_8		-1
+c var 225		v_13_9		-1
+c var 226		v_13_10		-1
+c var 227		v_13_11		-1
+c var 228		v_13_12		-1
+c var 229		v_13_13		-1
+c var 230		v_13_14		-1
+c var 231		v_13_15		-1
+c var 232		v_13_16		-1
+c var 233		v_13_17		-1
+c var 234		v_13_18		-1
+c var 235		v_14_1		-1
+c var 236		v_14_2		-1
+c var 237		v_14_3		-1
+c var 238		v_14_4		-1
+c var 239		v_14_5		-1
+c var 240		v_14_6		-1
+c var 241		v_14_7		-1
+c var 242		v_14_8		-1
+c var 243		v_14_9		-1
+c var 244		v_14_10		-1
+c var 245		v_14_11		-1
+c var 246		v_14_12		-1
+c var 247		v_14_13		-1
+c var 248		v_14_14		-1
+c var 249		v_14_15		-1
+c var 250		v_14_16		-1
+c var 251		v_14_17		-1
+c var 252		v_14_18		-1
+c var 253		v_15_1		-1
+c var 254		v_15_2		-1
+c var 255		v_15_3		-1
+c var 256		v_15_4		-1
+c var 257		v_15_5		-1
+c var 258		v_15_6		-1
+c var 259		v_15_7		-1
+c var 260		v_15_8		-1
+c var 261		v_15_9		-1
+c var 262		v_15_10		-1
+c var 263		v_15_11		-1
+c var 264		v_15_12		-1
+c var 265		v_15_13		-1
+c var 266		v_15_14		-1
+c var 267		v_15_15		-1
+c var 268		v_15_16		-1
+c var 269		v_15_17		-1
+c var 270		v_15_18		-1
+c var 271		v_16_1		-1
+c var 272		v_16_2		-1
+c var 273		v_16_3		-1
+c var 274		v_16_4		-1
+c var 275		v_16_5		-1
+c var 276		v_16_6		-1
+c var 277		v_16_7		-1
+c var 278		v_16_8		-1
+c var 279		v_16_9		-1
+c var 280		v_16_10		-1
+c var 281		v_16_11		-1
+c var 282		v_16_12		-1
+c var 283		v_16_13		-1
+c var 284		v_16_14		-1
+c var 285		v_16_15		-1
+c var 286		v_16_16		-1
+c var 287		v_16_17		-1
+c var 288		v_16_18		-1
+c var 289		v_17_1		-1
+c var 290		v_17_2		-1
+c var 291		v_17_3		-1
+c var 292		v_17_4		-1
+c var 293		v_17_5		-1
+c var 294		v_17_6		-1
+c var 295		v_17_7		-1
+c var 296		v_17_8		-1
+c var 297		v_17_9		-1
+c var 298		v_17_10		-1
+c var 299		v_17_11		-1
+c var 300		v_17_12		-1
+c var 301		v_17_13		-1
+c var 302		v_17_14		-1
+c var 303		v_17_15		-1
+c var 304		v_17_16		-1
+c var 305		v_17_17		-1
+c var 306		v_17_18		-1
+c var 307		v_18_1		-1
+c var 308		v_18_2		-1
+c var 309		v_18_3		-1
+c var 310		v_18_4		-1
+c var 311		v_18_5		-1
+c var 312		v_18_6		-1
+c var 313		v_18_7		-1
+c var 314		v_18_8		-1
+c var 315		v_18_9		-1
+c var 316		v_18_10		-1
+c var 317		v_18_11		-1
+c var 318		v_18_12		-1
+c var 319		v_18_13		-1
+c var 320		v_18_14		-1
+c var 321		v_18_15		-1
+c var 322		v_18_16		-1
+c var 323		v_18_17		-1
+c var 324		v_18_18		-1
+c var 325		 added at v_1_2		0
+c var 326		 added at v_1_2		1
+c var 327		 added at v_1_3		0
+c var 328		 added at v_1_3		1
+c var 329		 added at v_1_4		1
+c var 330		 added at v_1_4		0
+c var 331		 added at v_1_5		0.272927
+c var 332		 added at v_1_5		0.424798
+c var 333		 added at v_1_6		0.408145
+c var 334		 added at v_1_6		0.392433
+c var 335		 added at v_1_7		1
+c var 336		 added at v_1_7		0
+c var 337		 added at v_1_8		0
+c var 338		 added at v_1_8		1
+c var 339		 added at v_1_9		1
+c var 340		 added at v_1_9		0
+c var 341		 added at v_1_10		1
+c var 342		 added at v_1_10		0
+c var 343		 added at v_1_11		1
+c var 344		 added at v_1_11		0
+c var 345		 added at v_1_12		1
+c var 346		 added at v_1_12		0
+c var 347		 added at v_1_13		0
+c var 348		 added at v_1_13		1
+c var 349		 added at v_1_14		1
+c var 350		 added at v_1_14		0
+c var 351		 added at v_1_15		1
+c var 352		 added at v_1_15		0
+c var 353		 added at v_1_16		1
+c var 354		 added at v_1_16		0
+c var 355		 added at v_1_17		0.60075
+c var 356		 added at v_1_17		0.607901
+c var 357		 added at v_1_18		0.893985
+c var 358		 added at v_1_18		0.470497
+c var 359		 added at v_2_1		1
+c var 360		 added at v_2_1		0
+c var 361		 added at v_2_2		1
+c var 362		 added at v_2_2		0
+c var 363		 added at v_2_2		0
+c var 364		 added at v_2_2		1
+c var 365		 added at v_2_3		0
+c var 366		 added at v_2_3		0
+c var 367		 added at v_2_3		1
+c var 368		 added at v_2_3		0
+c var 369		 added at v_2_4		0
+c var 370		 added at v_2_4		0
+c var 371		 added at v_2_4		1
+c var 372		 added at v_2_4		0
+c var 373		 added at v_2_5		1
+c var 374		 added at v_2_5		0
+c var 375		 added at v_2_5		1
+c var 376		 added at v_2_5		0
+c var 377		 added at v_2_6		1
+c var 378		 added at v_2_6		1
+c var 379		 added at v_2_6		0
+c var 380		 added at v_2_6		0
+c var 381		 added at v_2_7		0
+c var 382		 added at v_2_7		0
+c var 383		 added at v_2_7		0
+c var 384		 added at v_2_7		1
+c var 385		 added at v_2_8		1
+c var 386		 added at v_2_8		0
+c var 387		 added at v_2_8		0
+c var 388		 added at v_2_8		1
+c var 389		 added at v_2_9		0
+c var 390		 added at v_2_9		0
+c var 391		 added at v_2_9		1
+c var 392		 added at v_2_9		1
+c var 393		 added at v_2_10		0
+c var 394		 added at v_2_10		0
+c var 395		 added at v_2_10		0
+c var 396		 added at v_2_10		1
+c var 397		 added at v_2_11		1
+c var 398		 added at v_2_11		0
+c var 399		 added at v_2_11		0
+c var 400		 added at v_2_11		0
+c var 401		 added at v_2_12		1
+c var 402		 added at v_2_12		1
+c var 403		 added at v_2_12		0
+c var 404		 added at v_2_12		1
+c var 405		 added at v_2_13		0.959103
+c var 406		 added at v_2_13		0.0823965
+c var 407		 added at v_2_13		0.957089
+c var 408		 added at v_2_13		0.528427
+c var 409		 added at v_2_14		0
+c var 410		 added at v_2_14		0
+c var 411		 added at v_2_14		1
+c var 412		 added at v_2_14		0
+c var 413		 added at v_2_15		0
+c var 414		 added at v_2_15		1
+c var 415		 added at v_2_15		0
+c var 416		 added at v_2_15		0
+c var 417		 added at v_2_16		0
+c var 418		 added at v_2_16		1
+c var 419		 added at v_2_16		1
+c var 420		 added at v_2_16		0
+c var 421		 added at v_2_17		0
+c var 422		 added at v_2_17		0
+c var 423		 added at v_2_17		1
+c var 424		 added at v_2_17		0
+c var 425		 added at v_2_18		0
+c var 426		 added at v_2_18		0
+c var 427		 added at v_2_18		1
+c var 428		 added at v_2_18		1
+c var 429		 added at v_3_1		0
+c var 430		 added at v_3_1		1
+c var 431		 added at v_3_2		1
+c var 432		 added at v_3_2		0
+c var 433		 added at v_3_2		1
+c var 434		 added at v_3_2		1
+c var 435		 added at v_3_3		0
+c var 436		 added at v_3_3		1
+c var 437		 added at v_3_3		0
+c var 438		 added at v_3_3		1
+c var 439		 added at v_3_4		0.403395
+c var 440		 added at v_3_4		0.0494035
+c var 441		 added at v_3_4		0.190801
+c var 442		 added at v_3_4		0.710689
+c var 443		 added at v_3_5		0
+c var 444		 added at v_3_5		0
+c var 445		 added at v_3_5		1
+c var 446		 added at v_3_5		0
+c var 447		 added at v_3_6		0
+c var 448		 added at v_3_6		1
+c var 449		 added at v_3_6		0
+c var 450		 added at v_3_6		1
+c var 451		 added at v_3_7		0
+c var 452		 added at v_3_7		0
+c var 453		 added at v_3_7		1
+c var 454		 added at v_3_7		0
+c var 455		 added at v_3_8		0
+c var 456		 added at v_3_8		1
+c var 457		 added at v_3_8		0
+c var 458		 added at v_3_8		0
+c var 459		 added at v_3_9		1
+c var 460		 added at v_3_9		0
+c var 461		 added at v_3_9		0
+c var 462		 added at v_3_9		1
+c var 463		 added at v_3_10		0
+c var 464		 added at v_3_10		0
+c var 465		 added at v_3_10		0
+c var 466		 added at v_3_10		1
+c var 467		 added at v_3_11		0.860228
+c var 468		 added at v_3_11		0.461111
+c var 469		 added at v_3_11		0.661242
+c var 470		 added at v_3_11		0.371177
+c var 471		 added at v_3_12		0
+c var 472		 added at v_3_12		1
+c var 473		 added at v_3_12		1
+c var 474		 added at v_3_12		1
+c var 475		 added at v_3_13		0
+c var 476		 added at v_3_13		0
+c var 477		 added at v_3_13		0
+c var 478		 added at v_3_13		1
+c var 479		 added at v_3_14		1
+c var 480		 added at v_3_14		1
+c var 481		 added at v_3_14		1
+c var 482		 added at v_3_14		0
+c var 483		 added at v_3_15		1
+c var 484		 added at v_3_15		1
+c var 485		 added at v_3_15		0
+c var 486		 added at v_3_15		1
+c var 487		 added at v_3_16		0.229077
+c var 488		 added at v_3_16		0.730746
+c var 489		 added at v_3_16		0.384476
+c var 490		 added at v_3_16		0.108868
+c var 491		 added at v_3_17		1
+c var 492		 added at v_3_17		0
+c var 493		 added at v_3_17		1
+c var 494		 added at v_3_17		1
+c var 495		 added at v_3_18		0
+c var 496		 added at v_3_18		0
+c var 497		 added at v_3_18		0
+c var 498		 added at v_3_18		1
+c var 499		 added at v_4_1		0.699529
+c var 500		 added at v_4_1		0.994746
+c var 501		 added at v_4_2		0
+c var 502		 added at v_4_2		0
+c var 503		 added at v_4_2		1
+c var 504		 added at v_4_2		0
+c var 505		 added at v_4_3		0
+c var 506		 added at v_4_3		0
+c var 507		 added at v_4_3		1
+c var 508		 added at v_4_3		1
+c var 509		 added at v_4_4		0.195629
+c var 510		 added at v_4_4		0.0507797
+c var 511		 added at v_4_4		0.225147
+c var 512		 added at v_4_4		0.926375
+c var 513		 added at v_4_5		1
+c var 514		 added at v_4_5		1
+c var 515		 added at v_4_5		0
+c var 516		 added at v_4_5		1
+c var 517		 added at v_4_6		1
+c var 518		 added at v_4_6		0
+c var 519		 added at v_4_6		0
+c var 520		 added at v_4_6		1
+c var 521		 added at v_4_7		1
+c var 522		 added at v_4_7		0
+c var 523		 added at v_4_7		1
+c var 524		 added at v_4_7		1
+c var 525		 added at v_4_8		0.420958
+c var 526		 added at v_4_8		0.864522
+c var 527		 added at v_4_8		0.109613
+c var 528		 added at v_4_8		0.0907217
+c var 529		 added at v_4_9		1
+c var 530		 added at v_4_9		0
+c var 531		 added at v_4_9		0
+c var 532		 added at v_4_9		0
+c var 533		 added at v_4_10		0
+c var 534		 added at v_4_10		0
+c var 535		 added at v_4_10		0
+c var 536		 added at v_4_10		1
+c var 537		 added at v_4_11		0.876208
+c var 538		 added at v_4_11		0.997676
+c var 539		 added at v_4_11		0.40055
+c var 540		 added at v_4_11		0.157051
+c var 541		 added at v_4_12		1
+c var 542		 added at v_4_12		0
+c var 543		 added at v_4_12		0
+c var 544		 added at v_4_12		1
+c var 545		 added at v_4_13		0
+c var 546		 added at v_4_13		1
+c var 547		 added at v_4_13		1
+c var 548		 added at v_4_13		1
+c var 549		 added at v_4_14		1
+c var 550		 added at v_4_14		1
+c var 551		 added at v_4_14		0
+c var 552		 added at v_4_14		1
+c var 553		 added at v_4_15		0.513628
+c var 554		 added at v_4_15		0.671123
+c var 555		 added at v_4_15		0.240101
+c var 556		 added at v_4_15		0.274826
+c var 557		 added at v_4_16		1
+c var 558		 added at v_4_16		1
+c var 559		 added at v_4_16		0
+c var 560		 added at v_4_16		0
+c var 561		 added at v_4_17		1
+c var 562		 added at v_4_17		1
+c var 563		 added at v_4_17		0
+c var 564		 added at v_4_17		0
+c var 565		 added at v_4_18		1
+c var 566		 added at v_4_18		0
+c var 567		 added at v_4_18		1
+c var 568		 added at v_4_18		0
+c var 569		 added at v_5_1		1
+c var 570		 added at v_5_1		0
+c var 571		 added at v_5_2		0
+c var 572		 added at v_5_2		0
+c var 573		 added at v_5_2		1
+c var 574		 added at v_5_2		0
+c var 575		 added at v_5_3		0.412658
+c var 576		 added at v_5_3		0.793646
+c var 577		 added at v_5_3		0.275191
+c var 578		 added at v_5_3		0.210314
+c var 579		 added at v_5_4		0
+c var 580		 added at v_5_4		1
+c var 581		 added at v_5_4		1
+c var 582		 added at v_5_4		1
+c var 583		 added at v_5_5		0.50986
+c var 584		 added at v_5_5		0.471305
+c var 585		 added at v_5_5		0.928604
+c var 586		 added at v_5_5		0.888318
+c var 587		 added at v_5_6		0.444007
+c var 588		 added at v_5_6		0.423826
+c var 589		 added at v_5_6		0.253009
+c var 590		 added at v_5_6		0.839459
+c var 591		 added at v_5_7		0
+c var 592		 added at v_5_7		1
+c var 593		 added at v_5_7		1
+c var 594		 added at v_5_7		1
+c var 595		 added at v_5_8		0.848572
+c var 596		 added at v_5_8		0.192147
+c var 597		 added at v_5_8		0.106221
+c var 598		 added at v_5_8		0.799413
+c var 599		 added at v_5_9		1
+c var 600		 added at v_5_9		0
+c var 601		 added at v_5_9		0
+c var 602		 added at v_5_9		1
+c var 603		 added at v_5_10		0.35606
+c var 604		 added at v_5_10		0.179608
+c var 605		 added at v_5_10		0.482432
+c var 606		 added at v_5_10		0.363671
+c var 607		 added at v_5_11		1
+c var 608		 added at v_5_11		0
+c var 609		 added at v_5_11		1
+c var 610		 added at v_5_11		1
+c var 611		 added at v_5_12		0.5912
+c var 612		 added at v_5_12		0.668794
+c var 613		 added at v_5_12		0.185675
+c var 614		 added at v_5_12		0.844208
+c var 615		 added at v_5_13		0
+c var 616		 added at v_5_13		1
+c var 617		 added at v_5_13		0
+c var 618		 added at v_5_13		1
+c var 619		 added at v_5_14		0.783432
+c var 620		 added at v_5_14		0.0564421
+c var 621		 added at v_5_14		0.140719
+c var 622		 added at v_5_14		0.889652
+c var 623		 added at v_5_15		0.275273
+c var 624		 added at v_5_15		0.408531
+c var 625		 added at v_5_15		0.448914
+c var 626		 added at v_5_15		0.685019
+c var 627		 added at v_5_16		1
+c var 628		 added at v_5_16		1
+c var 629		 added at v_5_16		0
+c var 630		 added at v_5_16		0
+c var 631		 added at v_5_17		1
+c var 632		 added at v_5_17		0
+c var 633		 added at v_5_17		0
+c var 634		 added at v_5_17		0
+c var 635		 added at v_5_18		0
+c var 636		 added at v_5_18		0
+c var 637		 added at v_5_18		1
+c var 638		 added at v_5_18		0
+c var 639		 added at v_6_1		0.5297
+c var 640		 added at v_6_1		0.802751
+c var 641		 added at v_6_2		0
+c var 642		 added at v_6_2		1
+c var 643		 added at v_6_2		0
+c var 644		 added at v_6_2		1
+c var 645		 added at v_6_3		0
+c var 646		 added at v_6_3		1
+c var 647		 added at v_6_3		0
+c var 648		 added at v_6_3		0
+c var 649		 added at v_6_4		0
+c var 650		 added at v_6_4		1
+c var 651		 added at v_6_4		1
+c var 652		 added at v_6_4		0
+c var 653		 added at v_6_5		0
+c var 654		 added at v_6_5		0
+c var 655		 added at v_6_5		0
+c var 656		 added at v_6_5		1
+c var 657		 added at v_6_6		0
+c var 658		 added at v_6_6		1
+c var 659		 added at v_6_6		1
+c var 660		 added at v_6_6		0
+c var 661		 added at v_6_7		0.0547212
+c var 662		 added at v_6_7		0.337718
+c var 663		 added at v_6_7		0.735247
+c var 664		 added at v_6_7		0.584421
+c var 665		 added at v_6_8		1
+c var 666		 added at v_6_8		0
+c var 667		 added at v_6_8		1
+c var 668		 added at v_6_8		1
+c var 669		 added at v_6_9		0
+c var 670		 added at v_6_9		1
+c var 671		 added at v_6_9		0
+c var 672		 added at v_6_9		1
+c var 673		 added at v_6_10		1
+c var 674		 added at v_6_10		0
+c var 675		 added at v_6_10		1
+c var 676		 added at v_6_10		1
+c var 677		 added at v_6_11		1
+c var 678		 added at v_6_11		0
+c var 679		 added at v_6_11		0
+c var 680		 added at v_6_11		0
+c var 681		 added at v_6_12		1
+c var 682		 added at v_6_12		1
+c var 683		 added at v_6_12		0
+c var 684		 added at v_6_12		1
+c var 685		 added at v_6_13		1
+c var 686		 added at v_6_13		0
+c var 687		 added at v_6_13		1
+c var 688		 added at v_6_13		0
+c var 689		 added at v_6_14		0
+c var 690		 added at v_6_14		0
+c var 691		 added at v_6_14		0
+c var 692		 added at v_6_14		1
+c var 693		 added at v_6_15		0.845727
+c var 694		 added at v_6_15		0.102559
+c var 695		 added at v_6_15		0.0321733
+c var 696		 added at v_6_15		0.175767
+c var 697		 added at v_6_16		1
+c var 698		 added at v_6_16		1
+c var 699		 added at v_6_16		0
+c var 700		 added at v_6_16		0
+c var 701		 added at v_6_17		0.36946
+c var 702		 added at v_6_17		0.565813
+c var 703		 added at v_6_17		0.77992
+c var 704		 added at v_6_17		0.708479
+c var 705		 added at v_6_18		0
+c var 706		 added at v_6_18		1
+c var 707		 added at v_6_18		1
+c var 708		 added at v_6_18		0
+c var 709		 added at v_7_1		0
+c var 710		 added at v_7_1		1
+c var 711		 added at v_7_2		1
+c var 712		 added at v_7_2		0
+c var 713		 added at v_7_2		0
+c var 714		 added at v_7_2		1
+c var 715		 added at v_7_3		0
+c var 716		 added at v_7_3		1
+c var 717		 added at v_7_3		0
+c var 718		 added at v_7_3		1
+c var 719		 added at v_7_4		0.460858
+c var 720		 added at v_7_4		0.254799
+c var 721		 added at v_7_4		0.0372529
+c var 722		 added at v_7_4		0.999008
+c var 723		 added at v_7_5		0.890735
+c var 724		 added at v_7_5		0.520348
+c var 725		 added at v_7_5		0.578944
+c var 726		 added at v_7_5		0.810685
+c var 727		 added at v_7_6		0.144757
+c var 728		 added at v_7_6		0.590604
+c var 729		 added at v_7_6		0.598287
+c var 730		 added at v_7_6		0.177941
+c var 731		 added at v_7_7		1
+c var 732		 added at v_7_7		0
+c var 733		 added at v_7_7		0
+c var 734		 added at v_7_7		0
+c var 735		 added at v_7_8		0
+c var 736		 added at v_7_8		1
+c var 737		 added at v_7_8		1
+c var 738		 added at v_7_8		1
+c var 739		 added at v_7_9		0
+c var 740		 added at v_7_9		0
+c var 741		 added at v_7_9		0
+c var 742		 added at v_7_9		1
+c var 743		 added at v_7_10		1
+c var 744		 added at v_7_10		0
+c var 745		 added at v_7_10		1
+c var 746		 added at v_7_10		0
+c var 747		 added at v_7_11		1
+c var 748		 added at v_7_11		0
+c var 749		 added at v_7_11		0
+c var 750		 added at v_7_11		1
+c var 751		 added at v_7_12		0
+c var 752		 added at v_7_12		1
+c var 753		 added at v_7_12		0
+c var 754		 added at v_7_12		0
+c var 755		 added at v_7_13		1
+c var 756		 added at v_7_13		1
+c var 757		 added at v_7_13		0
+c var 758		 added at v_7_13		1
+c var 759		 added at v_7_14		1
+c var 760		 added at v_7_14		0
+c var 761		 added at v_7_14		0
+c var 762		 added at v_7_14		0
+c var 763		 added at v_7_15		0
+c var 764		 added at v_7_15		1
+c var 765		 added at v_7_15		1
+c var 766		 added at v_7_15		0
+c var 767		 added at v_7_16		0.0177931
+c var 768		 added at v_7_16		0.260233
+c var 769		 added at v_7_16		0.233146
+c var 770		 added at v_7_16		0.147373
+c var 771		 added at v_7_17		1
+c var 772		 added at v_7_17		0
+c var 773		 added at v_7_17		0
+c var 774		 added at v_7_17		0
+c var 775		 added at v_7_18		0.0402798
+c var 776		 added at v_7_18		0.475057
+c var 777		 added at v_7_18		0.31153
+c var 778		 added at v_7_18		0.942233
+c var 779		 added at v_8_1		1
+c var 780		 added at v_8_1		0
+c var 781		 added at v_8_2		0.452964
+c var 782		 added at v_8_2		0.262834
+c var 783		 added at v_8_2		0.0557176
+c var 784		 added at v_8_2		0.305991
+c var 785		 added at v_8_3		1
+c var 786		 added at v_8_3		0
+c var 787		 added at v_8_3		1
+c var 788		 added at v_8_3		1
+c var 789		 added at v_8_4		0
+c var 790		 added at v_8_4		1
+c var 791		 added at v_8_4		0
+c var 792		 added at v_8_4		0
+c var 793		 added at v_8_5		1
+c var 794		 added at v_8_5		1
+c var 795		 added at v_8_5		0
+c var 796		 added at v_8_5		0
+c var 797		 added at v_8_6		0
+c var 798		 added at v_8_6		0
+c var 799		 added at v_8_6		1
+c var 800		 added at v_8_6		0
+c var 801		 added at v_8_7		1
+c var 802		 added at v_8_7		1
+c var 803		 added at v_8_7		1
+c var 804		 added at v_8_7		0
+c var 805		 added at v_8_8		0
+c var 806		 added at v_8_8		1
+c var 807		 added at v_8_8		1
+c var 808		 added at v_8_8		0
+c var 809		 added at v_8_9		1
+c var 810		 added at v_8_9		0
+c var 811		 added at v_8_9		1
+c var 812		 added at v_8_9		0
+c var 813		 added at v_8_10		0
+c var 814		 added at v_8_10		0
+c var 815		 added at v_8_10		1
+c var 816		 added at v_8_10		0
+c var 817		 added at v_8_11		0
+c var 818		 added at v_8_11		1
+c var 819		 added at v_8_11		1
+c var 820		 added at v_8_11		0
+c var 821		 added at v_8_12		0.256458
+c var 822		 added at v_8_12		0.874875
+c var 823		 added at v_8_12		0.43585
+c var 824		 added at v_8_12		0.534786
+c var 825		 added at v_8_13		0.292614
+c var 826		 added at v_8_13		0.755346
+c var 827		 added at v_8_13		0.126986
+c var 828		 added at v_8_13		0.536075
+c var 829		 added at v_8_14		0.783844
+c var 830		 added at v_8_14		0.0423695
+c var 831		 added at v_8_14		0.0557919
+c var 832		 added at v_8_14		0.746694
+c var 833		 added at v_8_15		0
+c var 834		 added at v_8_15		1
+c var 835		 added at v_8_15		1
+c var 836		 added at v_8_15		0
+c var 837		 added at v_8_16		0.114568
+c var 838		 added at v_8_16		0.137574
+c var 839		 added at v_8_16		0.839067
+c var 840		 added at v_8_16		0.741335
+c var 841		 added at v_8_17		1
+c var 842		 added at v_8_17		0
+c var 843		 added at v_8_17		0
+c var 844		 added at v_8_17		0
+c var 845		 added at v_8_18		0
+c var 846		 added at v_8_18		0
+c var 847		 added at v_8_18		0
+c var 848		 added at v_8_18		1
+c var 849		 added at v_9_1		0.90661
+c var 850		 added at v_9_1		0.509277
+c var 851		 added at v_9_2		1
+c var 852		 added at v_9_2		0
+c var 853		 added at v_9_2		0
+c var 854		 added at v_9_2		0
+c var 855		 added at v_9_3		1
+c var 856		 added at v_9_3		0
+c var 857		 added at v_9_3		0
+c var 858		 added at v_9_3		1
+c var 859		 added at v_9_4		0.584564
+c var 860		 added at v_9_4		0.645866
+c var 861		 added at v_9_4		0.809862
+c var 862		 added at v_9_4		0.699131
+c var 863		 added at v_9_5		0.648929
+c var 864		 added at v_9_5		0.440467
+c var 865		 added at v_9_5		0.380117
+c var 866		 added at v_9_5		0.708963
+c var 867		 added at v_9_6		0
+c var 868		 added at v_9_6		1
+c var 869		 added at v_9_6		1
+c var 870		 added at v_9_6		0
+c var 871		 added at v_9_7		1
+c var 872		 added at v_9_7		1
+c var 873		 added at v_9_7		1
+c var 874		 added at v_9_7		0
+c var 875		 added at v_9_8		0.617034
+c var 876		 added at v_9_8		0.279761
+c var 877		 added at v_9_8		0.822417
+c var 878		 added at v_9_8		0.119779
+c var 879		 added at v_9_9		1
+c var 880		 added at v_9_9		0
+c var 881		 added at v_9_9		0
+c var 882		 added at v_9_9		0
+c var 883		 added at v_9_10		0
+c var 884		 added at v_9_10		1
+c var 885		 added at v_9_10		0
+c var 886		 added at v_9_10		0
+c var 887		 added at v_9_11		0.439613
+c var 888		 added at v_9_11		0.342703
+c var 889		 added at v_9_11		0.654939
+c var 890		 added at v_9_11		0.687007
+c var 891		 added at v_9_12		0
+c var 892		 added at v_9_12		0
+c var 893		 added at v_9_12		1
+c var 894		 added at v_9_12		0
+c var 895		 added at v_9_13		0.556658
+c var 896		 added at v_9_13		0.628764
+c var 897		 added at v_9_13		0.708996
+c var 898		 added at v_9_13		0.173692
+c var 899		 added at v_9_14		0.531413
+c var 900		 added at v_9_14		0.293471
+c var 901		 added at v_9_14		0.00572531
+c var 902		 added at v_9_14		0.441551
+c var 903		 added at v_9_15		0.66706
+c var 904		 added at v_9_15		0.157002
+c var 905		 added at v_9_15		0.505066
+c var 906		 added at v_9_15		0.154245
+c var 907		 added at v_9_16		1
+c var 908		 added at v_9_16		1
+c var 909		 added at v_9_16		1
+c var 910		 added at v_9_16		0
+c var 911		 added at v_9_17		0
+c var 912		 added at v_9_17		1
+c var 913		 added at v_9_17		0
+c var 914		 added at v_9_17		1
+c var 915		 added at v_9_18		1
+c var 916		 added at v_9_18		0
+c var 917		 added at v_9_18		1
+c var 918		 added at v_9_18		1
+c var 919		 added at v_10_1		0
+c var 920		 added at v_10_1		1
+c var 921		 added at v_10_2		0
+c var 922		 added at v_10_2		1
+c var 923		 added at v_10_2		0
+c var 924		 added at v_10_2		1
+c var 925		 added at v_10_3		0
+c var 926		 added at v_10_3		1
+c var 927		 added at v_10_3		1
+c var 928		 added at v_10_3		1
+c var 929		 added at v_10_4		0
+c var 930		 added at v_10_4		1
+c var 931		 added at v_10_4		0
+c var 932		 added at v_10_4		0
+c var 933		 added at v_10_5		0.950732
+c var 934		 added at v_10_5		0.890899
+c var 935		 added at v_10_5		0.221309
+c var 936		 added at v_10_5		0.84651
+c var 937		 added at v_10_6		0.273518
+c var 938		 added at v_10_6		0.429295
+c var 939		 added at v_10_6		0.482916
+c var 940		 added at v_10_6		0.768073
+c var 941		 added at v_10_7		0
+c var 942		 added at v_10_7		1
+c var 943		 added at v_10_7		1
+c var 944		 added at v_10_7		0
+c var 945		 added at v_10_8		0
+c var 946		 added at v_10_8		1
+c var 947		 added at v_10_8		0
+c var 948		 added at v_10_8		1
+c var 949		 added at v_10_9		1
+c var 950		 added at v_10_9		0
+c var 951		 added at v_10_9		1
+c var 952		 added at v_10_9		0
+c var 953		 added at v_10_10		1
+c var 954		 added at v_10_10		1
+c var 955		 added at v_10_10		0
+c var 956		 added at v_10_10		1
+c var 957		 added at v_10_11		1
+c var 958		 added at v_10_11		1
+c var 959		 added at v_10_11		1
+c var 960		 added at v_10_11		0
+c var 961		 added at v_10_12		1
+c var 962		 added at v_10_12		1
+c var 963		 added at v_10_12		0
+c var 964		 added at v_10_12		0
+c var 965		 added at v_10_13		0
+c var 966		 added at v_10_13		0
+c var 967		 added at v_10_13		0
+c var 968		 added at v_10_13		1
+c var 969		 added at v_10_14		1
+c var 970		 added at v_10_14		1
+c var 971		 added at v_10_14		0
+c var 972		 added at v_10_14		1
+c var 973		 added at v_10_15		0.277023
+c var 974		 added at v_10_15		0.295024
+c var 975		 added at v_10_15		0.797745
+c var 976		 added at v_10_15		0.452321
+c var 977		 added at v_10_16		0
+c var 978		 added at v_10_16		1
+c var 979		 added at v_10_16		0
+c var 980		 added at v_10_16		0
+c var 981		 added at v_10_17		1
+c var 982		 added at v_10_17		0
+c var 983		 added at v_10_17		0
+c var 984		 added at v_10_17		1
+c var 985		 added at v_10_18		0.535396
+c var 986		 added at v_10_18		0.781984
+c var 987		 added at v_10_18		0.559037
+c var 988		 added at v_10_18		0.46935
+c var 989		 added at v_11_1		0
+c var 990		 added at v_11_1		1
+c var 991		 added at v_11_2		1
+c var 992		 added at v_11_2		0
+c var 993		 added at v_11_2		1
+c var 994		 added at v_11_2		0
+c var 995		 added at v_11_3		0
+c var 996		 added at v_11_3		1
+c var 997		 added at v_11_3		1
+c var 998		 added at v_11_3		1
+c var 999		 added at v_11_4		0.359349
+c var 1000		 added at v_11_4		0.0620197
+c var 1001		 added at v_11_4		0.227274
+c var 1002		 added at v_11_4		0.0249533
+c var 1003		 added at v_11_5		0.892444
+c var 1004		 added at v_11_5		0.621028
+c var 1005		 added at v_11_5		0.0794831
+c var 1006		 added at v_11_5		0.26503
+c var 1007		 added at v_11_6		0
+c var 1008		 added at v_11_6		1
+c var 1009		 added at v_11_6		0
+c var 1010		 added at v_11_6		0
+c var 1011		 added at v_11_7		0.00977212
+c var 1012		 added at v_11_7		0.906041
+c var 1013		 added at v_11_7		0.300512
+c var 1014		 added at v_11_7		0.220541
+c var 1015		 added at v_11_8		0.75894
+c var 1016		 added at v_11_8		0.609671
+c var 1017		 added at v_11_8		0.279692
+c var 1018		 added at v_11_8		0.269999
+c var 1019		 added at v_11_9		1
+c var 1020		 added at v_11_9		0
+c var 1021		 added at v_11_9		1
+c var 1022		 added at v_11_9		0
+c var 1023		 added at v_11_10		0.398209
+c var 1024		 added at v_11_10		0.788426
+c var 1025		 added at v_11_10		0.860729
+c var 1026		 added at v_11_10		0.625483
+c var 1027		 added at v_11_11		0.736902
+c var 1028		 added at v_11_11		0.517927
+c var 1029		 added at v_11_11		0.434407
+c var 1030		 added at v_11_11		0.816385
+c var 1031		 added at v_11_12		0.82608
+c var 1032		 added at v_11_12		0.312375
+c var 1033		 added at v_11_12		0.0787233
+c var 1034		 added at v_11_12		0.0538687
+c var 1035		 added at v_11_13		1
+c var 1036		 added at v_11_13		0
+c var 1037		 added at v_11_13		0
+c var 1038		 added at v_11_13		1
+c var 1039		 added at v_11_14		0
+c var 1040		 added at v_11_14		0
+c var 1041		 added at v_11_14		0
+c var 1042		 added at v_11_14		1
+c var 1043		 added at v_11_15		0
+c var 1044		 added at v_11_15		0
+c var 1045		 added at v_11_15		0
+c var 1046		 added at v_11_15		1
+c var 1047		 added at v_11_16		0
+c var 1048		 added at v_11_16		0
+c var 1049		 added at v_11_16		0
+c var 1050		 added at v_11_16		1
+c var 1051		 added at v_11_17		0
+c var 1052		 added at v_11_17		1
+c var 1053		 added at v_11_17		1
+c var 1054		 added at v_11_17		1
+c var 1055		 added at v_11_18		0.967011
+c var 1056		 added at v_11_18		0.442408
+c var 1057		 added at v_11_18		0.298871
+c var 1058		 added at v_11_18		0.0457338
+c var 1059		 added at v_12_1		0
+c var 1060		 added at v_12_1		1
+c var 1061		 added at v_12_2		0.559918
+c var 1062		 added at v_12_2		0.523669
+c var 1063		 added at v_12_2		0.166016
+c var 1064		 added at v_12_2		0.8441
+c var 1065		 added at v_12_3		1
+c var 1066		 added at v_12_3		1
+c var 1067		 added at v_12_3		0
+c var 1068		 added at v_12_3		1
+c var 1069		 added at v_12_4		0.967587
+c var 1070		 added at v_12_4		0.148459
+c var 1071		 added at v_12_4		0.399565
+c var 1072		 added at v_12_4		0.547702
+c var 1073		 added at v_12_5		0
+c var 1074		 added at v_12_5		0
+c var 1075		 added at v_12_5		1
+c var 1076		 added at v_12_5		1
+c var 1077		 added at v_12_6		0
+c var 1078		 added at v_12_6		0
+c var 1079		 added at v_12_6		1
+c var 1080		 added at v_12_6		1
+c var 1081		 added at v_12_7		0
+c var 1082		 added at v_12_7		1
+c var 1083		 added at v_12_7		1
+c var 1084		 added at v_12_7		0
+c var 1085		 added at v_12_8		1
+c var 1086		 added at v_12_8		0
+c var 1087		 added at v_12_8		0
+c var 1088		 added at v_12_8		1
+c var 1089		 added at v_12_9		1
+c var 1090		 added at v_12_9		0
+c var 1091		 added at v_12_9		0
+c var 1092		 added at v_12_9		0
+c var 1093		 added at v_12_10		0.552278
+c var 1094		 added at v_12_10		0.905942
+c var 1095		 added at v_12_10		0.0832682
+c var 1096		 added at v_12_10		0.951844
+c var 1097		 added at v_12_11		0
+c var 1098		 added at v_12_11		1
+c var 1099		 added at v_12_11		0
+c var 1100		 added at v_12_11		1
+c var 1101		 added at v_12_12		0
+c var 1102		 added at v_12_12		0
+c var 1103		 added at v_12_12		1
+c var 1104		 added at v_12_12		0
+c var 1105		 added at v_12_13		1
+c var 1106		 added at v_12_13		0
+c var 1107		 added at v_12_13		0
+c var 1108		 added at v_12_13		0
+c var 1109		 added at v_12_14		0.770868
+c var 1110		 added at v_12_14		0.608061
+c var 1111		 added at v_12_14		0.205715
+c var 1112		 added at v_12_14		0.862412
+c var 1113		 added at v_12_15		0
+c var 1114		 added at v_12_15		0
+c var 1115		 added at v_12_15		1
+c var 1116		 added at v_12_15		0
+c var 1117		 added at v_12_16		0.527758
+c var 1118		 added at v_12_16		0.610335
+c var 1119		 added at v_12_16		0.828517
+c var 1120		 added at v_12_16		0.611027
+c var 1121		 added at v_12_17		1
+c var 1122		 added at v_12_17		1
+c var 1123		 added at v_12_17		1
+c var 1124		 added at v_12_17		0
+c var 1125		 added at v_12_18		0
+c var 1126		 added at v_12_18		0
+c var 1127		 added at v_12_18		1
+c var 1128		 added at v_12_18		1
+c var 1129		 added at v_13_1		0
+c var 1130		 added at v_13_1		1
+c var 1131		 added at v_13_2		0
+c var 1132		 added at v_13_2		1
+c var 1133		 added at v_13_2		1
+c var 1134		 added at v_13_2		0
+c var 1135		 added at v_13_3		1
+c var 1136		 added at v_13_3		1
+c var 1137		 added at v_13_3		1
+c var 1138		 added at v_13_3		0
+c var 1139		 added at v_13_4		1
+c var 1140		 added at v_13_4		0
+c var 1141		 added at v_13_4		1
+c var 1142		 added at v_13_4		1
+c var 1143		 added at v_13_5		1
+c var 1144		 added at v_13_5		0
+c var 1145		 added at v_13_5		1
+c var 1146		 added at v_13_5		1
+c var 1147		 added at v_13_6		0
+c var 1148		 added at v_13_6		0
+c var 1149		 added at v_13_6		0
+c var 1150		 added at v_13_6		1
+c var 1151		 added at v_13_7		0
+c var 1152		 added at v_13_7		0
+c var 1153		 added at v_13_7		1
+c var 1154		 added at v_13_7		1
+c var 1155		 added at v_13_8		0
+c var 1156		 added at v_13_8		1
+c var 1157		 added at v_13_8		0
+c var 1158		 added at v_13_8		0
+c var 1159		 added at v_13_9		1
+c var 1160		 added at v_13_9		1
+c var 1161		 added at v_13_9		1
+c var 1162		 added at v_13_9		0
+c var 1163		 added at v_13_10		0
+c var 1164		 added at v_13_10		0
+c var 1165		 added at v_13_10		0
+c var 1166		 added at v_13_10		1
+c var 1167		 added at v_13_11		1
+c var 1168		 added at v_13_11		1
+c var 1169		 added at v_13_11		0
+c var 1170		 added at v_13_11		0
+c var 1171		 added at v_13_12		0
+c var 1172		 added at v_13_12		1
+c var 1173		 added at v_13_12		0
+c var 1174		 added at v_13_12		0
+c var 1175		 added at v_13_13		0.694589
+c var 1176		 added at v_13_13		0.0839025
+c var 1177		 added at v_13_13		0.385621
+c var 1178		 added at v_13_13		0.676744
+c var 1179		 added at v_13_14		0
+c var 1180		 added at v_13_14		0
+c var 1181		 added at v_13_14		1
+c var 1182		 added at v_13_14		0
+c var 1183		 added at v_13_15		0.537113
+c var 1184		 added at v_13_15		0.626453
+c var 1185		 added at v_13_15		0.00462842
+c var 1186		 added at v_13_15		0.832446
+c var 1187		 added at v_13_16		1
+c var 1188		 added at v_13_16		0
+c var 1189		 added at v_13_16		1
+c var 1190		 added at v_13_16		1
+c var 1191		 added at v_13_17		0.156974
+c var 1192		 added at v_13_17		0.432515
+c var 1193		 added at v_13_17		0.12296
+c var 1194		 added at v_13_17		0.506741
+c var 1195		 added at v_13_18		0
+c var 1196		 added at v_13_18		1
+c var 1197		 added at v_13_18		0
+c var 1198		 added at v_13_18		0
+c var 1199		 added at v_14_1		1
+c var 1200		 added at v_14_1		0
+c var 1201		 added at v_14_2		1
+c var 1202		 added at v_14_2		0
+c var 1203		 added at v_14_2		0
+c var 1204		 added at v_14_2		1
+c var 1205		 added at v_14_3		0
+c var 1206		 added at v_14_3		0
+c var 1207		 added at v_14_3		0
+c var 1208		 added at v_14_3		1
+c var 1209		 added at v_14_4		1
+c var 1210		 added at v_14_4		1
+c var 1211		 added at v_14_4		0
+c var 1212		 added at v_14_4		1
+c var 1213		 added at v_14_5		0
+c var 1214		 added at v_14_5		0
+c var 1215		 added at v_14_5		0
+c var 1216		 added at v_14_5		1
+c var 1217		 added at v_14_6		1
+c var 1218		 added at v_14_6		0
+c var 1219		 added at v_14_6		1
+c var 1220		 added at v_14_6		1
+c var 1221		 added at v_14_7		0.932305
+c var 1222		 added at v_14_7		0.642323
+c var 1223		 added at v_14_7		0.0650903
+c var 1224		 added at v_14_7		0.136707
+c var 1225		 added at v_14_8		1
+c var 1226		 added at v_14_8		0
+c var 1227		 added at v_14_8		0
+c var 1228		 added at v_14_8		0
+c var 1229		 added at v_14_9		0
+c var 1230		 added at v_14_9		0
+c var 1231		 added at v_14_9		0
+c var 1232		 added at v_14_9		1
+c var 1233		 added at v_14_10		0.084864
+c var 1234		 added at v_14_10		0.527235
+c var 1235		 added at v_14_10		0.530082
+c var 1236		 added at v_14_10		0.436809
+c var 1237		 added at v_14_11		0
+c var 1238		 added at v_14_11		1
+c var 1239		 added at v_14_11		0
+c var 1240		 added at v_14_11		1
+c var 1241		 added at v_14_12		1
+c var 1242		 added at v_14_12		1
+c var 1243		 added at v_14_12		0
+c var 1244		 added at v_14_12		0
+c var 1245		 added at v_14_13		1
+c var 1246		 added at v_14_13		0
+c var 1247		 added at v_14_13		0
+c var 1248		 added at v_14_13		0
+c var 1249		 added at v_14_14		1
+c var 1250		 added at v_14_14		0
+c var 1251		 added at v_14_14		1
+c var 1252		 added at v_14_14		0
+c var 1253		 added at v_14_15		0.891971
+c var 1254		 added at v_14_15		0.709061
+c var 1255		 added at v_14_15		0.234991
+c var 1256		 added at v_14_15		0.0588406
+c var 1257		 added at v_14_16		1
+c var 1258		 added at v_14_16		0
+c var 1259		 added at v_14_16		0
+c var 1260		 added at v_14_16		1
+c var 1261		 added at v_14_17		0
+c var 1262		 added at v_14_17		1
+c var 1263		 added at v_14_17		1
+c var 1264		 added at v_14_17		0
+c var 1265		 added at v_14_18		0
+c var 1266		 added at v_14_18		1
+c var 1267		 added at v_14_18		1
+c var 1268		 added at v_14_18		0
+c var 1269		 added at v_15_1		0.925388
+c var 1270		 added at v_15_1		0.477155
+c var 1271		 added at v_15_2		1
+c var 1272		 added at v_15_2		1
+c var 1273		 added at v_15_2		1
+c var 1274		 added at v_15_2		0
+c var 1275		 added at v_15_3		0
+c var 1276		 added at v_15_3		0
+c var 1277		 added at v_15_3		1
+c var 1278		 added at v_15_3		0
+c var 1279		 added at v_15_4		0
+c var 1280		 added at v_15_4		1
+c var 1281		 added at v_15_4		1
+c var 1282		 added at v_15_4		1
+c var 1283		 added at v_15_5		1
+c var 1284		 added at v_15_5		0
+c var 1285		 added at v_15_5		1
+c var 1286		 added at v_15_5		1
+c var 1287		 added at v_15_6		0
+c var 1288		 added at v_15_6		1
+c var 1289		 added at v_15_6		1
+c var 1290		 added at v_15_6		0
+c var 1291		 added at v_15_7		0
+c var 1292		 added at v_15_7		0
+c var 1293		 added at v_15_7		0
+c var 1294		 added at v_15_7		1
+c var 1295		 added at v_15_8		0
+c var 1296		 added at v_15_8		0
+c var 1297		 added at v_15_8		1
+c var 1298		 added at v_15_8		1
+c var 1299		 added at v_15_9		1
+c var 1300		 added at v_15_9		1
+c var 1301		 added at v_15_9		1
+c var 1302		 added at v_15_9		0
+c var 1303		 added at v_15_10		0
+c var 1304		 added at v_15_10		0
+c var 1305		 added at v_15_10		1
+c var 1306		 added at v_15_10		1
+c var 1307		 added at v_15_11		0.764341
+c var 1308		 added at v_15_11		0.761659
+c var 1309		 added at v_15_11		0.63872
+c var 1310		 added at v_15_11		0.670567
+c var 1311		 added at v_15_12		0.742368
+c var 1312		 added at v_15_12		0.680054
+c var 1313		 added at v_15_12		0.171951
+c var 1314		 added at v_15_12		0.533257
+c var 1315		 added at v_15_13		0.552382
+c var 1316		 added at v_15_13		0.182047
+c var 1317		 added at v_15_13		0.832604
+c var 1318		 added at v_15_13		0.714432
+c var 1319		 added at v_15_14		0.308362
+c var 1320		 added at v_15_14		0.023959
+c var 1321		 added at v_15_14		0.38837
+c var 1322		 added at v_15_14		0.0304825
+c var 1323		 added at v_15_15		0.528314
+c var 1324		 added at v_15_15		0.494904
+c var 1325		 added at v_15_15		0.0596662
+c var 1326		 added at v_15_15		0.457312
+c var 1327		 added at v_15_16		1
+c var 1328		 added at v_15_16		1
+c var 1329		 added at v_15_16		1
+c var 1330		 added at v_15_16		0
+c var 1331		 added at v_15_17		1
+c var 1332		 added at v_15_17		0
+c var 1333		 added at v_15_17		1
+c var 1334		 added at v_15_17		0
+c var 1335		 added at v_15_18		0
+c var 1336		 added at v_15_18		0
+c var 1337		 added at v_15_18		1
+c var 1338		 added at v_15_18		0
+c var 1339		 added at v_16_1		1
+c var 1340		 added at v_16_1		0
+c var 1341		 added at v_16_2		1
+c var 1342		 added at v_16_2		0
+c var 1343		 added at v_16_2		1
+c var 1344		 added at v_16_2		1
+c var 1345		 added at v_16_3		0.154009
+c var 1346		 added at v_16_3		0.822523
+c var 1347		 added at v_16_3		0.875325
+c var 1348		 added at v_16_3		0.0802234
+c var 1349		 added at v_16_4		0
+c var 1350		 added at v_16_4		0
+c var 1351		 added at v_16_4		0
+c var 1352		 added at v_16_4		1
+c var 1353		 added at v_16_5		1
+c var 1354		 added at v_16_5		1
+c var 1355		 added at v_16_5		1
+c var 1356		 added at v_16_5		0
+c var 1357		 added at v_16_6		1
+c var 1358		 added at v_16_6		1
+c var 1359		 added at v_16_6		0
+c var 1360		 added at v_16_6		1
+c var 1361		 added at v_16_7		0
+c var 1362		 added at v_16_7		1
+c var 1363		 added at v_16_7		1
+c var 1364		 added at v_16_7		0
+c var 1365		 added at v_16_8		0
+c var 1366		 added at v_16_8		1
+c var 1367		 added at v_16_8		0
+c var 1368		 added at v_16_8		1
+c var 1369		 added at v_16_9		0.875237
+c var 1370		 added at v_16_9		0.868466
+c var 1371		 added at v_16_9		0.762028
+c var 1372		 added at v_16_9		0.750562
+c var 1373		 added at v_16_10		0.112864
+c var 1374		 added at v_16_10		0.12079
+c var 1375		 added at v_16_10		0.0885785
+c var 1376		 added at v_16_10		0.921012
+c var 1377		 added at v_16_11		0
+c var 1378		 added at v_16_11		1
+c var 1379		 added at v_16_11		0
+c var 1380		 added at v_16_11		1
+c var 1381		 added at v_16_12		0
+c var 1382		 added at v_16_12		1
+c var 1383		 added at v_16_12		1
+c var 1384		 added at v_16_12		1
+c var 1385		 added at v_16_13		0
+c var 1386		 added at v_16_13		1
+c var 1387		 added at v_16_13		0
+c var 1388		 added at v_16_13		0
+c var 1389		 added at v_16_14		0
+c var 1390		 added at v_16_14		1
+c var 1391		 added at v_16_14		0
+c var 1392		 added at v_16_14		1
+c var 1393		 added at v_16_15		0.59593
+c var 1394		 added at v_16_15		0.642118
+c var 1395		 added at v_16_15		0.54563
+c var 1396		 added at v_16_15		0.346492
+c var 1397		 added at v_16_16		1
+c var 1398		 added at v_16_16		1
+c var 1399		 added at v_16_16		0
+c var 1400		 added at v_16_16		1
+c var 1401		 added at v_16_17		1
+c var 1402		 added at v_16_17		0
+c var 1403		 added at v_16_17		1
+c var 1404		 added at v_16_17		0
+c var 1405		 added at v_16_18		0
+c var 1406		 added at v_16_18		1
+c var 1407		 added at v_16_18		1
+c var 1408		 added at v_16_18		0
+c var 1409		 added at v_17_1		0.885722
+c var 1410		 added at v_17_1		0.726467
+c var 1411		 added at v_17_2		1
+c var 1412		 added at v_17_2		0
+c var 1413		 added at v_17_2		1
+c var 1414		 added at v_17_2		1
+c var 1415		 added at v_17_3		0.479891
+c var 1416		 added at v_17_3		0.193358
+c var 1417		 added at v_17_3		0.692912
+c var 1418		 added at v_17_3		0.0758209
+c var 1419		 added at v_17_4		0.238542
+c var 1420		 added at v_17_4		0.422313
+c var 1421		 added at v_17_4		0.426283
+c var 1422		 added at v_17_4		0.897036
+c var 1423		 added at v_17_5		0.105668
+c var 1424		 added at v_17_5		0.476542
+c var 1425		 added at v_17_5		0.451932
+c var 1426		 added at v_17_5		0.329807
+c var 1427		 added at v_17_6		0
+c var 1428		 added at v_17_6		1
+c var 1429		 added at v_17_6		1
+c var 1430		 added at v_17_6		1
+c var 1431		 added at v_17_7		0.828631
+c var 1432		 added at v_17_7		0.926975
+c var 1433		 added at v_17_7		0.648466
+c var 1434		 added at v_17_7		0.714353
+c var 1435		 added at v_17_8		0
+c var 1436		 added at v_17_8		1
+c var 1437		 added at v_17_8		1
+c var 1438		 added at v_17_8		1
+c var 1439		 added at v_17_9		0
+c var 1440		 added at v_17_9		0
+c var 1441		 added at v_17_9		1
+c var 1442		 added at v_17_9		0
+c var 1443		 added at v_17_10		1
+c var 1444		 added at v_17_10		1
+c var 1445		 added at v_17_10		1
+c var 1446		 added at v_17_10		0
+c var 1447		 added at v_17_11		1
+c var 1448		 added at v_17_11		0
+c var 1449		 added at v_17_11		0
+c var 1450		 added at v_17_11		0
+c var 1451		 added at v_17_12		1
+c var 1452		 added at v_17_12		1
+c var 1453		 added at v_17_12		0
+c var 1454		 added at v_17_12		1
+c var 1455		 added at v_17_13		1
+c var 1456		 added at v_17_13		1
+c var 1457		 added at v_17_13		0
+c var 1458		 added at v_17_13		1
+c var 1459		 added at v_17_14		0.836733
+c var 1460		 added at v_17_14		0.469387
+c var 1461		 added at v_17_14		0.483465
+c var 1462		 added at v_17_14		0.313295
+c var 1463		 added at v_17_15		0.111428
+c var 1464		 added at v_17_15		0.269748
+c var 1465		 added at v_17_15		0.651885
+c var 1466		 added at v_17_15		0.432303
+c var 1467		 added at v_17_16		1
+c var 1468		 added at v_17_16		0
+c var 1469		 added at v_17_16		0
+c var 1470		 added at v_17_16		1
+c var 1471		 added at v_17_17		1
+c var 1472		 added at v_17_17		1
+c var 1473		 added at v_17_17		1
+c var 1474		 added at v_17_17		0
+c var 1475		 added at v_17_18		1
+c var 1476		 added at v_17_18		1
+c var 1477		 added at v_17_18		1
+c var 1478		 added at v_17_18		0
+c var 1479		 added at v_18_1		1
+c var 1480		 added at v_18_1		0
+c var 1481		 added at v_18_2		0
+c var 1482		 added at v_18_2		0
+c var 1483		 added at v_18_2		1
+c var 1484		 added at v_18_2		0
+c var 1485		 added at v_18_3		0
+c var 1486		 added at v_18_3		1
+c var 1487		 added at v_18_3		0
+c var 1488		 added at v_18_3		0
+c var 1489		 added at v_18_4		1
+c var 1490		 added at v_18_4		1
+c var 1491		 added at v_18_4		0
+c var 1492		 added at v_18_4		0
+c var 1493		 added at v_18_5		0
+c var 1494		 added at v_18_5		0
+c var 1495		 added at v_18_5		0
+c var 1496		 added at v_18_5		1
+c var 1497		 added at v_18_6		1
+c var 1498		 added at v_18_6		1
+c var 1499		 added at v_18_6		1
+c var 1500		 added at v_18_6		0
+c var 1501		 added at v_18_7		1
+c var 1502		 added at v_18_7		0
+c var 1503		 added at v_18_7		1
+c var 1504		 added at v_18_7		0
+c var 1505		 added at v_18_8		1
+c var 1506		 added at v_18_8		0
+c var 1507		 added at v_18_8		1
+c var 1508		 added at v_18_8		1
+c var 1509		 added at v_18_9		1
+c var 1510		 added at v_18_9		0
+c var 1511		 added at v_18_9		1
+c var 1512		 added at v_18_9		1
+c var 1513		 added at v_18_10		0
+c var 1514		 added at v_18_10		0
+c var 1515		 added at v_18_10		1
+c var 1516		 added at v_18_10		0
+c var 1517		 added at v_18_11		1
+c var 1518		 added at v_18_11		0
+c var 1519		 added at v_18_11		1
+c var 1520		 added at v_18_11		1
+c var 1521		 added at v_18_12		0
+c var 1522		 added at v_18_12		1
+c var 1523		 added at v_18_12		1
+c var 1524		 added at v_18_12		0
+c var 1525		 added at v_18_13		0
+c var 1526		 added at v_18_13		1
+c var 1527		 added at v_18_13		0
+c var 1528		 added at v_18_13		1
+c var 1529		 added at v_18_14		0
+c var 1530		 added at v_18_14		1
+c var 1531		 added at v_18_14		0
+c var 1532		 added at v_18_14		1
+c var 1533		 added at v_18_15		1
+c var 1534		 added at v_18_15		0
+c var 1535		 added at v_18_15		1
+c var 1536		 added at v_18_15		0
+c var 1537		 added at v_18_16		0
+c var 1538		 added at v_18_16		0
+c var 1539		 added at v_18_16		1
+c var 1540		 added at v_18_16		1
+c var 1541		 added at v_18_17		0.661582
+c var 1542		 added at v_18_17		0.181958
+c var 1543		 added at v_18_17		0.588075
+c var 1544		 added at v_18_17		0.368666
+c var 1545		 added at v_18_18		1
+c var 1546		 added at v_18_18		0
+c var 1547		 added at v_18_18		1
+c var 1548		 added at v_18_18		1
+w	1	0.319105 
+w	2	-1 
+w	3	-1 
+w	4	-1 
+w	5	-1 
+w	6	-1 
+w	7	-1 
+w	8	-1 
+w	9	-1 
+w	10	-1 
+w	11	-1 
+w	12	-1 
+w	13	-1 
+w	14	-1 
+w	15	-1 
+w	16	-1 
+w	17	-1 
+w	18	-1 
+w	19	-1 
+w	20	-1 
+w	21	-1 
+w	22	-1 
+w	23	-1 
+w	24	-1 
+w	25	-1 
+w	26	-1 
+w	27	-1 
+w	28	-1 
+w	29	-1 
+w	30	-1 
+w	31	-1 
+w	32	-1 
+w	33	-1 
+w	34	-1 
+w	35	-1 
+w	36	-1 
+w	37	-1 
+w	38	-1 
+w	39	-1 
+w	40	-1 
+w	41	-1 
+w	42	-1 
+w	43	-1 
+w	44	-1 
+w	45	-1 
+w	46	-1 
+w	47	-1 
+w	48	-1 
+w	49	-1 
+w	50	-1 
+w	51	-1 
+w	52	-1 
+w	53	-1 
+w	54	-1 
+w	55	-1 
+w	56	-1 
+w	57	-1 
+w	58	-1 
+w	59	-1 
+w	60	-1 
+w	61	-1 
+w	62	-1 
+w	63	-1 
+w	64	-1 
+w	65	-1 
+w	66	-1 
+w	67	-1 
+w	68	-1 
+w	69	-1 
+w	70	-1 
+w	71	-1 
+w	72	-1 
+w	73	-1 
+w	74	-1 
+w	75	-1 
+w	76	-1 
+w	77	-1 
+w	78	-1 
+w	79	-1 
+w	80	-1 
+w	81	-1 
+w	82	-1 
+w	83	-1 
+w	84	-1 
+w	85	-1 
+w	86	-1 
+w	87	-1 
+w	88	-1 
+w	89	-1 
+w	90	-1 
+w	91	-1 
+w	92	-1 
+w	93	-1 
+w	94	-1 
+w	95	-1 
+w	96	-1 
+w	97	-1 
+w	98	-1 
+w	99	-1 
+w	100	-1 
+w	101	-1 
+w	102	-1 
+w	103	-1 
+w	104	-1 
+w	105	-1 
+w	106	-1 
+w	107	-1 
+w	108	-1 
+w	109	-1 
+w	110	-1 
+w	111	-1 
+w	112	-1 
+w	113	-1 
+w	114	-1 
+w	115	-1 
+w	116	-1 
+w	117	-1 
+w	118	-1 
+w	119	-1 
+w	120	-1 
+w	121	-1 
+w	122	-1 
+w	123	-1 
+w	124	-1 
+w	125	-1 
+w	126	-1 
+w	127	-1 
+w	128	-1 
+w	129	-1 
+w	130	-1 
+w	131	-1 
+w	132	-1 
+w	133	-1 
+w	134	-1 
+w	135	-1 
+w	136	-1 
+w	137	-1 
+w	138	-1 
+w	139	-1 
+w	140	-1 
+w	141	-1 
+w	142	-1 
+w	143	-1 
+w	144	-1 
+w	145	-1 
+w	146	-1 
+w	147	-1 
+w	148	-1 
+w	149	-1 
+w	150	-1 
+w	151	-1 
+w	152	-1 
+w	153	-1 
+w	154	-1 
+w	155	-1 
+w	156	-1 
+w	157	-1 
+w	158	-1 
+w	159	-1 
+w	160	-1 
+w	161	-1 
+w	162	-1 
+w	163	-1 
+w	164	-1 
+w	165	-1 
+w	166	-1 
+w	167	-1 
+w	168	-1 
+w	169	-1 
+w	170	-1 
+w	171	-1 
+w	172	-1 
+w	173	-1 
+w	174	-1 
+w	175	-1 
+w	176	-1 
+w	177	-1 
+w	178	-1 
+w	179	-1 
+w	180	-1 
+w	181	-1 
+w	182	-1 
+w	183	-1 
+w	184	-1 
+w	185	-1 
+w	186	-1 
+w	187	-1 
+w	188	-1 
+w	189	-1 
+w	190	-1 
+w	191	-1 
+w	192	-1 
+w	193	-1 
+w	194	-1 
+w	195	-1 
+w	196	-1 
+w	197	-1 
+w	198	-1 
+w	199	-1 
+w	200	-1 
+w	201	-1 
+w	202	-1 
+w	203	-1 
+w	204	-1 
+w	205	-1 
+w	206	-1 
+w	207	-1 
+w	208	-1 
+w	209	-1 
+w	210	-1 
+w	211	-1 
+w	212	-1 
+w	213	-1 
+w	214	-1 
+w	215	-1 
+w	216	-1 
+w	217	-1 
+w	218	-1 
+w	219	-1 
+w	220	-1 
+w	221	-1 
+w	222	-1 
+w	223	-1 
+w	224	-1 
+w	225	-1 
+w	226	-1 
+w	227	-1 
+w	228	-1 
+w	229	-1 
+w	230	-1 
+w	231	-1 
+w	232	-1 
+w	233	-1 
+w	234	-1 
+w	235	-1 
+w	236	-1 
+w	237	-1 
+w	238	-1 
+w	239	-1 
+w	240	-1 
+w	241	-1 
+w	242	-1 
+w	243	-1 
+w	244	-1 
+w	245	-1 
+w	246	-1 
+w	247	-1 
+w	248	-1 
+w	249	-1 
+w	250	-1 
+w	251	-1 
+w	252	-1 
+w	253	-1 
+w	254	-1 
+w	255	-1 
+w	256	-1 
+w	257	-1 
+w	258	-1 
+w	259	-1 
+w	260	-1 
+w	261	-1 
+w	262	-1 
+w	263	-1 
+w	264	-1 
+w	265	-1 
+w	266	-1 
+w	267	-1 
+w	268	-1 
+w	269	-1 
+w	270	-1 
+w	271	-1 
+w	272	-1 
+w	273	-1 
+w	274	-1 
+w	275	-1 
+w	276	-1 
+w	277	-1 
+w	278	-1 
+w	279	-1 
+w	280	-1 
+w	281	-1 
+w	282	-1 
+w	283	-1 
+w	284	-1 
+w	285	-1 
+w	286	-1 
+w	287	-1 
+w	288	-1 
+w	289	-1 
+w	290	-1 
+w	291	-1 
+w	292	-1 
+w	293	-1 
+w	294	-1 
+w	295	-1 
+w	296	-1 
+w	297	-1 
+w	298	-1 
+w	299	-1 
+w	300	-1 
+w	301	-1 
+w	302	-1 
+w	303	-1 
+w	304	-1 
+w	305	-1 
+w	306	-1 
+w	307	-1 
+w	308	-1 
+w	309	-1 
+w	310	-1 
+w	311	-1 
+w	312	-1 
+w	313	-1 
+w	314	-1 
+w	315	-1 
+w	316	-1 
+w	317	-1 
+w	318	-1 
+w	319	-1 
+w	320	-1 
+w	321	-1 
+w	322	-1 
+w	323	-1 
+w	324	-1 
+w	331	0.272927 
+w	332	0.424798 
+w	333	0.408145 
+w	334	0.392433 
+w	355	0.60075 
+w	356	0.607901 
+w	357	0.893985 
+w	358	0.470497 
+w	405	0.959103 
+w	406	0.0823965 
+w	407	0.957089 
+w	408	0.528427 
+w	439	0.403395 
+w	440	0.0494035 
+w	441	0.190801 
+w	442	0.710689 
+w	467	0.860228 
+w	468	0.461111 
+w	469	0.661242 
+w	470	0.371177 
+w	487	0.229077 
+w	488	0.730746 
+w	489	0.384476 
+w	490	0.108868 
+w	499	0.699529 
+w	500	0.994746 
+w	509	0.195629 
+w	510	0.0507797 
+w	511	0.225147 
+w	512	0.926375 
+w	525	0.420958 
+w	526	0.864522 
+w	527	0.109613 
+w	528	0.0907217 
+w	537	0.876208 
+w	538	0.997676 
+w	539	0.40055 
+w	540	0.157051 
+w	553	0.513628 
+w	554	0.671123 
+w	555	0.240101 
+w	556	0.274826 
+w	575	0.412658 
+w	576	0.793646 
+w	577	0.275191 
+w	578	0.210314 
+w	583	0.50986 
+w	584	0.471305 
+w	585	0.928604 
+w	586	0.888318 
+w	587	0.444007 
+w	588	0.423826 
+w	589	0.253009 
+w	590	0.839459 
+w	595	0.848572 
+w	596	0.192147 
+w	597	0.106221 
+w	598	0.799413 
+w	603	0.35606 
+w	604	0.179608 
+w	605	0.482432 
+w	606	0.363671 
+w	611	0.5912 
+w	612	0.668794 
+w	613	0.185675 
+w	614	0.844208 
+w	619	0.783432 
+w	620	0.0564421 
+w	621	0.140719 
+w	622	0.889652 
+w	623	0.275273 
+w	624	0.408531 
+w	625	0.448914 
+w	626	0.685019 
+w	639	0.5297 
+w	640	0.802751 
+w	661	0.0547212 
+w	662	0.337718 
+w	663	0.735247 
+w	664	0.584421 
+w	693	0.845727 
+w	694	0.102559 
+w	695	0.0321733 
+w	696	0.175767 
+w	701	0.36946 
+w	702	0.565813 
+w	703	0.77992 
+w	704	0.708479 
+w	719	0.460858 
+w	720	0.254799 
+w	721	0.0372529 
+w	722	0.999008 
+w	723	0.890735 
+w	724	0.520348 
+w	725	0.578944 
+w	726	0.810685 
+w	727	0.144757 
+w	728	0.590604 
+w	729	0.598287 
+w	730	0.177941 
+w	767	0.0177931 
+w	768	0.260233 
+w	769	0.233146 
+w	770	0.147373 
+w	775	0.0402798 
+w	776	0.475057 
+w	777	0.31153 
+w	778	0.942233 
+w	781	0.452964 
+w	782	0.262834 
+w	783	0.0557176 
+w	784	0.305991 
+w	821	0.256458 
+w	822	0.874875 
+w	823	0.43585 
+w	824	0.534786 
+w	825	0.292614 
+w	826	0.755346 
+w	827	0.126986 
+w	828	0.536075 
+w	829	0.783844 
+w	830	0.0423695 
+w	831	0.0557919 
+w	832	0.746694 
+w	837	0.114568 
+w	838	0.137574 
+w	839	0.839067 
+w	840	0.741335 
+w	849	0.90661 
+w	850	0.509277 
+w	859	0.584564 
+w	860	0.645866 
+w	861	0.809862 
+w	862	0.699131 
+w	863	0.648929 
+w	864	0.440467 
+w	865	0.380117 
+w	866	0.708963 
+w	875	0.617034 
+w	876	0.279761 
+w	877	0.822417 
+w	878	0.119779 
+w	887	0.439613 
+w	888	0.342703 
+w	889	0.654939 
+w	890	0.687007 
+w	895	0.556658 
+w	896	0.628764 
+w	897	0.708996 
+w	898	0.173692 
+w	899	0.531413 
+w	900	0.293471 
+w	901	0.00572531 
+w	902	0.441551 
+w	903	0.66706 
+w	904	0.157002 
+w	905	0.505066 
+w	906	0.154245 
+w	933	0.950732 
+w	934	0.890899 
+w	935	0.221309 
+w	936	0.84651 
+w	937	0.273518 
+w	938	0.429295 
+w	939	0.482916 
+w	940	0.768073 
+w	973	0.277023 
+w	974	0.295024 
+w	975	0.797745 
+w	976	0.452321 
+w	985	0.535396 
+w	986	0.781984 
+w	987	0.559037 
+w	988	0.46935 
+w	999	0.359349 
+w	1000	0.0620197 
+w	1001	0.227274 
+w	1002	0.0249533 
+w	1003	0.892444 
+w	1004	0.621028 
+w	1005	0.0794831 
+w	1006	0.26503 
+w	1011	0.00977212 
+w	1012	0.906041 
+w	1013	0.300512 
+w	1014	0.220541 
+w	1015	0.75894 
+w	1016	0.609671 
+w	1017	0.279692 
+w	1018	0.269999 
+w	1023	0.398209 
+w	1024	0.788426 
+w	1025	0.860729 
+w	1026	0.625483 
+w	1027	0.736902 
+w	1028	0.517927 
+w	1029	0.434407 
+w	1030	0.816385 
+w	1031	0.82608 
+w	1032	0.312375 
+w	1033	0.0787233 
+w	1034	0.0538687 
+w	1055	0.967011 
+w	1056	0.442408 
+w	1057	0.298871 
+w	1058	0.0457338 
+w	1061	0.559918 
+w	1062	0.523669 
+w	1063	0.166016 
+w	1064	0.8441 
+w	1069	0.967587 
+w	1070	0.148459 
+w	1071	0.399565 
+w	1072	0.547702 
+w	1093	0.552278 
+w	1094	0.905942 
+w	1095	0.0832682 
+w	1096	0.951844 
+w	1109	0.770868 
+w	1110	0.608061 
+w	1111	0.205715 
+w	1112	0.862412 
+w	1117	0.527758 
+w	1118	0.610335 
+w	1119	0.828517 
+w	1120	0.611027 
+w	1175	0.694589 
+w	1176	0.0839025 
+w	1177	0.385621 
+w	1178	0.676744 
+w	1183	0.537113 
+w	1184	0.626453 
+w	1185	0.00462842 
+w	1186	0.832446 
+w	1191	0.156974 
+w	1192	0.432515 
+w	1193	0.12296 
+w	1194	0.506741 
+w	1221	0.932305 
+w	1222	0.642323 
+w	1223	0.0650903 
+w	1224	0.136707 
+w	1233	0.084864 
+w	1234	0.527235 
+w	1235	0.530082 
+w	1236	0.436809 
+w	1253	0.891971 
+w	1254	0.709061 
+w	1255	0.234991 
+w	1256	0.0588406 
+w	1269	0.925388 
+w	1270	0.477155 
+w	1307	0.764341 
+w	1308	0.761659 
+w	1309	0.63872 
+w	1310	0.670567 
+w	1311	0.742368 
+w	1312	0.680054 
+w	1313	0.171951 
+w	1314	0.533257 
+w	1315	0.552382 
+w	1316	0.182047 
+w	1317	0.832604 
+w	1318	0.714432 
+w	1319	0.308362 
+w	1320	0.023959 
+w	1321	0.38837 
+w	1322	0.0304825 
+w	1323	0.528314 
+w	1324	0.494904 
+w	1325	0.0596662 
+w	1326	0.457312 
+w	1345	0.154009 
+w	1346	0.822523 
+w	1347	0.875325 
+w	1348	0.0802234 
+w	1369	0.875237 
+w	1370	0.868466 
+w	1371	0.762028 
+w	1372	0.750562 
+w	1373	0.112864 
+w	1374	0.12079 
+w	1375	0.0885785 
+w	1376	0.921012 
+w	1393	0.59593 
+w	1394	0.642118 
+w	1395	0.54563 
+w	1396	0.346492 
+w	1409	0.885722 
+w	1410	0.726467 
+w	1415	0.479891 
+w	1416	0.193358 
+w	1417	0.692912 
+w	1418	0.0758209 
+w	1419	0.238542 
+w	1420	0.422313 
+w	1421	0.426283 
+w	1422	0.897036 
+w	1423	0.105668 
+w	1424	0.476542 
+w	1425	0.451932 
+w	1426	0.329807 
+w	1431	0.828631 
+w	1432	0.926975 
+w	1433	0.648466 
+w	1434	0.714353 
+w	1459	0.836733 
+w	1460	0.469387 
+w	1461	0.483465 
+w	1462	0.313295 
+w	1463	0.111428 
+w	1464	0.269748 
+w	1465	0.651885 
+w	1466	0.432303 
+w	1541	0.661582 
+w	1542	0.181958 
+w	1543	0.588075 
+w	1544	0.368666 
+c clauses added for node v_1_2
+-1  -2 0 
+1 2 0 
+c clauses added for node v_1_3
+-2  -3 0 
+2 3 0 
+c clauses added for node v_1_4
+-3 4 0 
+3  -4 0 
+c clauses added for node v_1_5
+-4 -331 5 0 
+-4 331 -5 0 
+4 -332 5 0 
+4 332 -5 0 
+c clauses added for node v_1_6
+-5 -333 6 0 
+-5 333 -6 0 
+5 -334 6 0 
+5 334 -6 0 
+c clauses added for node v_1_7
+-6 7 0 
+6  -7 0 
+c clauses added for node v_1_8
+-7  -8 0 
+7 8 0 
+c clauses added for node v_1_9
+-8 9 0 
+8  -9 0 
+c clauses added for node v_1_10
+-9 10 0 
+9  -10 0 
+c clauses added for node v_1_11
+-10 11 0 
+10  -11 0 
+c clauses added for node v_1_12
+-11 12 0 
+11  -12 0 
+c clauses added for node v_1_13
+-12  -13 0 
+12 13 0 
+c clauses added for node v_1_14
+-13 14 0 
+13  -14 0 
+c clauses added for node v_1_15
+-14 15 0 
+14  -15 0 
+c clauses added for node v_1_16
+-15 16 0 
+15  -16 0 
+c clauses added for node v_1_17
+-16 -355 17 0 
+-16 355 -17 0 
+16 -356 17 0 
+16 356 -17 0 
+c clauses added for node v_1_18
+-17 -357 18 0 
+-17 357 -18 0 
+17 -358 18 0 
+17 358 -18 0 
+c clauses added for node v_2_1
+-1 19 0 
+1  -19 0 
+c clauses added for node v_2_2
+-19 -2 20 0 
+-19 2  -20 0 
+19 -2  -20 0 
+19 2 20 0 
+c clauses added for node v_2_3
+-20 -3  -21 0 
+-20 3  -21 0 
+20 -3 21 0 
+20 3  -21 0 
+c clauses added for node v_2_4
+-21 -4  -22 0 
+-21 4  -22 0 
+21 -4 22 0 
+21 4  -22 0 
+c clauses added for node v_2_5
+-22 -5 23 0 
+-22 5  -23 0 
+22 -5 23 0 
+22 5  -23 0 
+c clauses added for node v_2_6
+-23 -6 24 0 
+-23 6 24 0 
+23 -6  -24 0 
+23 6  -24 0 
+c clauses added for node v_2_7
+-24 -7  -25 0 
+-24 7  -25 0 
+24 -7  -25 0 
+24 7 25 0 
+c clauses added for node v_2_8
+-25 -8 26 0 
+-25 8  -26 0 
+25 -8  -26 0 
+25 8 26 0 
+c clauses added for node v_2_9
+-26 -9  -27 0 
+-26 9  -27 0 
+26 -9 27 0 
+26 9 27 0 
+c clauses added for node v_2_10
+-27 -10  -28 0 
+-27 10  -28 0 
+27 -10  -28 0 
+27 10 28 0 
+c clauses added for node v_2_11
+-28 -11 29 0 
+-28 11  -29 0 
+28 -11  -29 0 
+28 11  -29 0 
+c clauses added for node v_2_12
+-29 -12 30 0 
+-29 12 30 0 
+29 -12  -30 0 
+29 12 30 0 
+c clauses added for node v_2_13
+-30 -13 -405 31 0 
+-30 -13 405 -31 0 
+-30 13 -406 31 0 
+-30 13 406 -31 0 
+30 -13 -407 31 0 
+30 -13 407 -31 0 
+30 13 -408 31 0 
+30 13 408 -31 0 
+c clauses added for node v_2_14
+-31 -14  -32 0 
+-31 14  -32 0 
+31 -14 32 0 
+31 14  -32 0 
+c clauses added for node v_2_15
+-32 -15  -33 0 
+-32 15 33 0 
+32 -15  -33 0 
+32 15  -33 0 
+c clauses added for node v_2_16
+-33 -16  -34 0 
+-33 16 34 0 
+33 -16 34 0 
+33 16  -34 0 
+c clauses added for node v_2_17
+-34 -17  -35 0 
+-34 17  -35 0 
+34 -17 35 0 
+34 17  -35 0 
+c clauses added for node v_2_18
+-35 -18  -36 0 
+-35 18  -36 0 
+35 -18 36 0 
+35 18 36 0 
+c clauses added for node v_3_1
+-19  -37 0 
+19 37 0 
+c clauses added for node v_3_2
+-37 -20 38 0 
+-37 20  -38 0 
+37 -20 38 0 
+37 20 38 0 
+c clauses added for node v_3_3
+-38 -21  -39 0 
+-38 21 39 0 
+38 -21  -39 0 
+38 21 39 0 
+c clauses added for node v_3_4
+-39 -22 -439 40 0 
+-39 -22 439 -40 0 
+-39 22 -440 40 0 
+-39 22 440 -40 0 
+39 -22 -441 40 0 
+39 -22 441 -40 0 
+39 22 -442 40 0 
+39 22 442 -40 0 
+c clauses added for node v_3_5
+-40 -23  -41 0 
+-40 23  -41 0 
+40 -23 41 0 
+40 23  -41 0 
+c clauses added for node v_3_6
+-41 -24  -42 0 
+-41 24 42 0 
+41 -24  -42 0 
+41 24 42 0 
+c clauses added for node v_3_7
+-42 -25  -43 0 
+-42 25  -43 0 
+42 -25 43 0 
+42 25  -43 0 
+c clauses added for node v_3_8
+-43 -26  -44 0 
+-43 26 44 0 
+43 -26  -44 0 
+43 26  -44 0 
+c clauses added for node v_3_9
+-44 -27 45 0 
+-44 27  -45 0 
+44 -27  -45 0 
+44 27 45 0 
+c clauses added for node v_3_10
+-45 -28  -46 0 
+-45 28  -46 0 
+45 -28  -46 0 
+45 28 46 0 
+c clauses added for node v_3_11
+-46 -29 -467 47 0 
+-46 -29 467 -47 0 
+-46 29 -468 47 0 
+-46 29 468 -47 0 
+46 -29 -469 47 0 
+46 -29 469 -47 0 
+46 29 -470 47 0 
+46 29 470 -47 0 
+c clauses added for node v_3_12
+-47 -30  -48 0 
+-47 30 48 0 
+47 -30 48 0 
+47 30 48 0 
+c clauses added for node v_3_13
+-48 -31  -49 0 
+-48 31  -49 0 
+48 -31  -49 0 
+48 31 49 0 
+c clauses added for node v_3_14
+-49 -32 50 0 
+-49 32 50 0 
+49 -32 50 0 
+49 32  -50 0 
+c clauses added for node v_3_15
+-50 -33 51 0 
+-50 33 51 0 
+50 -33  -51 0 
+50 33 51 0 
+c clauses added for node v_3_16
+-51 -34 -487 52 0 
+-51 -34 487 -52 0 
+-51 34 -488 52 0 
+-51 34 488 -52 0 
+51 -34 -489 52 0 
+51 -34 489 -52 0 
+51 34 -490 52 0 
+51 34 490 -52 0 
+c clauses added for node v_3_17
+-52 -35 53 0 
+-52 35  -53 0 
+52 -35 53 0 
+52 35 53 0 
+c clauses added for node v_3_18
+-53 -36  -54 0 
+-53 36  -54 0 
+53 -36  -54 0 
+53 36 54 0 
+c clauses added for node v_4_1
+-37 -499 55 0 
+-37 499 -55 0 
+37 -500 55 0 
+37 500 -55 0 
+c clauses added for node v_4_2
+-55 -38  -56 0 
+-55 38  -56 0 
+55 -38 56 0 
+55 38  -56 0 
+c clauses added for node v_4_3
+-56 -39  -57 0 
+-56 39  -57 0 
+56 -39 57 0 
+56 39 57 0 
+c clauses added for node v_4_4
+-57 -40 -509 58 0 
+-57 -40 509 -58 0 
+-57 40 -510 58 0 
+-57 40 510 -58 0 
+57 -40 -511 58 0 
+57 -40 511 -58 0 
+57 40 -512 58 0 
+57 40 512 -58 0 
+c clauses added for node v_4_5
+-58 -41 59 0 
+-58 41 59 0 
+58 -41  -59 0 
+58 41 59 0 
+c clauses added for node v_4_6
+-59 -42 60 0 
+-59 42  -60 0 
+59 -42  -60 0 
+59 42 60 0 
+c clauses added for node v_4_7
+-60 -43 61 0 
+-60 43  -61 0 
+60 -43 61 0 
+60 43 61 0 
+c clauses added for node v_4_8
+-61 -44 -525 62 0 
+-61 -44 525 -62 0 
+-61 44 -526 62 0 
+-61 44 526 -62 0 
+61 -44 -527 62 0 
+61 -44 527 -62 0 
+61 44 -528 62 0 
+61 44 528 -62 0 
+c clauses added for node v_4_9
+-62 -45 63 0 
+-62 45  -63 0 
+62 -45  -63 0 
+62 45  -63 0 
+c clauses added for node v_4_10
+-63 -46  -64 0 
+-63 46  -64 0 
+63 -46  -64 0 
+63 46 64 0 
+c clauses added for node v_4_11
+-64 -47 -537 65 0 
+-64 -47 537 -65 0 
+-64 47 -538 65 0 
+-64 47 538 -65 0 
+64 -47 -539 65 0 
+64 -47 539 -65 0 
+64 47 -540 65 0 
+64 47 540 -65 0 
+c clauses added for node v_4_12
+-65 -48 66 0 
+-65 48  -66 0 
+65 -48  -66 0 
+65 48 66 0 
+c clauses added for node v_4_13
+-66 -49  -67 0 
+-66 49 67 0 
+66 -49 67 0 
+66 49 67 0 
+c clauses added for node v_4_14
+-67 -50 68 0 
+-67 50 68 0 
+67 -50  -68 0 
+67 50 68 0 
+c clauses added for node v_4_15
+-68 -51 -553 69 0 
+-68 -51 553 -69 0 
+-68 51 -554 69 0 
+-68 51 554 -69 0 
+68 -51 -555 69 0 
+68 -51 555 -69 0 
+68 51 -556 69 0 
+68 51 556 -69 0 
+c clauses added for node v_4_16
+-69 -52 70 0 
+-69 52 70 0 
+69 -52  -70 0 
+69 52  -70 0 
+c clauses added for node v_4_17
+-70 -53 71 0 
+-70 53 71 0 
+70 -53  -71 0 
+70 53  -71 0 
+c clauses added for node v_4_18
+-71 -54 72 0 
+-71 54  -72 0 
+71 -54 72 0 
+71 54  -72 0 
+c clauses added for node v_5_1
+-55 73 0 
+55  -73 0 
+c clauses added for node v_5_2
+-73 -56  -74 0 
+-73 56  -74 0 
+73 -56 74 0 
+73 56  -74 0 
+c clauses added for node v_5_3
+-74 -57 -575 75 0 
+-74 -57 575 -75 0 
+-74 57 -576 75 0 
+-74 57 576 -75 0 
+74 -57 -577 75 0 
+74 -57 577 -75 0 
+74 57 -578 75 0 
+74 57 578 -75 0 
+c clauses added for node v_5_4
+-75 -58  -76 0 
+-75 58 76 0 
+75 -58 76 0 
+75 58 76 0 
+c clauses added for node v_5_5
+-76 -59 -583 77 0 
+-76 -59 583 -77 0 
+-76 59 -584 77 0 
+-76 59 584 -77 0 
+76 -59 -585 77 0 
+76 -59 585 -77 0 
+76 59 -586 77 0 
+76 59 586 -77 0 
+c clauses added for node v_5_6
+-77 -60 -587 78 0 
+-77 -60 587 -78 0 
+-77 60 -588 78 0 
+-77 60 588 -78 0 
+77 -60 -589 78 0 
+77 -60 589 -78 0 
+77 60 -590 78 0 
+77 60 590 -78 0 
+c clauses added for node v_5_7
+-78 -61  -79 0 
+-78 61 79 0 
+78 -61 79 0 
+78 61 79 0 
+c clauses added for node v_5_8
+-79 -62 -595 80 0 
+-79 -62 595 -80 0 
+-79 62 -596 80 0 
+-79 62 596 -80 0 
+79 -62 -597 80 0 
+79 -62 597 -80 0 
+79 62 -598 80 0 
+79 62 598 -80 0 
+c clauses added for node v_5_9
+-80 -63 81 0 
+-80 63  -81 0 
+80 -63  -81 0 
+80 63 81 0 
+c clauses added for node v_5_10
+-81 -64 -603 82 0 
+-81 -64 603 -82 0 
+-81 64 -604 82 0 
+-81 64 604 -82 0 
+81 -64 -605 82 0 
+81 -64 605 -82 0 
+81 64 -606 82 0 
+81 64 606 -82 0 
+c clauses added for node v_5_11
+-82 -65 83 0 
+-82 65  -83 0 
+82 -65 83 0 
+82 65 83 0 
+c clauses added for node v_5_12
+-83 -66 -611 84 0 
+-83 -66 611 -84 0 
+-83 66 -612 84 0 
+-83 66 612 -84 0 
+83 -66 -613 84 0 
+83 -66 613 -84 0 
+83 66 -614 84 0 
+83 66 614 -84 0 
+c clauses added for node v_5_13
+-84 -67  -85 0 
+-84 67 85 0 
+84 -67  -85 0 
+84 67 85 0 
+c clauses added for node v_5_14
+-85 -68 -619 86 0 
+-85 -68 619 -86 0 
+-85 68 -620 86 0 
+-85 68 620 -86 0 
+85 -68 -621 86 0 
+85 -68 621 -86 0 
+85 68 -622 86 0 
+85 68 622 -86 0 
+c clauses added for node v_5_15
+-86 -69 -623 87 0 
+-86 -69 623 -87 0 
+-86 69 -624 87 0 
+-86 69 624 -87 0 
+86 -69 -625 87 0 
+86 -69 625 -87 0 
+86 69 -626 87 0 
+86 69 626 -87 0 
+c clauses added for node v_5_16
+-87 -70 88 0 
+-87 70 88 0 
+87 -70  -88 0 
+87 70  -88 0 
+c clauses added for node v_5_17
+-88 -71 89 0 
+-88 71  -89 0 
+88 -71  -89 0 
+88 71  -89 0 
+c clauses added for node v_5_18
+-89 -72  -90 0 
+-89 72  -90 0 
+89 -72 90 0 
+89 72  -90 0 
+c clauses added for node v_6_1
+-73 -639 91 0 
+-73 639 -91 0 
+73 -640 91 0 
+73 640 -91 0 
+c clauses added for node v_6_2
+-91 -74  -92 0 
+-91 74 92 0 
+91 -74  -92 0 
+91 74 92 0 
+c clauses added for node v_6_3
+-92 -75  -93 0 
+-92 75 93 0 
+92 -75  -93 0 
+92 75  -93 0 
+c clauses added for node v_6_4
+-93 -76  -94 0 
+-93 76 94 0 
+93 -76 94 0 
+93 76  -94 0 
+c clauses added for node v_6_5
+-94 -77  -95 0 
+-94 77  -95 0 
+94 -77  -95 0 
+94 77 95 0 
+c clauses added for node v_6_6
+-95 -78  -96 0 
+-95 78 96 0 
+95 -78 96 0 
+95 78  -96 0 
+c clauses added for node v_6_7
+-96 -79 -661 97 0 
+-96 -79 661 -97 0 
+-96 79 -662 97 0 
+-96 79 662 -97 0 
+96 -79 -663 97 0 
+96 -79 663 -97 0 
+96 79 -664 97 0 
+96 79 664 -97 0 
+c clauses added for node v_6_8
+-97 -80 98 0 
+-97 80  -98 0 
+97 -80 98 0 
+97 80 98 0 
+c clauses added for node v_6_9
+-98 -81  -99 0 
+-98 81 99 0 
+98 -81  -99 0 
+98 81 99 0 
+c clauses added for node v_6_10
+-99 -82 100 0 
+-99 82  -100 0 
+99 -82 100 0 
+99 82 100 0 
+c clauses added for node v_6_11
+-100 -83 101 0 
+-100 83  -101 0 
+100 -83  -101 0 
+100 83  -101 0 
+c clauses added for node v_6_12
+-101 -84 102 0 
+-101 84 102 0 
+101 -84  -102 0 
+101 84 102 0 
+c clauses added for node v_6_13
+-102 -85 103 0 
+-102 85  -103 0 
+102 -85 103 0 
+102 85  -103 0 
+c clauses added for node v_6_14
+-103 -86  -104 0 
+-103 86  -104 0 
+103 -86  -104 0 
+103 86 104 0 
+c clauses added for node v_6_15
+-104 -87 -693 105 0 
+-104 -87 693 -105 0 
+-104 87 -694 105 0 
+-104 87 694 -105 0 
+104 -87 -695 105 0 
+104 -87 695 -105 0 
+104 87 -696 105 0 
+104 87 696 -105 0 
+c clauses added for node v_6_16
+-105 -88 106 0 
+-105 88 106 0 
+105 -88  -106 0 
+105 88  -106 0 
+c clauses added for node v_6_17
+-106 -89 -701 107 0 
+-106 -89 701 -107 0 
+-106 89 -702 107 0 
+-106 89 702 -107 0 
+106 -89 -703 107 0 
+106 -89 703 -107 0 
+106 89 -704 107 0 
+106 89 704 -107 0 
+c clauses added for node v_6_18
+-107 -90  -108 0 
+-107 90 108 0 
+107 -90 108 0 
+107 90  -108 0 
+c clauses added for node v_7_1
+-91  -109 0 
+91 109 0 
+c clauses added for node v_7_2
+-109 -92 110 0 
+-109 92  -110 0 
+109 -92  -110 0 
+109 92 110 0 
+c clauses added for node v_7_3
+-110 -93  -111 0 
+-110 93 111 0 
+110 -93  -111 0 
+110 93 111 0 
+c clauses added for node v_7_4
+-111 -94 -719 112 0 
+-111 -94 719 -112 0 
+-111 94 -720 112 0 
+-111 94 720 -112 0 
+111 -94 -721 112 0 
+111 -94 721 -112 0 
+111 94 -722 112 0 
+111 94 722 -112 0 
+c clauses added for node v_7_5
+-112 -95 -723 113 0 
+-112 -95 723 -113 0 
+-112 95 -724 113 0 
+-112 95 724 -113 0 
+112 -95 -725 113 0 
+112 -95 725 -113 0 
+112 95 -726 113 0 
+112 95 726 -113 0 
+c clauses added for node v_7_6
+-113 -96 -727 114 0 
+-113 -96 727 -114 0 
+-113 96 -728 114 0 
+-113 96 728 -114 0 
+113 -96 -729 114 0 
+113 -96 729 -114 0 
+113 96 -730 114 0 
+113 96 730 -114 0 
+c clauses added for node v_7_7
+-114 -97 115 0 
+-114 97  -115 0 
+114 -97  -115 0 
+114 97  -115 0 
+c clauses added for node v_7_8
+-115 -98  -116 0 
+-115 98 116 0 
+115 -98 116 0 
+115 98 116 0 
+c clauses added for node v_7_9
+-116 -99  -117 0 
+-116 99  -117 0 
+116 -99  -117 0 
+116 99 117 0 
+c clauses added for node v_7_10
+-117 -100 118 0 
+-117 100  -118 0 
+117 -100 118 0 
+117 100  -118 0 
+c clauses added for node v_7_11
+-118 -101 119 0 
+-118 101  -119 0 
+118 -101  -119 0 
+118 101 119 0 
+c clauses added for node v_7_12
+-119 -102  -120 0 
+-119 102 120 0 
+119 -102  -120 0 
+119 102  -120 0 
+c clauses added for node v_7_13
+-120 -103 121 0 
+-120 103 121 0 
+120 -103  -121 0 
+120 103 121 0 
+c clauses added for node v_7_14
+-121 -104 122 0 
+-121 104  -122 0 
+121 -104  -122 0 
+121 104  -122 0 
+c clauses added for node v_7_15
+-122 -105  -123 0 
+-122 105 123 0 
+122 -105 123 0 
+122 105  -123 0 
+c clauses added for node v_7_16
+-123 -106 -767 124 0 
+-123 -106 767 -124 0 
+-123 106 -768 124 0 
+-123 106 768 -124 0 
+123 -106 -769 124 0 
+123 -106 769 -124 0 
+123 106 -770 124 0 
+123 106 770 -124 0 
+c clauses added for node v_7_17
+-124 -107 125 0 
+-124 107  -125 0 
+124 -107  -125 0 
+124 107  -125 0 
+c clauses added for node v_7_18
+-125 -108 -775 126 0 
+-125 -108 775 -126 0 
+-125 108 -776 126 0 
+-125 108 776 -126 0 
+125 -108 -777 126 0 
+125 -108 777 -126 0 
+125 108 -778 126 0 
+125 108 778 -126 0 
+c clauses added for node v_8_1
+-109 127 0 
+109  -127 0 
+c clauses added for node v_8_2
+-127 -110 -781 128 0 
+-127 -110 781 -128 0 
+-127 110 -782 128 0 
+-127 110 782 -128 0 
+127 -110 -783 128 0 
+127 -110 783 -128 0 
+127 110 -784 128 0 
+127 110 784 -128 0 
+c clauses added for node v_8_3
+-128 -111 129 0 
+-128 111  -129 0 
+128 -111 129 0 
+128 111 129 0 
+c clauses added for node v_8_4
+-129 -112  -130 0 
+-129 112 130 0 
+129 -112  -130 0 
+129 112  -130 0 
+c clauses added for node v_8_5
+-130 -113 131 0 
+-130 113 131 0 
+130 -113  -131 0 
+130 113  -131 0 
+c clauses added for node v_8_6
+-131 -114  -132 0 
+-131 114  -132 0 
+131 -114 132 0 
+131 114  -132 0 
+c clauses added for node v_8_7
+-132 -115 133 0 
+-132 115 133 0 
+132 -115 133 0 
+132 115  -133 0 
+c clauses added for node v_8_8
+-133 -116  -134 0 
+-133 116 134 0 
+133 -116 134 0 
+133 116  -134 0 
+c clauses added for node v_8_9
+-134 -117 135 0 
+-134 117  -135 0 
+134 -117 135 0 
+134 117  -135 0 
+c clauses added for node v_8_10
+-135 -118  -136 0 
+-135 118  -136 0 
+135 -118 136 0 
+135 118  -136 0 
+c clauses added for node v_8_11
+-136 -119  -137 0 
+-136 119 137 0 
+136 -119 137 0 
+136 119  -137 0 
+c clauses added for node v_8_12
+-137 -120 -821 138 0 
+-137 -120 821 -138 0 
+-137 120 -822 138 0 
+-137 120 822 -138 0 
+137 -120 -823 138 0 
+137 -120 823 -138 0 
+137 120 -824 138 0 
+137 120 824 -138 0 
+c clauses added for node v_8_13
+-138 -121 -825 139 0 
+-138 -121 825 -139 0 
+-138 121 -826 139 0 
+-138 121 826 -139 0 
+138 -121 -827 139 0 
+138 -121 827 -139 0 
+138 121 -828 139 0 
+138 121 828 -139 0 
+c clauses added for node v_8_14
+-139 -122 -829 140 0 
+-139 -122 829 -140 0 
+-139 122 -830 140 0 
+-139 122 830 -140 0 
+139 -122 -831 140 0 
+139 -122 831 -140 0 
+139 122 -832 140 0 
+139 122 832 -140 0 
+c clauses added for node v_8_15
+-140 -123  -141 0 
+-140 123 141 0 
+140 -123 141 0 
+140 123  -141 0 
+c clauses added for node v_8_16
+-141 -124 -837 142 0 
+-141 -124 837 -142 0 
+-141 124 -838 142 0 
+-141 124 838 -142 0 
+141 -124 -839 142 0 
+141 -124 839 -142 0 
+141 124 -840 142 0 
+141 124 840 -142 0 
+c clauses added for node v_8_17
+-142 -125 143 0 
+-142 125  -143 0 
+142 -125  -143 0 
+142 125  -143 0 
+c clauses added for node v_8_18
+-143 -126  -144 0 
+-143 126  -144 0 
+143 -126  -144 0 
+143 126 144 0 
+c clauses added for node v_9_1
+-127 -849 145 0 
+-127 849 -145 0 
+127 -850 145 0 
+127 850 -145 0 
+c clauses added for node v_9_2
+-145 -128 146 0 
+-145 128  -146 0 
+145 -128  -146 0 
+145 128  -146 0 
+c clauses added for node v_9_3
+-146 -129 147 0 
+-146 129  -147 0 
+146 -129  -147 0 
+146 129 147 0 
+c clauses added for node v_9_4
+-147 -130 -859 148 0 
+-147 -130 859 -148 0 
+-147 130 -860 148 0 
+-147 130 860 -148 0 
+147 -130 -861 148 0 
+147 -130 861 -148 0 
+147 130 -862 148 0 
+147 130 862 -148 0 
+c clauses added for node v_9_5
+-148 -131 -863 149 0 
+-148 -131 863 -149 0 
+-148 131 -864 149 0 
+-148 131 864 -149 0 
+148 -131 -865 149 0 
+148 -131 865 -149 0 
+148 131 -866 149 0 
+148 131 866 -149 0 
+c clauses added for node v_9_6
+-149 -132  -150 0 
+-149 132 150 0 
+149 -132 150 0 
+149 132  -150 0 
+c clauses added for node v_9_7
+-150 -133 151 0 
+-150 133 151 0 
+150 -133 151 0 
+150 133  -151 0 
+c clauses added for node v_9_8
+-151 -134 -875 152 0 
+-151 -134 875 -152 0 
+-151 134 -876 152 0 
+-151 134 876 -152 0 
+151 -134 -877 152 0 
+151 -134 877 -152 0 
+151 134 -878 152 0 
+151 134 878 -152 0 
+c clauses added for node v_9_9
+-152 -135 153 0 
+-152 135  -153 0 
+152 -135  -153 0 
+152 135  -153 0 
+c clauses added for node v_9_10
+-153 -136  -154 0 
+-153 136 154 0 
+153 -136  -154 0 
+153 136  -154 0 
+c clauses added for node v_9_11
+-154 -137 -887 155 0 
+-154 -137 887 -155 0 
+-154 137 -888 155 0 
+-154 137 888 -155 0 
+154 -137 -889 155 0 
+154 -137 889 -155 0 
+154 137 -890 155 0 
+154 137 890 -155 0 
+c clauses added for node v_9_12
+-155 -138  -156 0 
+-155 138  -156 0 
+155 -138 156 0 
+155 138  -156 0 
+c clauses added for node v_9_13
+-156 -139 -895 157 0 
+-156 -139 895 -157 0 
+-156 139 -896 157 0 
+-156 139 896 -157 0 
+156 -139 -897 157 0 
+156 -139 897 -157 0 
+156 139 -898 157 0 
+156 139 898 -157 0 
+c clauses added for node v_9_14
+-157 -140 -899 158 0 
+-157 -140 899 -158 0 
+-157 140 -900 158 0 
+-157 140 900 -158 0 
+157 -140 -901 158 0 
+157 -140 901 -158 0 
+157 140 -902 158 0 
+157 140 902 -158 0 
+c clauses added for node v_9_15
+-158 -141 -903 159 0 
+-158 -141 903 -159 0 
+-158 141 -904 159 0 
+-158 141 904 -159 0 
+158 -141 -905 159 0 
+158 -141 905 -159 0 
+158 141 -906 159 0 
+158 141 906 -159 0 
+c clauses added for node v_9_16
+-159 -142 160 0 
+-159 142 160 0 
+159 -142 160 0 
+159 142  -160 0 
+c clauses added for node v_9_17
+-160 -143  -161 0 
+-160 143 161 0 
+160 -143  -161 0 
+160 143 161 0 
+c clauses added for node v_9_18
+-161 -144 162 0 
+-161 144  -162 0 
+161 -144 162 0 
+161 144 162 0 
+c clauses added for node v_10_1
+-145  -163 0 
+145 163 0 
+c clauses added for node v_10_2
+-163 -146  -164 0 
+-163 146 164 0 
+163 -146  -164 0 
+163 146 164 0 
+c clauses added for node v_10_3
+-164 -147  -165 0 
+-164 147 165 0 
+164 -147 165 0 
+164 147 165 0 
+c clauses added for node v_10_4
+-165 -148  -166 0 
+-165 148 166 0 
+165 -148  -166 0 
+165 148  -166 0 
+c clauses added for node v_10_5
+-166 -149 -933 167 0 
+-166 -149 933 -167 0 
+-166 149 -934 167 0 
+-166 149 934 -167 0 
+166 -149 -935 167 0 
+166 -149 935 -167 0 
+166 149 -936 167 0 
+166 149 936 -167 0 
+c clauses added for node v_10_6
+-167 -150 -937 168 0 
+-167 -150 937 -168 0 
+-167 150 -938 168 0 
+-167 150 938 -168 0 
+167 -150 -939 168 0 
+167 -150 939 -168 0 
+167 150 -940 168 0 
+167 150 940 -168 0 
+c clauses added for node v_10_7
+-168 -151  -169 0 
+-168 151 169 0 
+168 -151 169 0 
+168 151  -169 0 
+c clauses added for node v_10_8
+-169 -152  -170 0 
+-169 152 170 0 
+169 -152  -170 0 
+169 152 170 0 
+c clauses added for node v_10_9
+-170 -153 171 0 
+-170 153  -171 0 
+170 -153 171 0 
+170 153  -171 0 
+c clauses added for node v_10_10
+-171 -154 172 0 
+-171 154 172 0 
+171 -154  -172 0 
+171 154 172 0 
+c clauses added for node v_10_11
+-172 -155 173 0 
+-172 155 173 0 
+172 -155 173 0 
+172 155  -173 0 
+c clauses added for node v_10_12
+-173 -156 174 0 
+-173 156 174 0 
+173 -156  -174 0 
+173 156  -174 0 
+c clauses added for node v_10_13
+-174 -157  -175 0 
+-174 157  -175 0 
+174 -157  -175 0 
+174 157 175 0 
+c clauses added for node v_10_14
+-175 -158 176 0 
+-175 158 176 0 
+175 -158  -176 0 
+175 158 176 0 
+c clauses added for node v_10_15
+-176 -159 -973 177 0 
+-176 -159 973 -177 0 
+-176 159 -974 177 0 
+-176 159 974 -177 0 
+176 -159 -975 177 0 
+176 -159 975 -177 0 
+176 159 -976 177 0 
+176 159 976 -177 0 
+c clauses added for node v_10_16
+-177 -160  -178 0 
+-177 160 178 0 
+177 -160  -178 0 
+177 160  -178 0 
+c clauses added for node v_10_17
+-178 -161 179 0 
+-178 161  -179 0 
+178 -161  -179 0 
+178 161 179 0 
+c clauses added for node v_10_18
+-179 -162 -985 180 0 
+-179 -162 985 -180 0 
+-179 162 -986 180 0 
+-179 162 986 -180 0 
+179 -162 -987 180 0 
+179 -162 987 -180 0 
+179 162 -988 180 0 
+179 162 988 -180 0 
+c clauses added for node v_11_1
+-163  -181 0 
+163 181 0 
+c clauses added for node v_11_2
+-181 -164 182 0 
+-181 164  -182 0 
+181 -164 182 0 
+181 164  -182 0 
+c clauses added for node v_11_3
+-182 -165  -183 0 
+-182 165 183 0 
+182 -165 183 0 
+182 165 183 0 
+c clauses added for node v_11_4
+-183 -166 -999 184 0 
+-183 -166 999 -184 0 
+-183 166 -1000 184 0 
+-183 166 1000 -184 0 
+183 -166 -1001 184 0 
+183 -166 1001 -184 0 
+183 166 -1002 184 0 
+183 166 1002 -184 0 
+c clauses added for node v_11_5
+-184 -167 -1003 185 0 
+-184 -167 1003 -185 0 
+-184 167 -1004 185 0 
+-184 167 1004 -185 0 
+184 -167 -1005 185 0 
+184 -167 1005 -185 0 
+184 167 -1006 185 0 
+184 167 1006 -185 0 
+c clauses added for node v_11_6
+-185 -168  -186 0 
+-185 168 186 0 
+185 -168  -186 0 
+185 168  -186 0 
+c clauses added for node v_11_7
+-186 -169 -1011 187 0 
+-186 -169 1011 -187 0 
+-186 169 -1012 187 0 
+-186 169 1012 -187 0 
+186 -169 -1013 187 0 
+186 -169 1013 -187 0 
+186 169 -1014 187 0 
+186 169 1014 -187 0 
+c clauses added for node v_11_8
+-187 -170 -1015 188 0 
+-187 -170 1015 -188 0 
+-187 170 -1016 188 0 
+-187 170 1016 -188 0 
+187 -170 -1017 188 0 
+187 -170 1017 -188 0 
+187 170 -1018 188 0 
+187 170 1018 -188 0 
+c clauses added for node v_11_9
+-188 -171 189 0 
+-188 171  -189 0 
+188 -171 189 0 
+188 171  -189 0 
+c clauses added for node v_11_10
+-189 -172 -1023 190 0 
+-189 -172 1023 -190 0 
+-189 172 -1024 190 0 
+-189 172 1024 -190 0 
+189 -172 -1025 190 0 
+189 -172 1025 -190 0 
+189 172 -1026 190 0 
+189 172 1026 -190 0 
+c clauses added for node v_11_11
+-190 -173 -1027 191 0 
+-190 -173 1027 -191 0 
+-190 173 -1028 191 0 
+-190 173 1028 -191 0 
+190 -173 -1029 191 0 
+190 -173 1029 -191 0 
+190 173 -1030 191 0 
+190 173 1030 -191 0 
+c clauses added for node v_11_12
+-191 -174 -1031 192 0 
+-191 -174 1031 -192 0 
+-191 174 -1032 192 0 
+-191 174 1032 -192 0 
+191 -174 -1033 192 0 
+191 -174 1033 -192 0 
+191 174 -1034 192 0 
+191 174 1034 -192 0 
+c clauses added for node v_11_13
+-192 -175 193 0 
+-192 175  -193 0 
+192 -175  -193 0 
+192 175 193 0 
+c clauses added for node v_11_14
+-193 -176  -194 0 
+-193 176  -194 0 
+193 -176  -194 0 
+193 176 194 0 
+c clauses added for node v_11_15
+-194 -177  -195 0 
+-194 177  -195 0 
+194 -177  -195 0 
+194 177 195 0 
+c clauses added for node v_11_16
+-195 -178  -196 0 
+-195 178  -196 0 
+195 -178  -196 0 
+195 178 196 0 
+c clauses added for node v_11_17
+-196 -179  -197 0 
+-196 179 197 0 
+196 -179 197 0 
+196 179 197 0 
+c clauses added for node v_11_18
+-197 -180 -1055 198 0 
+-197 -180 1055 -198 0 
+-197 180 -1056 198 0 
+-197 180 1056 -198 0 
+197 -180 -1057 198 0 
+197 -180 1057 -198 0 
+197 180 -1058 198 0 
+197 180 1058 -198 0 
+c clauses added for node v_12_1
+-181  -199 0 
+181 199 0 
+c clauses added for node v_12_2
+-199 -182 -1061 200 0 
+-199 -182 1061 -200 0 
+-199 182 -1062 200 0 
+-199 182 1062 -200 0 
+199 -182 -1063 200 0 
+199 -182 1063 -200 0 
+199 182 -1064 200 0 
+199 182 1064 -200 0 
+c clauses added for node v_12_3
+-200 -183 201 0 
+-200 183 201 0 
+200 -183  -201 0 
+200 183 201 0 
+c clauses added for node v_12_4
+-201 -184 -1069 202 0 
+-201 -184 1069 -202 0 
+-201 184 -1070 202 0 
+-201 184 1070 -202 0 
+201 -184 -1071 202 0 
+201 -184 1071 -202 0 
+201 184 -1072 202 0 
+201 184 1072 -202 0 
+c clauses added for node v_12_5
+-202 -185  -203 0 
+-202 185  -203 0 
+202 -185 203 0 
+202 185 203 0 
+c clauses added for node v_12_6
+-203 -186  -204 0 
+-203 186  -204 0 
+203 -186 204 0 
+203 186 204 0 
+c clauses added for node v_12_7
+-204 -187  -205 0 
+-204 187 205 0 
+204 -187 205 0 
+204 187  -205 0 
+c clauses added for node v_12_8
+-205 -188 206 0 
+-205 188  -206 0 
+205 -188  -206 0 
+205 188 206 0 
+c clauses added for node v_12_9
+-206 -189 207 0 
+-206 189  -207 0 
+206 -189  -207 0 
+206 189  -207 0 
+c clauses added for node v_12_10
+-207 -190 -1093 208 0 
+-207 -190 1093 -208 0 
+-207 190 -1094 208 0 
+-207 190 1094 -208 0 
+207 -190 -1095 208 0 
+207 -190 1095 -208 0 
+207 190 -1096 208 0 
+207 190 1096 -208 0 
+c clauses added for node v_12_11
+-208 -191  -209 0 
+-208 191 209 0 
+208 -191  -209 0 
+208 191 209 0 
+c clauses added for node v_12_12
+-209 -192  -210 0 
+-209 192  -210 0 
+209 -192 210 0 
+209 192  -210 0 
+c clauses added for node v_12_13
+-210 -193 211 0 
+-210 193  -211 0 
+210 -193  -211 0 
+210 193  -211 0 
+c clauses added for node v_12_14
+-211 -194 -1109 212 0 
+-211 -194 1109 -212 0 
+-211 194 -1110 212 0 
+-211 194 1110 -212 0 
+211 -194 -1111 212 0 
+211 -194 1111 -212 0 
+211 194 -1112 212 0 
+211 194 1112 -212 0 
+c clauses added for node v_12_15
+-212 -195  -213 0 
+-212 195  -213 0 
+212 -195 213 0 
+212 195  -213 0 
+c clauses added for node v_12_16
+-213 -196 -1117 214 0 
+-213 -196 1117 -214 0 
+-213 196 -1118 214 0 
+-213 196 1118 -214 0 
+213 -196 -1119 214 0 
+213 -196 1119 -214 0 
+213 196 -1120 214 0 
+213 196 1120 -214 0 
+c clauses added for node v_12_17
+-214 -197 215 0 
+-214 197 215 0 
+214 -197 215 0 
+214 197  -215 0 
+c clauses added for node v_12_18
+-215 -198  -216 0 
+-215 198  -216 0 
+215 -198 216 0 
+215 198 216 0 
+c clauses added for node v_13_1
+-199  -217 0 
+199 217 0 
+c clauses added for node v_13_2
+-217 -200  -218 0 
+-217 200 218 0 
+217 -200 218 0 
+217 200  -218 0 
+c clauses added for node v_13_3
+-218 -201 219 0 
+-218 201 219 0 
+218 -201 219 0 
+218 201  -219 0 
+c clauses added for node v_13_4
+-219 -202 220 0 
+-219 202  -220 0 
+219 -202 220 0 
+219 202 220 0 
+c clauses added for node v_13_5
+-220 -203 221 0 
+-220 203  -221 0 
+220 -203 221 0 
+220 203 221 0 
+c clauses added for node v_13_6
+-221 -204  -222 0 
+-221 204  -222 0 
+221 -204  -222 0 
+221 204 222 0 
+c clauses added for node v_13_7
+-222 -205  -223 0 
+-222 205  -223 0 
+222 -205 223 0 
+222 205 223 0 
+c clauses added for node v_13_8
+-223 -206  -224 0 
+-223 206 224 0 
+223 -206  -224 0 
+223 206  -224 0 
+c clauses added for node v_13_9
+-224 -207 225 0 
+-224 207 225 0 
+224 -207 225 0 
+224 207  -225 0 
+c clauses added for node v_13_10
+-225 -208  -226 0 
+-225 208  -226 0 
+225 -208  -226 0 
+225 208 226 0 
+c clauses added for node v_13_11
+-226 -209 227 0 
+-226 209 227 0 
+226 -209  -227 0 
+226 209  -227 0 
+c clauses added for node v_13_12
+-227 -210  -228 0 
+-227 210 228 0 
+227 -210  -228 0 
+227 210  -228 0 
+c clauses added for node v_13_13
+-228 -211 -1175 229 0 
+-228 -211 1175 -229 0 
+-228 211 -1176 229 0 
+-228 211 1176 -229 0 
+228 -211 -1177 229 0 
+228 -211 1177 -229 0 
+228 211 -1178 229 0 
+228 211 1178 -229 0 
+c clauses added for node v_13_14
+-229 -212  -230 0 
+-229 212  -230 0 
+229 -212 230 0 
+229 212  -230 0 
+c clauses added for node v_13_15
+-230 -213 -1183 231 0 
+-230 -213 1183 -231 0 
+-230 213 -1184 231 0 
+-230 213 1184 -231 0 
+230 -213 -1185 231 0 
+230 -213 1185 -231 0 
+230 213 -1186 231 0 
+230 213 1186 -231 0 
+c clauses added for node v_13_16
+-231 -214 232 0 
+-231 214  -232 0 
+231 -214 232 0 
+231 214 232 0 
+c clauses added for node v_13_17
+-232 -215 -1191 233 0 
+-232 -215 1191 -233 0 
+-232 215 -1192 233 0 
+-232 215 1192 -233 0 
+232 -215 -1193 233 0 
+232 -215 1193 -233 0 
+232 215 -1194 233 0 
+232 215 1194 -233 0 
+c clauses added for node v_13_18
+-233 -216  -234 0 
+-233 216 234 0 
+233 -216  -234 0 
+233 216  -234 0 
+c clauses added for node v_14_1
+-217 235 0 
+217  -235 0 
+c clauses added for node v_14_2
+-235 -218 236 0 
+-235 218  -236 0 
+235 -218  -236 0 
+235 218 236 0 
+c clauses added for node v_14_3
+-236 -219  -237 0 
+-236 219  -237 0 
+236 -219  -237 0 
+236 219 237 0 
+c clauses added for node v_14_4
+-237 -220 238 0 
+-237 220 238 0 
+237 -220  -238 0 
+237 220 238 0 
+c clauses added for node v_14_5
+-238 -221  -239 0 
+-238 221  -239 0 
+238 -221  -239 0 
+238 221 239 0 
+c clauses added for node v_14_6
+-239 -222 240 0 
+-239 222  -240 0 
+239 -222 240 0 
+239 222 240 0 
+c clauses added for node v_14_7
+-240 -223 -1221 241 0 
+-240 -223 1221 -241 0 
+-240 223 -1222 241 0 
+-240 223 1222 -241 0 
+240 -223 -1223 241 0 
+240 -223 1223 -241 0 
+240 223 -1224 241 0 
+240 223 1224 -241 0 
+c clauses added for node v_14_8
+-241 -224 242 0 
+-241 224  -242 0 
+241 -224  -242 0 
+241 224  -242 0 
+c clauses added for node v_14_9
+-242 -225  -243 0 
+-242 225  -243 0 
+242 -225  -243 0 
+242 225 243 0 
+c clauses added for node v_14_10
+-243 -226 -1233 244 0 
+-243 -226 1233 -244 0 
+-243 226 -1234 244 0 
+-243 226 1234 -244 0 
+243 -226 -1235 244 0 
+243 -226 1235 -244 0 
+243 226 -1236 244 0 
+243 226 1236 -244 0 
+c clauses added for node v_14_11
+-244 -227  -245 0 
+-244 227 245 0 
+244 -227  -245 0 
+244 227 245 0 
+c clauses added for node v_14_12
+-245 -228 246 0 
+-245 228 246 0 
+245 -228  -246 0 
+245 228  -246 0 
+c clauses added for node v_14_13
+-246 -229 247 0 
+-246 229  -247 0 
+246 -229  -247 0 
+246 229  -247 0 
+c clauses added for node v_14_14
+-247 -230 248 0 
+-247 230  -248 0 
+247 -230 248 0 
+247 230  -248 0 
+c clauses added for node v_14_15
+-248 -231 -1253 249 0 
+-248 -231 1253 -249 0 
+-248 231 -1254 249 0 
+-248 231 1254 -249 0 
+248 -231 -1255 249 0 
+248 -231 1255 -249 0 
+248 231 -1256 249 0 
+248 231 1256 -249 0 
+c clauses added for node v_14_16
+-249 -232 250 0 
+-249 232  -250 0 
+249 -232  -250 0 
+249 232 250 0 
+c clauses added for node v_14_17
+-250 -233  -251 0 
+-250 233 251 0 
+250 -233 251 0 
+250 233  -251 0 
+c clauses added for node v_14_18
+-251 -234  -252 0 
+-251 234 252 0 
+251 -234 252 0 
+251 234  -252 0 
+c clauses added for node v_15_1
+-235 -1269 253 0 
+-235 1269 -253 0 
+235 -1270 253 0 
+235 1270 -253 0 
+c clauses added for node v_15_2
+-253 -236 254 0 
+-253 236 254 0 
+253 -236 254 0 
+253 236  -254 0 
+c clauses added for node v_15_3
+-254 -237  -255 0 
+-254 237  -255 0 
+254 -237 255 0 
+254 237  -255 0 
+c clauses added for node v_15_4
+-255 -238  -256 0 
+-255 238 256 0 
+255 -238 256 0 
+255 238 256 0 
+c clauses added for node v_15_5
+-256 -239 257 0 
+-256 239  -257 0 
+256 -239 257 0 
+256 239 257 0 
+c clauses added for node v_15_6
+-257 -240  -258 0 
+-257 240 258 0 
+257 -240 258 0 
+257 240  -258 0 
+c clauses added for node v_15_7
+-258 -241  -259 0 
+-258 241  -259 0 
+258 -241  -259 0 
+258 241 259 0 
+c clauses added for node v_15_8
+-259 -242  -260 0 
+-259 242  -260 0 
+259 -242 260 0 
+259 242 260 0 
+c clauses added for node v_15_9
+-260 -243 261 0 
+-260 243 261 0 
+260 -243 261 0 
+260 243  -261 0 
+c clauses added for node v_15_10
+-261 -244  -262 0 
+-261 244  -262 0 
+261 -244 262 0 
+261 244 262 0 
+c clauses added for node v_15_11
+-262 -245 -1307 263 0 
+-262 -245 1307 -263 0 
+-262 245 -1308 263 0 
+-262 245 1308 -263 0 
+262 -245 -1309 263 0 
+262 -245 1309 -263 0 
+262 245 -1310 263 0 
+262 245 1310 -263 0 
+c clauses added for node v_15_12
+-263 -246 -1311 264 0 
+-263 -246 1311 -264 0 
+-263 246 -1312 264 0 
+-263 246 1312 -264 0 
+263 -246 -1313 264 0 
+263 -246 1313 -264 0 
+263 246 -1314 264 0 
+263 246 1314 -264 0 
+c clauses added for node v_15_13
+-264 -247 -1315 265 0 
+-264 -247 1315 -265 0 
+-264 247 -1316 265 0 
+-264 247 1316 -265 0 
+264 -247 -1317 265 0 
+264 -247 1317 -265 0 
+264 247 -1318 265 0 
+264 247 1318 -265 0 
+c clauses added for node v_15_14
+-265 -248 -1319 266 0 
+-265 -248 1319 -266 0 
+-265 248 -1320 266 0 
+-265 248 1320 -266 0 
+265 -248 -1321 266 0 
+265 -248 1321 -266 0 
+265 248 -1322 266 0 
+265 248 1322 -266 0 
+c clauses added for node v_15_15
+-266 -249 -1323 267 0 
+-266 -249 1323 -267 0 
+-266 249 -1324 267 0 
+-266 249 1324 -267 0 
+266 -249 -1325 267 0 
+266 -249 1325 -267 0 
+266 249 -1326 267 0 
+266 249 1326 -267 0 
+c clauses added for node v_15_16
+-267 -250 268 0 
+-267 250 268 0 
+267 -250 268 0 
+267 250  -268 0 
+c clauses added for node v_15_17
+-268 -251 269 0 
+-268 251  -269 0 
+268 -251 269 0 
+268 251  -269 0 
+c clauses added for node v_15_18
+-269 -252  -270 0 
+-269 252  -270 0 
+269 -252 270 0 
+269 252  -270 0 
+c clauses added for node v_16_1
+-253 271 0 
+253  -271 0 
+c clauses added for node v_16_2
+-271 -254 272 0 
+-271 254  -272 0 
+271 -254 272 0 
+271 254 272 0 
+c clauses added for node v_16_3
+-272 -255 -1345 273 0 
+-272 -255 1345 -273 0 
+-272 255 -1346 273 0 
+-272 255 1346 -273 0 
+272 -255 -1347 273 0 
+272 -255 1347 -273 0 
+272 255 -1348 273 0 
+272 255 1348 -273 0 
+c clauses added for node v_16_4
+-273 -256  -274 0 
+-273 256  -274 0 
+273 -256  -274 0 
+273 256 274 0 
+c clauses added for node v_16_5
+-274 -257 275 0 
+-274 257 275 0 
+274 -257 275 0 
+274 257  -275 0 
+c clauses added for node v_16_6
+-275 -258 276 0 
+-275 258 276 0 
+275 -258  -276 0 
+275 258 276 0 
+c clauses added for node v_16_7
+-276 -259  -277 0 
+-276 259 277 0 
+276 -259 277 0 
+276 259  -277 0 
+c clauses added for node v_16_8
+-277 -260  -278 0 
+-277 260 278 0 
+277 -260  -278 0 
+277 260 278 0 
+c clauses added for node v_16_9
+-278 -261 -1369 279 0 
+-278 -261 1369 -279 0 
+-278 261 -1370 279 0 
+-278 261 1370 -279 0 
+278 -261 -1371 279 0 
+278 -261 1371 -279 0 
+278 261 -1372 279 0 
+278 261 1372 -279 0 
+c clauses added for node v_16_10
+-279 -262 -1373 280 0 
+-279 -262 1373 -280 0 
+-279 262 -1374 280 0 
+-279 262 1374 -280 0 
+279 -262 -1375 280 0 
+279 -262 1375 -280 0 
+279 262 -1376 280 0 
+279 262 1376 -280 0 
+c clauses added for node v_16_11
+-280 -263  -281 0 
+-280 263 281 0 
+280 -263  -281 0 
+280 263 281 0 
+c clauses added for node v_16_12
+-281 -264  -282 0 
+-281 264 282 0 
+281 -264 282 0 
+281 264 282 0 
+c clauses added for node v_16_13
+-282 -265  -283 0 
+-282 265 283 0 
+282 -265  -283 0 
+282 265  -283 0 
+c clauses added for node v_16_14
+-283 -266  -284 0 
+-283 266 284 0 
+283 -266  -284 0 
+283 266 284 0 
+c clauses added for node v_16_15
+-284 -267 -1393 285 0 
+-284 -267 1393 -285 0 
+-284 267 -1394 285 0 
+-284 267 1394 -285 0 
+284 -267 -1395 285 0 
+284 -267 1395 -285 0 
+284 267 -1396 285 0 
+284 267 1396 -285 0 
+c clauses added for node v_16_16
+-285 -268 286 0 
+-285 268 286 0 
+285 -268  -286 0 
+285 268 286 0 
+c clauses added for node v_16_17
+-286 -269 287 0 
+-286 269  -287 0 
+286 -269 287 0 
+286 269  -287 0 
+c clauses added for node v_16_18
+-287 -270  -288 0 
+-287 270 288 0 
+287 -270 288 0 
+287 270  -288 0 
+c clauses added for node v_17_1
+-271 -1409 289 0 
+-271 1409 -289 0 
+271 -1410 289 0 
+271 1410 -289 0 
+c clauses added for node v_17_2
+-289 -272 290 0 
+-289 272  -290 0 
+289 -272 290 0 
+289 272 290 0 
+c clauses added for node v_17_3
+-290 -273 -1415 291 0 
+-290 -273 1415 -291 0 
+-290 273 -1416 291 0 
+-290 273 1416 -291 0 
+290 -273 -1417 291 0 
+290 -273 1417 -291 0 
+290 273 -1418 291 0 
+290 273 1418 -291 0 
+c clauses added for node v_17_4
+-291 -274 -1419 292 0 
+-291 -274 1419 -292 0 
+-291 274 -1420 292 0 
+-291 274 1420 -292 0 
+291 -274 -1421 292 0 
+291 -274 1421 -292 0 
+291 274 -1422 292 0 
+291 274 1422 -292 0 
+c clauses added for node v_17_5
+-292 -275 -1423 293 0 
+-292 -275 1423 -293 0 
+-292 275 -1424 293 0 
+-292 275 1424 -293 0 
+292 -275 -1425 293 0 
+292 -275 1425 -293 0 
+292 275 -1426 293 0 
+292 275 1426 -293 0 
+c clauses added for node v_17_6
+-293 -276  -294 0 
+-293 276 294 0 
+293 -276 294 0 
+293 276 294 0 
+c clauses added for node v_17_7
+-294 -277 -1431 295 0 
+-294 -277 1431 -295 0 
+-294 277 -1432 295 0 
+-294 277 1432 -295 0 
+294 -277 -1433 295 0 
+294 -277 1433 -295 0 
+294 277 -1434 295 0 
+294 277 1434 -295 0 
+c clauses added for node v_17_8
+-295 -278  -296 0 
+-295 278 296 0 
+295 -278 296 0 
+295 278 296 0 
+c clauses added for node v_17_9
+-296 -279  -297 0 
+-296 279  -297 0 
+296 -279 297 0 
+296 279  -297 0 
+c clauses added for node v_17_10
+-297 -280 298 0 
+-297 280 298 0 
+297 -280 298 0 
+297 280  -298 0 
+c clauses added for node v_17_11
+-298 -281 299 0 
+-298 281  -299 0 
+298 -281  -299 0 
+298 281  -299 0 
+c clauses added for node v_17_12
+-299 -282 300 0 
+-299 282 300 0 
+299 -282  -300 0 
+299 282 300 0 
+c clauses added for node v_17_13
+-300 -283 301 0 
+-300 283 301 0 
+300 -283  -301 0 
+300 283 301 0 
+c clauses added for node v_17_14
+-301 -284 -1459 302 0 
+-301 -284 1459 -302 0 
+-301 284 -1460 302 0 
+-301 284 1460 -302 0 
+301 -284 -1461 302 0 
+301 -284 1461 -302 0 
+301 284 -1462 302 0 
+301 284 1462 -302 0 
+c clauses added for node v_17_15
+-302 -285 -1463 303 0 
+-302 -285 1463 -303 0 
+-302 285 -1464 303 0 
+-302 285 1464 -303 0 
+302 -285 -1465 303 0 
+302 -285 1465 -303 0 
+302 285 -1466 303 0 
+302 285 1466 -303 0 
+c clauses added for node v_17_16
+-303 -286 304 0 
+-303 286  -304 0 
+303 -286  -304 0 
+303 286 304 0 
+c clauses added for node v_17_17
+-304 -287 305 0 
+-304 287 305 0 
+304 -287 305 0 
+304 287  -305 0 
+c clauses added for node v_17_18
+-305 -288 306 0 
+-305 288 306 0 
+305 -288 306 0 
+305 288  -306 0 
+c clauses added for node v_18_1
+-289 307 0 
+289  -307 0 
+c clauses added for node v_18_2
+-307 -290  -308 0 
+-307 290  -308 0 
+307 -290 308 0 
+307 290  -308 0 
+c clauses added for node v_18_3
+-308 -291  -309 0 
+-308 291 309 0 
+308 -291  -309 0 
+308 291  -309 0 
+c clauses added for node v_18_4
+-309 -292 310 0 
+-309 292 310 0 
+309 -292  -310 0 
+309 292  -310 0 
+c clauses added for node v_18_5
+-310 -293  -311 0 
+-310 293  -311 0 
+310 -293  -311 0 
+310 293 311 0 
+c clauses added for node v_18_6
+-311 -294 312 0 
+-311 294 312 0 
+311 -294 312 0 
+311 294  -312 0 
+c clauses added for node v_18_7
+-312 -295 313 0 
+-312 295  -313 0 
+312 -295 313 0 
+312 295  -313 0 
+c clauses added for node v_18_8
+-313 -296 314 0 
+-313 296  -314 0 
+313 -296 314 0 
+313 296 314 0 
+c clauses added for node v_18_9
+-314 -297 315 0 
+-314 297  -315 0 
+314 -297 315 0 
+314 297 315 0 
+c clauses added for node v_18_10
+-315 -298  -316 0 
+-315 298  -316 0 
+315 -298 316 0 
+315 298  -316 0 
+c clauses added for node v_18_11
+-316 -299 317 0 
+-316 299  -317 0 
+316 -299 317 0 
+316 299 317 0 
+c clauses added for node v_18_12
+-317 -300  -318 0 
+-317 300 318 0 
+317 -300 318 0 
+317 300  -318 0 
+c clauses added for node v_18_13
+-318 -301  -319 0 
+-318 301 319 0 
+318 -301  -319 0 
+318 301 319 0 
+c clauses added for node v_18_14
+-319 -302  -320 0 
+-319 302 320 0 
+319 -302  -320 0 
+319 302 320 0 
+c clauses added for node v_18_15
+-320 -303 321 0 
+-320 303  -321 0 
+320 -303 321 0 
+320 303  -321 0 
+c clauses added for node v_18_16
+-321 -304  -322 0 
+-321 304  -322 0 
+321 -304 322 0 
+321 304 322 0 
+c clauses added for node v_18_17
+-322 -305 -1541 323 0 
+-322 -305 1541 -323 0 
+-322 305 -1542 323 0 
+-322 305 1542 -323 0 
+322 -305 -1543 323 0 
+322 -305 1543 -323 0 
+322 305 -1544 323 0 
+322 305 1544 -323 0 
+c clauses added for node v_18_18
+-323 -306 324 0 
+-323 306  -324 0 
+323 -306 324 0 
+323 306 324 0 
+
+c query node
+324 0

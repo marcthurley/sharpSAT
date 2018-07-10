@@ -5,7 +5,7 @@
  *      Author: mthurley
  */
 
-#include "component_archetype.h"
+#include <sharpSAT/component_types/component_archetype.h>
 
 CA_SearchState *ComponentArchetype::seen_ = nullptr;
 unsigned ComponentArchetype::seen_byte_size_ = 0;

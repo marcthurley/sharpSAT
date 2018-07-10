@@ -4,7 +4,7 @@
  *  Created on: Feb 4, 2013
  *      Author: mthurley
  */
-#include "base_packed_component.h"
+#include <sharpSAT/component_types/base_packed_component.h>
 #include <math.h>
 #include <iostream>
 

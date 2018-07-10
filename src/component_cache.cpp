@@ -5,7 +5,8 @@
  *      Author: mthurley
  */
 
-#include "component_cache.h"
+#include <sharpSAT/component_cache.h>
+#include <sharpSAT/stack.h>
 
 #include <algorithm>
 
@@ -41,21 +42,22 @@ uint64_t freeram() {
 }
 
 #else
-
+// ToDo: Provide something like freeram
+#error "freeram function not provided for this platform"
 #endif
 
-
-
-#include "stack.h"
 
 
 ComponentCache::ComponentCache(DataAndStatistics &statistics) :
 		statistics_(statistics) {
 }
 
-void ComponentCache::init(Component &super_comp) {
+void ComponentCache::init(Component &super_comp, SolverConfiguration &config) {
 
-    cout << sizeof(CacheableComponent) << " " << sizeof(mpz_class) << endl;
+	if (config.verbose) {
+    	cout << sizeof(CacheableComponent) << " " << sizeof(mpz_class) << endl;
+	}
+
     CacheableComponent &packed_super_comp = *new CacheableComponent(super_comp);
 	my_time_ = 1;
 
@@ -77,13 +79,17 @@ void ComponentCache::init(Component &super_comp) {
 	}
 
 	if (statistics_.maximum_cache_size_bytes_ > free_ram) {
-		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
-		cout << " Free RAM " << free_ram / 1000000 << "MB" << endl;
+		if (!config.quiet) {
+			cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
+			cout << " Free RAM " << free_ram / 1000000 << "MB" << endl;
+		}
 	}
 
-	cout << "Maximum cache size:\t"
+	if (config.verbose) {
+		cout << "Maximum cache size:\t"
 			<< statistics_.maximum_cache_size_bytes_ / 1000000 << " MB" << endl
 			<< endl;
+	}
 
 	assert(!statistics_.cache_full());
 
