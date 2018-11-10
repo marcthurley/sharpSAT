@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
         return -1;
       }
       theSolver.config().time_bound_seconds = atol(argv[i + 1]);
+      theSolver.setTimeBound(theSolver.config().time_bound_seconds);
       if (theSolver.config().verbose)
         cout << "time bound set to" << theSolver.config().time_bound_seconds << "s\n";
      } else if (strcmp(argv[i], "-cs") == 0) {
