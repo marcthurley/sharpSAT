@@ -29,7 +29,7 @@ class ComponentManager {
 public:
   ComponentManager(SolverConfiguration &config, DataAndStatistics &statistics,
         LiteralIndexedVector<TriValue> & lit_values) :
-        config_(config), statistics_(statistics), cache_(statistics),
+        config_(config), statistics_(statistics), cache_(statistics, config),
         ana_(statistics,lit_values) {
   }
 
