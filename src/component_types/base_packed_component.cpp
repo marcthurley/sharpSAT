@@ -20,10 +20,19 @@ unsigned BasePackedComponent::_data_size_mask = 0;
 void BasePackedComponent::adjustPackSize(unsigned int maxVarId,
     unsigned int maxClId) {
 
-  _bits_per_variable = log2(maxVarId) + 1;
-  _bits_per_clause   = log2(maxClId) + 1;
+  if (maxVarId > 0) {
+    _bits_per_variable = log2(maxVarId) + 1;
+    _bits_per_clause   = log2(maxClId) + 1;
+  } else {
+    _bits_per_variable = 1;
+    _bits_per_clause   = 1;
+  }
 
-  _bits_of_data_size = log2(maxVarId + maxClId) + 1;
+  if (maxVarId + maxClId > 0) {
+    _bits_of_data_size = log2(maxVarId + maxClId) + 1;
+  } else {
+    _bits_of_data_size = 1;
+  }
 
   _variable_mask = _clause_mask = _data_size_mask = 0;
   for (unsigned int i = 0; i < _bits_per_variable; i++)
