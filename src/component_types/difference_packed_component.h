@@ -12,6 +12,7 @@
 #include "component.h"
 
 #include <math.h>
+#include <cstdint>
 
 
 

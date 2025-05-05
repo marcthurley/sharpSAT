@@ -8,7 +8,11 @@
 #include <string>
 
 #include <sys/time.h>
+
+#if defined(__linux__) || defined(__APPLE__)
 #include <sys/resource.h>
+#endif
+//#include <sys/resource.h>
 
 using namespace std;
 

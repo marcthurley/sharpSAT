@@ -14,12 +14,10 @@
 #include <sys/sysinfo.h>
 #include <cstdint>
 
-uint64_t freeram() {
-
-  struct sysinfo info;
-      sysinfo(&info);
-
-  return info.freeram *(uint64_t) info.mem_unit;
+uint64_t free_ram() {
+    struct sysinfo info;
+    sysinfo(&info);
+    return info.freeram * (uint64_t)info.mem_unit;
 }
 
 #elif __APPLE__ && __MACH__
@@ -27,20 +25,34 @@ uint64_t freeram() {
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
+uint64_t free_ram() {
+    int mib[2];
+    int64_t physical_memory;
+    mib[0] = CTL_HW;
+    mib[1] = HW_MEMSIZE;
+    size_t length = sizeof(int64_t);
+    sysctl(mib, 2, &physical_memory, &length, NULL, 0);
+    return physical_memory;
+}
 
-uint64_t freeram() {
+#elif defined(_WIN32)
 
-  int mib[2];
-  int64_t physical_memory;
-  mib[0] = CTL_HW;
-  mib[1] = HW_MEMSIZE;
-  size_t length = sizeof(int64_t);
-  sysctl(mib, 2, &physical_memory, &length, NULL, 0);
+#include <windows.h>
 
-  return physical_memory;
+uint64_t free_ram() {
+    MEMORYSTATUSEX memInfo;
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+    GlobalMemoryStatusEx(&memInfo);
+    return memInfo.ullAvailPhys;
 }
 
 #else
+
+// If no OS detected, just return 0 or raise a compile error
+uint64_t free_ram() {
+    return 0;
+    // or #error "No implementation of free_ram() for this platform"
+}
 
 #endif
 
@@ -69,16 +81,16 @@ void ComponentCache::init(Component &super_comp) {
 	free_entry_base_slots_.clear();
 	free_entry_base_slots_.reserve(10000);
 
-	uint64_t free_ram = freeram();
-	uint64_t max_cache_bound = 95 * (free_ram / 100);
+	uint64_t freeram = free_ram();
+	uint64_t max_cache_bound = 95 * (freeram / 100);
 
 	if (statistics_.maximum_cache_size_bytes_ == 0) {
 	  statistics_.maximum_cache_size_bytes_ = max_cache_bound;
 	}
 
-	if (statistics_.maximum_cache_size_bytes_ > free_ram) {
+	if (statistics_.maximum_cache_size_bytes_ > freeram) {
 		cout << endl <<" WARNING: Maximum cache size larger than free RAM available" << endl;
-		cout << " Free RAM " << free_ram / 1000000 << "MB" << endl;
+		cout << " Free RAM " << freeram / 1000000 << "MB" << endl;
 	}
 
 	cout << "Maximum cache size:\t"
